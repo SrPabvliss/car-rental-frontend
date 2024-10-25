@@ -1,4 +1,3 @@
-import App from '@/App.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -7,7 +6,8 @@ const router = createRouter({
     {
       path: '/',
       name: 'login',
-      component: () => App,
+      component: () =>
+        import('@/features/auth/presentation/views/login-view.vue'),
     },
   ],
 })
