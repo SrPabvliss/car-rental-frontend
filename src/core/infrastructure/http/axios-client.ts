@@ -4,11 +4,12 @@ import type {
   IHttpResponse,
 } from '@/core/interfaces/IHttpHandler'
 import axios, { type AxiosInstance, type AxiosRequestConfig } from 'axios'
-import useToast from 'vue-toastification'
+import { useToast } from 'vue-toastification'
 
 export class AxiosClient implements IHttpHandler {
   private static instance: AxiosClient
   private axiosInstance: AxiosInstance
+  // @ts-expect-error - baseURL is required
   private static readonly baseURL = import.meta.env.VITE_API_URL || ''
   private accessToken: string | null = null
   private toast = useToast()
