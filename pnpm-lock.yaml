@@ -11,9 +11,15 @@ importers:
       '@formkit/addons':
         specifier: ^1.6.7
         version: 1.6.7
+      '@formkit/core':
+        specifier: ^1.6.7
+        version: 1.6.7
       '@formkit/i18n':
         specifier: ^1.6.7
         version: 1.6.7
+      '@formkit/themes':
+        specifier: ^1.6.7
+        version: 1.6.7(tailwindcss@3.4.14)
       '@formkit/vue':
         specifier: ^1.6.7
         version: 1.6.7(tailwindcss@3.4.14)(vue@3.5.12(typescript@5.6.3))

@@ -40,14 +40,14 @@ export class AuthDataSourceImpl implements AuthDataSource {
       },
     )
 
-    if (!data) return data
+    if (!data) return
 
     const user = jwtDecode<IAccount>(data.access_token)
     useAuthStore().setToken(data.access_token)
     useAuthStore().setUser(user)
     this.httpClient.setAccessToken(data.access_token)
 
-    return user
+    return user as IAccount
   }
 
   logout() {
@@ -57,7 +57,7 @@ export class AuthDataSourceImpl implements AuthDataSource {
 
   async register(data: ICreateUser): Promise<IUser> {
     const { data: response } = await this.httpClient.post<IUser>(
-      API_ROUTES.USERS.CREATE,
+      API_ROUTES.AUTH.SIGN_UP,
       data,
     )
 

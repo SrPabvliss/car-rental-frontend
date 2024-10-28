@@ -15,6 +15,7 @@ const { onSubmit, schema } = useRegister()
         lastName: { inputProps: { type: 'text' }, label: 'Apellido' },
         email: { inputProps: { type: 'email' }, label: 'Correo electrónico' },
         password: { inputProps: { type: 'password' }, label: 'Contraseña' },
+        role: { inputProps: { type: 'select' }, label: 'Rol' },
         phone: { inputProps: { type: 'tel', pattern:'[0-9]{3}-[0-9]{2}-[0-9]{3}' }, label: 'Teléfono' },
         address: { inputProps: { type: 'text' }, label: 'Dirección' },
       }"

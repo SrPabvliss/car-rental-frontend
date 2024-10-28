@@ -12,7 +12,7 @@ export default function useRecoverPasswordReq() {
 
   async function onSubmit(formData: IRecoverPasswordRequest) {
     try {
-      //   await AuthDataSourceImpl.getInstance().restorePasswordReq(formData.email)
+      await AuthDataSourceImpl.getInstance().restorePasswordReq(formData.email)
 
       router.push({ name: 'reset-password', query: { email: formData.email } })
     } catch (error) {

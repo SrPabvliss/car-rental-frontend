@@ -2,6 +2,7 @@ import type { ICreateUser } from '@/features/users/interfaces/IUser'
 import { z } from 'zod'
 import { AuthDataSourceImpl } from '../services/datasource'
 import router from '@/router'
+import { ROLE_ENUM } from '@/features/users/constants/RoleEnum'
 
 type RegisterForm = ICreateUser
 const phoneRegex = new RegExp(
@@ -25,6 +26,9 @@ export default function useRegister() {
     address: z
       .string({ required_error: 'La dirección es requerida.' })
       .min(3, { message: 'La dirección debe tener al menos 3 caracteres.' }),
+    role: z.enum([...Object.values(ROLE_ENUM)] as [string, ...string[]], {
+      message: 'El rol no es válido.',
+    }),
     phone: z
       .string({ required_error: 'El teléfono es requerido.' })
       .regex(phoneRegex, { message: 'El teléfono no es válido.' })

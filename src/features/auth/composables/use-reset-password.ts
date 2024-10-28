@@ -1,9 +1,9 @@
 import { z } from 'zod'
 import { AuthDataSourceImpl } from '../services/datasource'
 import type { IResetPassword } from '../interfaces/IRecoverPassword'
+import router from '@/router'
 
 export default function useResetPassword() {
-  //@ts-expect-error - token is required
   const schema = z.object({
     token: z.string({ required_error: 'El token es requerido.' }),
     newPassword: z
@@ -15,7 +15,7 @@ export default function useResetPassword() {
         message:
           'La confirmación de contraseña debe tener al menos 3 caracteres.',
       })
-      .refine(data => data === schema._def.shape.newPassword, {
+      .refine(data => data !== schema._def.shape.newPassword, {
         message: 'Las contraseñas no coinciden.',
       }),
   })
@@ -27,6 +27,8 @@ export default function useResetPassword() {
         return
       }
       await AuthDataSourceImpl.getInstance().resetPassword(formData)
+
+      router.push({ name: 'login' })
     } catch (error) {
       console.error(error)
     }
