@@ -27,20 +27,21 @@ export const CAR_BRANDS = [
   'Hyundai',
 ].sort()
 
-export const CAR_TYPES: CarType[] = [
-  'sedan',
-  'suv',
-  'hatchback',
-  'pickup',
-  'van',
-  'coupe',
+export const CAR_STATUSES: CarStatus[] = [
+  'Disponible',
+  'Alquilado',
+  'En mantenimiento',
 ]
 
-export const CAR_STATUSES: CarStatus[] = [
-  'available',
-  'maintenance',
-  'rented',
-  'unavailable',
+export const CAR_TYPES: CarType[] = [
+  'Económico',
+  'Sedán',
+  'SUV Compacto',
+  'SUV Grande',
+  'Lujo',
+  'Camioneta',
+  'Minivan',
+  'Deportivo',
 ]
 
 export const YEARS: number[] = Array.from(
