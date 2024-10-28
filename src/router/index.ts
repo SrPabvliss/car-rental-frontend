@@ -21,6 +21,19 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: () => import('@/core/layout/layout-view.vue'),
+      children: [
+        {
+          path: 'cars',
+          name: 'cars',
+          component: () =>
+            import('@/features/vehicles/presentation/views/cars-list-view.vue'),
+        },
+      ],
+    },
   ],
 })
 
