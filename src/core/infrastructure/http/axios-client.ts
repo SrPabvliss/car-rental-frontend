@@ -34,11 +34,13 @@ export class AxiosClient implements IHttpHandler {
 
     this.axiosInstance.interceptors.response.use(
       response => {
-        this.toast.success(response.data.message)
+        // this.toast.success(response.data.message)
+        this.toast.success('Correcto')
         return response
       },
       error => {
-        this.toast.error(error.response.data.message)
+        // this.toast.error(error.response.data.message)
+        this.toast.error('Error')
         return Promise.reject(error)
       },
     )

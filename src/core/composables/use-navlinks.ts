@@ -2,7 +2,7 @@ import type { LinkProp } from '../layout/nav-list.vue'
 
 export default function useNavLinks(roleType: string) {
   const links = {
-    trainer: [
+    admin: [
       {
         title: 'Vehículos',
         label: '',
@@ -11,7 +11,7 @@ export default function useNavLinks(roleType: string) {
         href: 'estudiantes',
       },
     ],
-    student: [
+    employee: [
       {
         title: 'Projects',
         label: '',
@@ -26,6 +26,7 @@ export default function useNavLinks(roleType: string) {
         variant: 'ghost',
       },
     ] as const,
+    client: [],
   }
 
   return links[roleType as keyof typeof links] as LinkProp[]
