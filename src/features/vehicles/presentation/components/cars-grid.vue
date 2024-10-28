@@ -1,4 +1,3 @@
-<!-- cars-grid.vue -->
 <script setup lang="ts">
 import {
   Card,

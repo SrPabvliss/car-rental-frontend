@@ -1,17 +1,14 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
 import {
-  Pagination,
-  PaginationEllipsis,
-  PaginationFirst,
-  PaginationLast,
-  PaginationList,
-  PaginationListItem,
-  PaginationNext,
-  PaginationPrev,
-} from '@/components/ui/pagination'
-import { computed } from 'vue'
+  ChevronFirst,
+  ChevronLast,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-vue-next'
 import type { ICarFilters } from '../../interfaces/ICarFilters'
+import { usePagination } from '../../composables/use-pagination'
+import { watch, ref, computed } from 'vue'
 
 interface Props {
   modelValue: ICarFilters
@@ -26,68 +23,93 @@ const emit = defineEmits<{
   'update:modelValue': [filters: ICarFilters]
 }>()
 
-const ITEMS_PER_PAGE = 5
+const currentPage = ref(props.modelValue.page)
 
-const currentPage = computed(() => props.modelValue.page)
-
-const updatePage = (page: number) => {
-  emit('update:modelValue', {
-    ...props.modelValue,
-    page,
-    perPage: ITEMS_PER_PAGE,
-  })
-}
-
-const stats = computed(() => {
-  const start = (currentPage.value - 1) * ITEMS_PER_PAGE + 1
-  const end = Math.min(start + ITEMS_PER_PAGE - 1, props.totalItems)
-  return `Mostrando ${start} a ${end} de ${props.totalItems} vehículos`
+const { totalPages, pages, stats, itemsPerPage } = usePagination({
+  modelValue: { ...props.modelValue, page: currentPage.value },
+  totalItems: props.totalItems,
 })
 
-const totalPages = computed(() => Math.ceil(props.totalItems / ITEMS_PER_PAGE))
+const isFirstPage = computed(() => currentPage.value === 1)
+const isLastPage = computed(() => currentPage.value === totalPages.value)
 
-const handlePageChange = (newPage: number) => {
-  if (newPage >= 1 && newPage <= totalPages.value) {
-    updatePage(newPage)
+const updatePage = (page: number) => {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page
+    emit('update:modelValue', {
+      ...props.modelValue,
+      page,
+      perPage: itemsPerPage,
+    })
   }
 }
+
+watch(
+  () => props.modelValue.page,
+  newPage => {
+    if (newPage !== currentPage.value) {
+      currentPage.value = newPage
+    }
+  },
+)
 </script>
 
 <template>
-  <div class="flex flex-col gap-2 items-center">
-    <Pagination
-      v-slot="{ page }"
-      :total="totalPages"
-      :sibling-count="1"
-      show-edges
-      :default-page="currentPage"
-      :page="currentPage"
-      @update:page="handlePageChange"
-    >
-      <PaginationList v-slot="{ items }" class="flex items-center gap-1">
-        <PaginationFirst @click="handlePageChange(1)" />
-        <PaginationPrev @click="handlePageChange(currentPage - 1)" />
-        <template v-for="(item, index) in items">
-          <PaginationListItem
-            v-if="item.type === 'page'"
-            :key="index"
-            :value="item.value"
-            as-child
-          >
-            <Button
-              class="w-10 h-10 p-0"
-              :variant="item.value === page ? 'default' : 'outline'"
-              @click="handlePageChange(item.value)"
-            >
-              {{ item.value }}
-            </Button>
-          </PaginationListItem>
-          <PaginationEllipsis v-else :key="item.type" :index="index" />
-        </template>
-        <PaginationNext @click="handlePageChange(currentPage + 1)" />
-        <PaginationLast @click="handlePageChange(totalPages)" />
-      </PaginationList>
-    </Pagination>
+  <div class="flex flex-col items-center gap-2">
+    <div class="flex items-center gap-1">
+      <Button
+        variant="outline"
+        size="icon"
+        class="h-8 w-8"
+        :disabled="isFirstPage"
+        @click="updatePage(1)"
+      >
+        <ChevronFirst class="h-4 w-4" />
+      </Button>
+
+      <Button
+        variant="outline"
+        size="icon"
+        class="h-8 w-8"
+        :disabled="isFirstPage"
+        @click="updatePage(currentPage - 1)"
+      >
+        <ChevronLeft class="h-4 w-4" />
+      </Button>
+
+      <template v-for="page in pages" :key="page">
+        <Button
+          v-if="typeof page === 'number'"
+          :variant="page === currentPage ? 'default' : 'outline'"
+          class="h-8 w-8"
+          @click="updatePage(page)"
+        >
+          {{ page }}
+        </Button>
+        <div v-else class="px-2">{{ page }}</div>
+      </template>
+
+      <Button
+        variant="outline"
+        size="icon"
+        class="h-8 w-8"
+        :disabled="isLastPage"
+        @click="updatePage(currentPage + 1)"
+      >
+        <ChevronRight class="h-4 w-4" />
+      </Button>
+
+      <Button
+        variant="outline"
+        size="icon"
+        class="h-8 w-8"
+        :disabled="isLastPage"
+        @click="updatePage(totalPages)"
+      >
+        <ChevronLast class="h-4 w-4" />
+      </Button>
+    </div>
+
     <p class="text-sm text-muted-foreground">
       {{ stats }}
     </p>
