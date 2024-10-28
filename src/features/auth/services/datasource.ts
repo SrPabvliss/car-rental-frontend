@@ -5,10 +5,12 @@ import type { ILogin, ILoginResponse } from '../interfaces/ILogin'
 import { jwtDecode } from 'jwt-decode'
 import { useAuthStore } from '@/features/auth/context/auth-store'
 import type { IAccount } from '../interfaces/IAccount'
+import type { ICreateUser, IUser } from '@/features/users/interfaces/IUser'
 
 interface AuthDataSource {
   login({ email, password }: ILogin): Promise<IAccount>
   logout(): void
+  register(data: ICreateUser): Promise<IUser>
   restorePassword(email: string): Promise<void>
 }
 
@@ -49,6 +51,17 @@ export class AuthDataSourceImpl implements AuthDataSource {
   logout() {
     useAuthStore().logout()
     this.httpClient.setAccessToken(null)
+  }
+
+  async register(data: ICreateUser): Promise<IUser> {
+    const { data: response } = await this.httpClient.post<IUser>(
+      API_ROUTES.USERS.CREATE,
+      data,
+    )
+
+    if (!response) return response
+
+    return response
   }
 
   async restorePassword(email: string) {

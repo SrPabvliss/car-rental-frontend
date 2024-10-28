@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import  LoginForm  from '../components/login-form.vue'
+import RegisterForm from '../components/register-form.vue'
 
 </script>
 
@@ -9,9 +9,9 @@ import  LoginForm  from '../components/login-form.vue'
   >
     <div class="lg:px-64 flex-2 md:px-16 md:w-3/4">
       <h2 class="text-3xl font-bold text-gray-800 mb-6">
-        Bienvenido de vuelta!
+        Regístrate
       </h2>
-      <LoginForm />
+      <RegisterForm />
     </div>
     <div
       class="relative w-3/4 lg:flex justify-end items-end overflow-hidden h-screen hidden "
@@ -35,4 +35,3 @@ import  LoginForm  from '../components/login-form.vue'
     </div>
   </div>
 </template>
-
