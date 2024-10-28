@@ -16,7 +16,12 @@ const { onSubmit, schema } = useLogin()
       password: { inputProps: { type: 'password' }, label: 'Contraseña' },
     }"
   >
+  <section class="flex flex-col">
+    <router-link to="/recover-password" class="-mt-6 mb-4">
+      <cite class="text-slate-400 text-xs"> Olvidaste tu contraseña?</cite>
+    </router-link>
     <Button type="submit" class="text-white"> Iniciar sesión </Button>
+  </section>
   </AutoForm>
   <cite class="flex pt-2">No tienes una cuenta? 
    <router-link to="/register">

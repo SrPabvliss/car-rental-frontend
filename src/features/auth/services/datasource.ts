@@ -6,12 +6,14 @@ import { jwtDecode } from 'jwt-decode'
 import { useAuthStore } from '@/features/auth/context/auth-store'
 import type { IAccount } from '../interfaces/IAccount'
 import type { ICreateUser, IUser } from '@/features/users/interfaces/IUser'
+import type { IResetPassword } from '../interfaces/IRecoverPassword'
 
 interface AuthDataSource {
   login({ email, password }: ILogin): Promise<IAccount>
   logout(): void
   register(data: ICreateUser): Promise<IUser>
-  restorePassword(email: string): Promise<void>
+  restorePasswordReq(email: string): Promise<void>
+  resetPassword(data: IResetPassword): Promise<void>
 }
 
 export class AuthDataSourceImpl implements AuthDataSource {
@@ -64,7 +66,14 @@ export class AuthDataSourceImpl implements AuthDataSource {
     return response
   }
 
-  async restorePassword(email: string) {
-    await this.httpClient.post(API_ROUTES.AUTH.RESTORE_PASSWORD, { email })
+  async restorePasswordReq(email: string) {
+    await this.httpClient.post(API_ROUTES.AUTH.RESET_REQUEST(email), {})
+  }
+
+  async resetPassword(data: IResetPassword) {
+    await this.httpClient.post(
+      API_ROUTES.AUTH.RESTORE_PASSWORD(data.token, data.newPassword),
+      {},
+    )
   }
 }

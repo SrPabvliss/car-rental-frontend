@@ -16,6 +16,20 @@ const router = createRouter({
         import('@/features/auth/presentation/views/register-view.vue'),
     },
     {
+      path: '/recover-password',
+      name: 'recover-password',
+      component: () =>
+        import(
+          '@/features/auth/presentation/views/recover-password-req-view.vue'
+        ),
+    },
+    {
+      path: '/reset-password',
+      name: 'reset-password',
+      component: () =>
+        import('@/features/auth/presentation/views/reset-password-view.vue'),
+    },
+    {
       path: '/test',
       name: 'test',
       component: () => import('@/core/layout/layout-view.vue'),
