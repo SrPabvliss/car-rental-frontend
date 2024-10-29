@@ -26,22 +26,22 @@ export class CarDataSourceImpl implements CarDataSource {
   }
 
   getAll = async (): Promise<ICar[]> => {
-    const { data } = await this.httpClient.get<ICar[]>('/api/cars')
+    const data = await this.httpClient.get<ICar[]>('/api/cars')
     return data
   }
 
   getById = async (id: string): Promise<ICar> => {
-    const { data } = await this.httpClient.get<ICar>(`/api/cars/${id}`)
+    const data = await this.httpClient.get<ICar>(`/api/cars/${id}`)
     return data
   }
 
   create = async (vehicle: ICar): Promise<ICar> => {
-    const { data } = await this.httpClient.post<ICar>('/api/cars', vehicle)
+    const data = await this.httpClient.post<ICar>('/api/cars', vehicle)
     return data
   }
 
   update = async (vehicle: ICar): Promise<ICar> => {
-    const { data } = await this.httpClient.put<ICar>(
+    const data = await this.httpClient.put<ICar>(
       `/api/cars/${vehicle.id}`,
       vehicle,
     )

@@ -7,8 +7,8 @@ export const API_ROUTES = {
   AUTH: {
     LOGIN: AR_KEYS.AUTH + '/signin',
     RESET_REQUEST: (email: string) => `${AR_KEYS.AUTH}/reset?email=${email}`,
-    RESTORE_PASSWORD: (token: string, newPassword: string) =>
-      `${AR_KEYS.AUTH}/reset-password?token=${token}&newPassword=${newPassword}`,
+    RESTORE_PASSWORD: (token: string) =>
+      `${AR_KEYS.AUTH}/reset-password?token=${token}`,
     SIGN_UP: AR_KEYS.AUTH + '/signup',
   },
   USERS: {

@@ -8,7 +8,7 @@ export default function useNavLinks(roleType: string) {
         label: '',
         icon: 'lucide:user-circle',
         variant: 'ghost',
-        href: 'estudiantes',
+        href: 'cars',
       },
     ],
     employee: [

@@ -11,7 +11,7 @@ export interface IUser {
   role: ROLE_ENUM
 }
 
-export interface ICreateUser extends Omit<IUser, 'id'> {
+export interface ICreateUser extends Omit<IUser, 'id' | 'active'> {
   password: string
 }
 

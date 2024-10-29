@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { z } from 'zod'
 import { AuthDataSourceImpl } from '../services/datasource'
 import type { IResetPassword } from '../interfaces/IRecoverPassword'
 import router from '@/router'
 
 export default function useResetPassword() {
-  const schema = z.object({
+  const schema: any = z.object({
     token: z.string({ required_error: 'El token es requerido.' }),
     newPassword: z
       .string({ required_error: 'La contraseña es requerida.' })

@@ -1,15 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type {
-  IHttpHandler,
-  IHttpResponse,
-} from '@/core/interfaces/IHttpHandler'
+import type { IHttpHandler } from '@/core/interfaces/IHttpHandler'
 import axios, { type AxiosInstance, type AxiosRequestConfig } from 'axios'
 import { useToast } from 'vue-toastification'
 
 export class AxiosClient implements IHttpHandler {
   private static instance: AxiosClient
   private axiosInstance: AxiosInstance
-  // @ts-expect-error - baseURL is required
   private static readonly baseURL = import.meta.env.VITE_API_URL || ''
   private accessToken: string | null = null
   private toast = useToast()
@@ -66,15 +62,9 @@ export class AxiosClient implements IHttpHandler {
     return this.axiosInstance
   }
 
-  async get<T>(
-    url: string,
-    config?: AxiosRequestConfig,
-  ): Promise<IHttpResponse<T>> {
+  async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
     try {
-      const response = await this.axiosInstance.get<IHttpResponse<T>>(
-        url,
-        config,
-      )
+      const response = await this.axiosInstance.get<T>(url, config)
       return response.data
     } catch (e: any) {
       return e.response.data
@@ -85,13 +75,9 @@ export class AxiosClient implements IHttpHandler {
     url: string,
     data?: any,
     config?: AxiosRequestConfig,
-  ): Promise<IHttpResponse<T>> {
+  ): Promise<T> {
     try {
-      const response = await this.axiosInstance.post<IHttpResponse<T>>(
-        url,
-        data,
-        config,
-      )
+      const response = await this.axiosInstance.post<T>(url, data, config)
       return response.data
     } catch (e: any) {
       return e.response.data
@@ -102,13 +88,9 @@ export class AxiosClient implements IHttpHandler {
     url: string,
     data?: any,
     config?: AxiosRequestConfig,
-  ): Promise<IHttpResponse<T>> {
+  ): Promise<T> {
     try {
-      const response = await this.axiosInstance.put<IHttpResponse<T>>(
-        url,
-        data,
-        config,
-      )
+      const response = await this.axiosInstance.put<T>(url, data, config)
       return response.data
     } catch (e: any) {
       return e.response.data
@@ -119,28 +101,18 @@ export class AxiosClient implements IHttpHandler {
     url: string,
     data?: any,
     config?: AxiosRequestConfig,
-  ): Promise<IHttpResponse<T>> {
+  ): Promise<T> {
     try {
-      const response = await this.axiosInstance.patch<IHttpResponse<T>>(
-        url,
-        data,
-        config,
-      )
+      const response = await this.axiosInstance.patch<T>(url, data, config)
       return response.data
     } catch (e: any) {
       return e.response.data
     }
   }
 
-  async delete<T>(
-    url: string,
-    config?: AxiosRequestConfig,
-  ): Promise<IHttpResponse<T>> {
+  async delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
     try {
-      const response = await this.axiosInstance.delete<IHttpResponse<T>>(
-        url,
-        config,
-      )
+      const response = await this.axiosInstance.delete<T>(url, config)
       return response.data
     } catch (e: any) {
       return e.response.data

@@ -12,11 +12,11 @@
     }
   ],
   "compilerOptions": {
+    "lib": ["ES2023", "DOM"],
     "module": "NodeNext",
+    "preserveSymlinks": true,
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     }
   }
 }

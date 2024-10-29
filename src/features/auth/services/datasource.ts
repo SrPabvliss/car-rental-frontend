@@ -9,7 +9,7 @@ import type { ICreateUser, IUser } from '@/features/users/interfaces/IUser'
 import type { IResetPassword } from '../interfaces/IRecoverPassword'
 
 interface AuthDataSource {
-  login({ email, password }: ILogin): Promise<IAccount>
+  login({ email, password }: ILogin): Promise<IAccount | undefined>
   logout(): void
   register(data: ICreateUser): Promise<IUser>
   restorePasswordReq(email: string): Promise<void>
@@ -18,7 +18,7 @@ interface AuthDataSource {
 
 export class AuthDataSourceImpl implements AuthDataSource {
   private httpClient: IHttpHandler
-  private static instance: AuthDataSource
+  private static instance: AuthDataSourceImpl
 
   constructor() {
     this.httpClient = AxiosClient.getInstance()
@@ -32,7 +32,7 @@ export class AuthDataSourceImpl implements AuthDataSource {
   }
 
   async login({ email, password }: ILogin) {
-    const { data } = await this.httpClient.post<ILoginResponse>(
+    const data = await this.httpClient.post<ILoginResponse>(
       API_ROUTES.AUTH.LOGIN,
       {
         email: email,
@@ -42,10 +42,10 @@ export class AuthDataSourceImpl implements AuthDataSource {
 
     if (!data) return
 
-    const user = jwtDecode<IAccount>(data.access_token)
-    useAuthStore().setToken(data.access_token)
+    const user = jwtDecode<IAccount>(data.token)
+    useAuthStore().setToken(data.token)
     useAuthStore().setUser(user)
-    this.httpClient.setAccessToken(data.access_token)
+    this.httpClient.setAccessToken(data.token)
 
     return user as IAccount
   }
@@ -56,7 +56,7 @@ export class AuthDataSourceImpl implements AuthDataSource {
   }
 
   async register(data: ICreateUser): Promise<IUser> {
-    const { data: response } = await this.httpClient.post<IUser>(
+    const response = await this.httpClient.post<IUser>(
       API_ROUTES.AUTH.SIGN_UP,
       data,
     )
@@ -71,9 +71,8 @@ export class AuthDataSourceImpl implements AuthDataSource {
   }
 
   async resetPassword(data: IResetPassword) {
-    await this.httpClient.post(
-      API_ROUTES.AUTH.RESTORE_PASSWORD(data.token, data.newPassword),
-      {},
-    )
+    await this.httpClient.post(API_ROUTES.AUTH.RESTORE_PASSWORD(data.token), {
+      newPassword: data.newPassword,
+    })
   }
 }

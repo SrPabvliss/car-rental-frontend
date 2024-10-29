@@ -22,11 +22,11 @@ export default function useRegister() {
       .email({ message: 'El email no es válido.' }),
     password: z
       .string({ required_error: 'La contraseña es requerida.' })
-      .min(3, { message: 'La contraseña debe tener al menos 3 caracteres.' }),
+      .min(5, { message: 'La contraseña debe tener al menos 5 caracteres.' }),
     address: z
       .string({ required_error: 'La dirección es requerida.' })
       .min(3, { message: 'La dirección debe tener al menos 3 caracteres.' }),
-    role: z.enum([...Object.values(ROLE_ENUM)] as [string, ...string[]], {
+    role: z.enum([...Object.values(ROLE_ENUM)] as [ROLE_ENUM, ...ROLE_ENUM[]], {
       message: 'El rol no es válido.',
     }),
     phone: z
@@ -37,10 +37,13 @@ export default function useRegister() {
   })
 
   async function onSubmit(formData: RegisterForm) {
-    const data = await AuthDataSourceImpl.getInstance().register(formData)
-    if (!data) return
-
-    router.push({ name: 'login' })
+    try {
+      const data = await AuthDataSourceImpl.getInstance().register(formData)
+      if (!data) return
+      router.push({ name: 'login' })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return {
