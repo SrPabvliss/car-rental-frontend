@@ -4,16 +4,28 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "run-p type-check \"build-only {@}\" --",
-    "preview": "vite preview",
-    "test:unit": "vitest",
-    "test:e2e": "start-server-and-test preview http://localhost:4173 'cypress run --e2e'",
-    "test:e2e:dev": "start-server-and-test 'vite dev --port 4173' http://localhost:4173 'cypress open --e2e'",
-    "build-only": "vite build",
-    "type-check": "vue-tsc --build --force",
-    "lint": "eslint . --fix",
-    "format": "prettier --write src/"
+  "dev": "vite --mode development",
+  "dev:test": "vite --mode test",
+  "dev:production": "vite --mode production",
+  
+  "build": "run-p type-check \"build-only {@}\" --",
+  "preview": "vite preview",
+
+  "test:unit": "vitest",
+  "test:unit:dev": "NODE_ENV=development vitest",
+  "test:unit:test": "NODE_ENV=test vitest",
+  "test:unit:prod": "NODE_ENV=production vitest",
+
+  "test:e2e": "start-server-and-test preview http://localhost:4173 'cypress run --e2e'",
+  "test:e2e:dev": "start-server-and-test 'vite dev --mode development --port 4173' http://localhost:4173 'cypress open --e2e'",
+  "test:e2e:test": "start-server-and-test 'vite preview --mode test --port 4173' http://localhost:4173 'cypress run --e2e'",
+  "test:e2e:prod": "start-server-and-test 'vite preview --mode production --port 4173' http://localhost:4173 'cypress run --e2e'",
+
+  "build-only": "vite build",
+  "type-check": "vue-tsc --build --force",
+
+  "lint": "eslint . --fix",
+  "format": "prettier --write src/"
   },
   "dependencies": {
     "@formkit/addons": "^1.6.7",
@@ -32,6 +44,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "dotenv": "^16.4.5",
     "jwt-decode": "^4.0.0",
     "lucide-vue": "^0.453.0",
     "lucide-vue-next": "^0.453.0",
