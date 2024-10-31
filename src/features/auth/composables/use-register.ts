@@ -1,8 +1,9 @@
-import type { ICreateUser } from '@/features/users/interfaces/IUser'
-import { z } from 'zod'
-import { AuthDataSourceImpl } from '../services/datasource'
-import router from '@/router'
 import { ROLE_ENUM } from '@/features/users/constants/RoleEnum'
+import type { ICreateUser } from '@/features/users/interfaces/IUser'
+import router from '@/router'
+import { z } from 'zod'
+
+import { AuthDataSourceImpl } from '../services/datasource'
 
 type RegisterForm = ICreateUser
 const phoneRegex = new RegExp(

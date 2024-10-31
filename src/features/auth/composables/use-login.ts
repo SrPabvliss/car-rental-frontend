@@ -1,8 +1,9 @@
-import { z } from 'zod'
-import { AuthDataSourceImpl } from '../services/datasource'
-import router from '@/router'
-import { useModulesStore } from '@/core/context/modules-store'
 import useNavLinks from '@/core/composables/use-navlinks'
+import { useModulesStore } from '@/core/context/modules-store'
+import router from '@/router'
+import { z } from 'zod'
+
+import { AuthDataSourceImpl } from '../services/datasource'
 
 interface LoginForm {
   email: string

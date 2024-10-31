@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+
 import type { LinkProp } from '../layout/nav-list.vue'
 
 interface IModulesStore {

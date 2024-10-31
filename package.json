@@ -4,28 +4,23 @@
   "private": true,
   "type": "module",
   "scripts": {
-  "dev": "vite --mode development",
-  "dev:test": "vite --mode test",
-  "dev:production": "vite --mode production",
-  
-  "build": "run-p type-check \"build-only {@}\" --",
-  "preview": "vite preview",
-
-  "test:unit": "vitest",
-  "test:unit:dev": "NODE_ENV=development vitest",
-  "test:unit:test": "NODE_ENV=test vitest",
-  "test:unit:prod": "NODE_ENV=production vitest",
-
-  "test:e2e": "start-server-and-test preview http://localhost:4173 'cypress run --e2e'",
-  "test:e2e:dev": "start-server-and-test 'vite dev --mode development --port 4173' http://localhost:4173 'cypress open --e2e'",
-  "test:e2e:test": "start-server-and-test 'vite preview --mode test --port 4173' http://localhost:4173 'cypress run --e2e'",
-  "test:e2e:prod": "start-server-and-test 'vite preview --mode production --port 4173' http://localhost:4173 'cypress run --e2e'",
-
-  "build-only": "vite build",
-  "type-check": "vue-tsc --build --force",
-
-  "lint": "eslint . --fix",
-  "format": "prettier --write src/"
+    "dev": "vite --mode development",
+    "dev:test": "vite --mode test",
+    "dev:production": "vite --mode production",
+    "build": "run-p type-check \"build-only {@}\" --",
+    "preview": "vite preview",
+    "test:unit": "vitest",
+    "test:unit:dev": "NODE_ENV=development vitest",
+    "test:unit:test": "NODE_ENV=test vitest",
+    "test:unit:prod": "NODE_ENV=production vitest",
+    "test:e2e": "start-server-and-test preview http://localhost:4173 'cypress run --e2e'",
+    "test:e2e:dev": "start-server-and-test 'vite dev --mode development --port 4173' http://localhost:4173 'cypress open --e2e'",
+    "test:e2e:test": "start-server-and-test 'vite preview --mode test --port 4173' http://localhost:4173 'cypress run --e2e'",
+    "test:e2e:prod": "start-server-and-test 'vite preview --mode production --port 4173' http://localhost:4173 'cypress run --e2e'",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --build --force",
+    "lint": "eslint . --fix",
+    "format": "prettier --write src/"
   },
   "dependencies": {
     "@formkit/addons": "^1.6.7",
@@ -65,6 +60,8 @@
     "@tsconfig/node20": "^20.1.4",
     "@types/jsdom": "^21.1.7",
     "@types/node": "^20.17.0",
+    "@typescript-eslint/eslint-plugin": "^8.12.2",
+    "@typescript-eslint/parser": "^8.12.2",
     "@vitejs/plugin-vue": "^5.1.4",
     "@vitejs/plugin-vue-jsx": "^4.0.1",
     "@vitest/eslint-plugin": "1.1.7",
@@ -76,6 +73,7 @@
     "cypress": "^13.15.1",
     "eslint": "^9.13.0",
     "eslint-plugin-cypress": "^4.0.0",
+    "eslint-plugin-import-helpers": "^2.0.1",
     "eslint-plugin-vue": "^9.29.0",
     "jsdom": "^25.0.1",
     "npm-run-all2": "^7.0.1",

@@ -1,10 +1,11 @@
-import { defaultConfig } from '@formkit/vue'
-import { rootClasses } from './formkit.theme'
 import {
   createAutoAnimatePlugin,
   createAutoHeightTextareaPlugin,
 } from '@formkit/addons'
 import { es } from '@formkit/i18n'
+import { defaultConfig } from '@formkit/vue'
+
+import { rootClasses } from './formkit.theme'
 
 const config = defaultConfig({
   plugins: [

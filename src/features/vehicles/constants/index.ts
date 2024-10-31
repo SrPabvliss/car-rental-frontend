@@ -1,5 +1,5 @@
-import type { ICarFilters, OrderByOption } from '../interfaces/ICarFilters'
 import type { CarStatus, CarType } from '../interfaces/ICar'
+import type { ICarFilters, OrderByOption } from '../interfaces/ICarFilters'
 
 export const defaultFilters: ICarFilters = {
   search: '',
@@ -66,7 +66,7 @@ export interface SelectConfig {
 }
 
 export const createFilterSelectConfigs = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   selectedValues: Record<string, any>,
   handlers: Record<string, (value: string) => void>,
 ): SelectConfig[] => [

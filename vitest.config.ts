@@ -1,8 +1,9 @@
+import dotenv from 'dotenv';
 import { fileURLToPath } from 'node:url'
 import { mergeConfig, defineConfig, configDefaults } from 'vitest/config'
+
 import viteConfig from './vite.config'
 
-import dotenv from 'dotenv';
 
 dotenv.config({ path: `.env.${process.env.NODE_ENV || 'development'}` });
 

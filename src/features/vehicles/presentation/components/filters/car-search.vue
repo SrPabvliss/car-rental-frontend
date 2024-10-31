@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Search } from 'lucide-vue-next'
-import { Input } from '@/components/ui/input'
 import { computed } from 'vue'
+
+import { Input } from '@/components/ui/input'
 
 const props = defineProps<{
   modelValue: string

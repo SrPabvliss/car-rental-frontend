@@ -1,4 +1,5 @@
 import { computed } from 'vue'
+
 import type { ICarFilters } from '../interfaces/ICarFilters'
 
 interface PaginationProps {

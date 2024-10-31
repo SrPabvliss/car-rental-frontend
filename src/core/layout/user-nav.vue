@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import router from '@/router'
+import { LogOut, User } from 'lucide-vue-next'
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,8 +13,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 // import { useAuthStore } from '@/features/auth/context/auth-store'
-import router from '@/router'
-import { LogOut, User } from 'lucide-vue-next'
 
 // const auth = useAuthStore()
 // auth.loadData()

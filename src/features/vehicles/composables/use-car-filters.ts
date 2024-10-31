@@ -1,6 +1,5 @@
 import { computed } from 'vue'
-import type { ICarFilters, OrderByValue } from '../interfaces/ICarFilters'
-import type { CarStatus, CarType } from '../interfaces/ICar'
+
 import {
   CAR_BRANDS,
   CAR_TYPES,
@@ -9,10 +8,12 @@ import {
   ORDER_BY_OPTIONS,
   createFilterSelectConfigs,
 } from '../constants'
+import type { CarStatus, CarType } from '../interfaces/ICar'
+import type { ICarFilters, OrderByValue } from '../interfaces/ICarFilters'
 
 export const ALL_VALUE = 'all'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 export function useCarFilters(props: { modelValue: ICarFilters }, emit: any) {
   const searchValue = computed({
     get: () => props.modelValue.search,

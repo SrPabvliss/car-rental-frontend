@@ -1,6 +1,7 @@
-import { defineStore } from 'pinia'
-import type { IAccount } from '../interfaces/IAccount'
 import { readLocalStorage } from '@/core/helpers/read-local-storage'
+import { defineStore } from 'pinia'
+
+import type { IAccount } from '../interfaces/IAccount'
 
 interface IAuthStore {
   user: IAccount | null

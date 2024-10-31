@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import ScrollArea from '@/components/ui/scroll-area/ScrollArea.vue'
 import { Separator } from '@/components/ui/separator'
+
+import { useMobile } from '../composables/use-mobile'
 import ModeToggle from './mode-toggle.vue'
 import UserNav from './user-nav.vue'
-import { useMobile } from '../composables/use-mobile'
 
 defineProps<{
   title: string

@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import ContentLayout from '@/core/layout/content-layout.vue'
-import CarFilters from '../components/filters/car-filters.vue'
-import CarsGrid from '../components/cars-grid.vue'
-import CarPagination from '../components/car-pagination.vue'
-import CarBreadcrumbs from '../components/car-breadcrumb.vue'
+
 import { useCars } from '../../composables/use-cars'
+import CarBreadcrumbs from '../components/car-breadcrumb.vue'
+import CarPagination from '../components/car-pagination.vue'
+import CarsGrid from '../components/cars-grid.vue'
+import CarFilters from '../components/filters/car-filters.vue'
 
 const {
   loading,

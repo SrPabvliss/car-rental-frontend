@@ -1,14 +1,15 @@
 <script lang="ts" setup>
+import { cn } from '@/lib/utils'
+import router from '@/router'
+import { Icon } from '@iconify/vue'
+import { useRoute } from 'vue-router'
+
 import { buttonVariants } from '@/components/ui/button'
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { cn } from '@/lib/utils'
-import router from '@/router'
-import { Icon } from '@iconify/vue'
-import { useRoute } from 'vue-router'
 
 export interface LinkProp {
   title: string

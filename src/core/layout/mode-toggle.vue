@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { useColorMode } from '@vueuse/core'
+import { MoonIcon, SunIcon } from 'lucide-vue-next'
+
 import { Button } from '@/components/ui/button'
 import {
   Tooltip,
@@ -6,8 +9,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { MoonIcon, SunIcon } from 'lucide-vue-next'
-import { useColorMode } from '@vueuse/core'
 const mode = useColorMode()
 
 const delayDuration = 100

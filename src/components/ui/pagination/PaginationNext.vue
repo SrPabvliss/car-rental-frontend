@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import {
-  Button,
-} from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { ChevronRightIcon } from '@radix-icons/vue'
 import { PaginationNext, type PaginationNextProps } from 'radix-vue'
 import { computed, type HTMLAttributes } from 'vue'
+
+import {
+  Button,
+} from '@/components/ui/button'
 
 const props = withDefaults(defineProps<PaginationNextProps & { class?: HTMLAttributes['class'] }>(), {
   asChild: true,

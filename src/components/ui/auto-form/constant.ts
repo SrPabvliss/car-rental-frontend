@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import AutoFormFieldArray from './AutoFormFieldArray.vue'
 import AutoFormFieldBoolean from './AutoFormFieldBoolean.vue'
 import AutoFormFieldDate from './AutoFormFieldDate.vue'

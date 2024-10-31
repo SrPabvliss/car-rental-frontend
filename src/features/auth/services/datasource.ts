@@ -1,11 +1,12 @@
 import { API_ROUTES } from '@/core/api/routes/api-routes'
 import { AxiosClient } from '@/core/infrastructure/http/axios-client'
 import type { IHttpHandler } from '@/core/interfaces/IHttpHandler'
-import type { ILogin, ILoginResponse } from '../interfaces/ILogin'
-import { jwtDecode } from 'jwt-decode'
 import { useAuthStore } from '@/features/auth/context/auth-store'
-import type { IAccount } from '../interfaces/IAccount'
 import type { ICreateUser, IUser } from '@/features/users/interfaces/IUser'
+import { jwtDecode } from 'jwt-decode'
+
+import type { IAccount } from '../interfaces/IAccount'
+import type { ILogin, ILoginResponse } from '../interfaces/ILogin'
 import type { IResetPassword } from '../interfaces/IRecoverPassword'
 
 interface AuthDataSource {

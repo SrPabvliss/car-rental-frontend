@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import RegisterForm from '../components/register-form.vue'
-
 </script>
 
 <template>
@@ -8,13 +7,11 @@ import RegisterForm from '../components/register-form.vue'
     class="flex justify-center items-center min-h-screen bg-gray-100 w-screen"
   >
     <div class="lg:px-64 flex-2 md:px-16 md:w-3/4">
-      <h2 class="text-3xl font-bold text-gray-800 mb-6">
-        Regístrate
-      </h2>
+      <h2 class="text-3xl font-bold text-gray-800 mb-6">Regístrate</h2>
       <RegisterForm />
     </div>
     <div
-      class="relative w-3/4 lg:flex justify-end items-end overflow-hidden h-screen hidden "
+      class="relative w-3/4 lg:flex justify-end items-end overflow-hidden h-screen hidden"
     >
       <img
         src="https://carsonrentacar.com/img/car-keys-850x476.jpg"
@@ -26,7 +23,9 @@ import RegisterForm from '../components/register-form.vue'
         class="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center"
       >
         <div class="text-center text-white px-6">
-          <h1 class="text-4xl font-bold">Tu solución de transporte y comodidad</h1>
+          <h1 class="text-4xl font-bold">
+            Tu solución de transporte y comodidad
+          </h1>
           <p class="mt-4 text-lg">
             Selección a tu gusto. ¡Asesoría en todo momento!
           </p>

@@ -1,8 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { z } from 'zod'
-import { AuthDataSourceImpl } from '../services/datasource'
-import type { IResetPassword } from '../interfaces/IRecoverPassword'
+ 
 import router from '@/router'
+import { z } from 'zod'
+
+import type { IResetPassword } from '../interfaces/IRecoverPassword'
+import { AuthDataSourceImpl } from '../services/datasource'
 
 export default function useResetPassword() {
   const schema: any = z.object({
