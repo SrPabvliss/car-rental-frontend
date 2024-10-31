@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import  LoginForm  from '../components/login-form.vue'
-
+import LoginForm from '../components/login-form.vue'
 </script>
 
 <template>
@@ -14,14 +13,13 @@ import  LoginForm  from '../components/login-form.vue'
       <LoginForm />
     </div>
     <div
-      class="relative w-3/4 lg:flex justify-end items-end overflow-hidden h-screen hidden "
+      class="relative w-3/4 lg:flex justify-end items-end overflow-hidden h-screen hidden"
     >
       <img
         src="https://carsonrentacar.com/img/car-keys-850x476.jpg"
         alt="Renta de autos"
         class="object-cover h-full w-full"
       />
-
       <div
         class="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center"
       >
@@ -35,4 +33,3 @@ import  LoginForm  from '../components/login-form.vue'
     </div>
   </div>
 </template>
-
