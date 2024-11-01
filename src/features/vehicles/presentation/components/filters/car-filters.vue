@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { SlidersHorizontal } from 'lucide-vue-next'
+
 import { Button } from '@/components/ui/button'
 import {
   Sheet,
@@ -9,11 +10,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import type { ICarFilters } from '../../../interfaces/ICarFilters'
+
 import { useCarFilters } from '../../../composables/use-car-filters'
-import CarSelect from './car-select.vue'
+import type { ICarFilters } from '../../../interfaces/ICarFilters'
 import CarPriceRange from './car-price-range.vue'
 import CarSearch from './car-search.vue'
+import CarSelect from './car-select.vue'
 
 
 const props = defineProps<{

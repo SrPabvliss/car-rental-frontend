@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import type { IHttpHandler } from '@/core/interfaces/IHttpHandler'
 import axios, { type AxiosInstance, type AxiosRequestConfig } from 'axios'
 import { useToast } from 'vue-toastification'

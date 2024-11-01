@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import { Button } from '@/components/ui/button'
 import {
   ChevronFirst,
   ChevronLast,
   ChevronLeft,
   ChevronRight,
 } from 'lucide-vue-next'
-import type { ICarFilters } from '../../interfaces/ICarFilters'
-import { usePagination } from '../../composables/use-pagination'
 import { watch, ref, computed } from 'vue'
+
+import { Button } from '@/components/ui/button'
+
+import { usePagination } from '../../composables/use-pagination'
+import type { ICarFilters } from '../../interfaces/ICarFilters'
+
 
 interface Props {
   modelValue: ICarFilters

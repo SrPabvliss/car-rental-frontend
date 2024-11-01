@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import router from '@/router'
+import { ChevronRight } from 'lucide-vue-next'
+import type { Component } from 'vue'
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -6,9 +10,6 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
-import { ChevronRight } from 'lucide-vue-next'
-import router from '@/router'
-import type { Component } from 'vue'
 
 interface BreadcrumbItem {
   label: string

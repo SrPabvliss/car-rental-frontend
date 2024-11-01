@@ -1,13 +1,15 @@
 <script lang="ts" setup>
-import { TooltipProvider } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
-import { ref, onMounted, onUnmounted } from 'vue'
-import Nav from './nav-list.vue'
-import Button from '@/components/ui/button/Button.vue'
 import { Car, ChevronLeft, Menu } from 'lucide-vue-next'
-import { useModulesStore } from '../context/modules-store'
-import { Sheet, SheetContent } from '@/components/ui/sheet'
+import { ref, onMounted, onUnmounted } from 'vue'
+
+import Button from '@/components/ui/button/Button.vue'
 import { Separator } from '@/components/ui/separator'
+import { Sheet, SheetContent } from '@/components/ui/sheet'
+import { TooltipProvider } from '@/components/ui/tooltip'
+
+import { useModulesStore } from '../context/modules-store'
+import Nav from './nav-list.vue'
 
 const props = withDefaults(
   defineProps<{

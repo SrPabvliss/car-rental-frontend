@@ -6,8 +6,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import CarCard from './car-card.vue'
+
 import type { ICar } from '../../interfaces/ICar'
+import CarCard from './car-card.vue'
 
 defineProps<{
   cars: ICar[]

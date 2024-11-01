@@ -1,8 +1,9 @@
 import { ref, computed, watch } from 'vue'
-import type { ICarFilters } from '../interfaces/ICarFilters'
+
 import { defaultFilters } from '../constants'
 import { mockCarsData } from '../data/car-data'
 import type { ICar } from '../interfaces/ICar'
+import type { ICarFilters } from '../interfaces/ICarFilters'
 
 export function useCars() {
   const loading = ref(false)
@@ -22,7 +23,7 @@ export function useCars() {
       )
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     const applyFilter = (key: keyof ICar, value: any) => {
       if (value) {
         result = result.filter(car => car[key] === value)

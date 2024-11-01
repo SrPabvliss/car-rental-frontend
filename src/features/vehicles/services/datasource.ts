@@ -1,6 +1,7 @@
-import type { IHttpHandler } from '@/core/interfaces/IHttpHandler'
-import type { ICar } from '../interfaces/ICar'
 import { AxiosClient } from '@/core/infrastructure/http/axios-client'
+import type { IHttpHandler } from '@/core/interfaces/IHttpHandler'
+
+import type { ICar } from '../interfaces/ICar'
 
 interface CarDataSource {
   getAll: () => Promise<ICar[]>

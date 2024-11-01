@@ -9,8 +9,6 @@
     "src/lib",
     "src/router",
     "src/stores",
-    "./formkit.config.ts",
-    "./formkit.theme.ts"
   ],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {

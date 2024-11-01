@@ -13,7 +13,7 @@ import RecoverPasswordReqForm from '../components/recover-password-req-form.vue'
       <RecoverPasswordReqForm />
     </div>
     <div
-      class="relative w-3/4 lg:flex justify-end items-end overflow-hidden h-screen hidden "
+      class="relative w-3/4 lg:flex justify-end items-end overflow-hidden h-screen hidden"
     >
       <img
         src="https://carsonrentacar.com/img/car-keys-850x476.jpg"
@@ -25,7 +25,9 @@ import RecoverPasswordReqForm from '../components/recover-password-req-form.vue'
         class="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center"
       >
         <div class="text-center text-white px-6">
-          <h1 class="text-4xl font-bold">Tu solución de transporte y comodidad</h1>
+          <h1 class="text-4xl font-bold">
+            Tu solución de transporte y comodidad
+          </h1>
           <p class="mt-4 text-lg">
             Selección a tu gusto. ¡Asesoría en todo momento!
           </p>

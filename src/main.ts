@@ -1,15 +1,13 @@
-import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import Toast from 'vue-toastification'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import { createApp } from 'vue'
+import Toast from 'vue-toastification'
 
 import 'vue-toastification/dist/index.css'
-import '@formkit/themes/genesis'
-import formkitConfig from '../formkit.config'
 import App from './App.vue'
 import router from './router'
+
 import './assets/index.css'
-import { plugin } from '@formkit/vue'
 
 const app = createApp(App)
 const pinia = createPinia()
@@ -32,7 +30,6 @@ const toastOptions = {
 pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
 app.use(router)
-app.use(plugin, formkitConfig)
 app.use(Toast, toastOptions)
 
 app.mount('#app')

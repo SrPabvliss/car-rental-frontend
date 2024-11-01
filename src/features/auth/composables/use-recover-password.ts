@@ -1,9 +1,11 @@
+import router from '@/router'
 import { z } from 'zod'
+
 import { type IRecoverPasswordRequest } from '../interfaces/IRecoverPassword'
 import { AuthDataSourceImpl } from '../services/datasource'
-import router from '@/router'
 
 export default function useRecoverPasswordReq() {
+
   const schema = z.object({
     email: z
       .string({ required_error: 'El email es requerido.' })
