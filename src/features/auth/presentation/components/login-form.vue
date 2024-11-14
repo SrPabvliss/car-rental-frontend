@@ -1,33 +1,66 @@
 <script setup lang="ts">
-import { AutoForm } from '@/components/ui/auto-form'
+import { useForm } from '@/lib/composables/use-form'
+
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 import useLogin from '../../composables/use-login'
 
-const { onSubmit, schema } = useLogin()
+const { schema, onSubmit } = useLogin()
+const { formData, errors, handleSubmit, validateField } = useForm(schema)
+
+const submitForm = () => handleSubmit(onSubmit)
 </script>
 
 <template>
-  <AutoForm
-    class="space-y-6"
-    :schema="schema"
-    @submit="onSubmit"
-    :field-config="{
-      email: { inputProps: { type: 'email' }, label: 'Correo electrónico' },
-      password: { inputProps: { type: 'password' }, label: 'Contraseña' },
-    }"
-  >
+  <form @submit.prevent="submitForm" class="space-y-6">
+    <div>
+      <Label for="email" class="block text-sm font-medium text-gray-700"
+        >Correo electrónico</Label
+      >
+      <Input
+        v-model="formData.email"
+        type="email"
+        id="email"
+        name="email"
+        placeholder="Ingrese su correo electrónico"
+        class="mt-1 block w-full"
+        @input="validateField('email')"
+      />
+      <p v-if="errors.email" class="text-red-500 text-xs">{{ errors.email }}</p>
+    </div>
+
+    <div>
+      <Label for="password" class="block text-sm font-medium text-gray-700"
+        >Contraseña</Label
+      >
+      <Input
+        v-model="formData.password"
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Ingrese su contraseña"
+        class="mt-1 block w-full"
+        @input="validateField('password')"
+      />
+      <p v-if="errors.password" class="text-red-500 text-xs">
+        {{ errors.password }}
+      </p>
+    </div>
+
     <section class="flex flex-col">
       <router-link to="/recover-password" class="-mt-6 mb-4">
-        <cite class="text-slate-400 text-xs"> Olvidaste tu contraseña?</cite>
+        <cite class="text-slate-400 text-xs">¿Olvidaste tu contraseña?</cite>
       </router-link>
-      <Button type="submit" class="text-white"> Iniciar sesión </Button>
+      <Button type="submit" class="text-white">Iniciar sesión</Button>
     </section>
-  </AutoForm>
-  <cite class="flex pt-2"
-    >No tienes una cuenta?
-    <router-link to="/register">
-      <span class="text-blue-500 pl-1"> Regístrate </span>
-    </router-link>
-  </cite>
+
+    <cite class="flex pt-2">
+      ¿No tienes una cuenta?
+      <router-link to="/register">
+        <span class="text-blue-500 pl-1">Regístrate</span>
+      </router-link>
+    </cite>
+  </form>
 </template>
