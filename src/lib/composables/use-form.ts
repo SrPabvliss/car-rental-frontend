@@ -25,8 +25,7 @@ export function useForm<T extends Record<string, any>>(schema: ZodSchema<T>) {
 
   const validateField = (field: keyof T) => {
     try {
-      const rawFormData = toRaw(formData) as T
-      schema.parse({ [field]: rawFormData[field] } as Partial<T>)
+      schema.parse(toRaw(formData) as T)
       errors.value[field] = null
     } catch (error) {
       if (error instanceof ZodError) {
@@ -35,6 +34,7 @@ export function useForm<T extends Record<string, any>>(schema: ZodSchema<T>) {
       }
     }
   }
+
   const resetErrors = () => {
     for (const key in errors.value) {
       errors.value[key] = null
