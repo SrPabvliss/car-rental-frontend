@@ -85,11 +85,11 @@ const roleOptions = Object.values(ROLE_ENUM)
       <Label for="phone">Teléfono</Label>
       <Input
         v-model="formData.phone"
-        type="tel"
+        type="number"
         id="phone"
         name="phone"
         placeholder="Ingrese su número de teléfono"
-        pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+        pattern="/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/"
         @input="validateField('phone')"
       />
       <p v-if="errors.phone" class="text-red-500 text-xs">{{ errors.phone }}</p>
