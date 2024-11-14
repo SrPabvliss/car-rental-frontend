@@ -1,35 +1,140 @@
 <script setup lang="ts">
-import { AutoForm } from '@/components/ui/auto-form'
 import { Button } from '@/components/ui/button'
-
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectLabel,
+  SelectItem,
+} from '@/components/ui/select'
+import { ROLE_ENUM } from '@/features/users/constants/RoleEnum'
 import useRegister from '../../composables/use-register'
-const { onSubmit, schema } = useRegister()
+import { useForm } from '@/lib/composables/use-form'
+
+const { schema, onSubmit } = useRegister()
+const { formData, errors, handleSubmit, validateField } = useForm(schema)
+
+const submitForm = () => handleSubmit(onSubmit)
+
+const roleOptions = Object.values(ROLE_ENUM)
 </script>
 
 <template>
-  <AutoForm
-    class="space-y-6"
-    :schema="schema"
-    @submit="onSubmit"
-    :field-config="{
-      name: { inputProps: { type: 'text' }, label: 'Nombre' },
-      lastName: { inputProps: { type: 'text' }, label: 'Apellido' },
-      email: { inputProps: { type: 'email' }, label: 'Correo electrónico' },
-      password: { inputProps: { type: 'password' }, label: 'Contraseña' },
-      role: { inputProps: { type: 'select' }, label: 'Rol' },
-      phone: {
-        inputProps: { type: 'tel', pattern: '[0-9]{3}-[0-9]{2}-[0-9]{3}' },
-        label: 'Teléfono',
-      },
-      address: { inputProps: { type: 'text' }, label: 'Dirección' },
-    }"
-  >
-    <Button type="submit" class="text-white"> Registrarse </Button>
-  </AutoForm>
-  <cite class="flex pt-2"
-    >Ya tienes una cuenta?
-    <router-link to="/login">
-      <span class="text-blue-500 pl-1"> Inicia sesión </span>
-    </router-link>
-  </cite>
+  <form @submit.prevent="submitForm" class="space-y-6">
+    <div>
+      <Label for="name">Nombre</Label>
+      <Input
+        v-model="formData.name"
+        type="text"
+        id="name"
+        name="name"
+        placeholder="Ingrese su nombre"
+        @input="validateField('name')"
+      />
+      <p v-if="errors.name" class="text-red-500 text-xs">{{ errors.name }}</p>
+    </div>
+
+    <div>
+      <Label for="lastName">Apellido</Label>
+      <Input
+        v-model="formData.lastName"
+        type="text"
+        id="lastName"
+        name="lastName"
+        placeholder="Ingrese su apellido"
+        @input="validateField('lastName')"
+      />
+      <p v-if="errors.lastName" class="text-red-500 text-xs">
+        {{ errors.lastName }}
+      </p>
+    </div>
+
+    <div>
+      <Label for="email">Correo electrónico</Label>
+      <Input
+        v-model="formData.email"
+        type="email"
+        id="email"
+        name="email"
+        placeholder="Ingrese su correo electrónico"
+        @input="validateField('email')"
+      />
+      <p v-if="errors.email" class="text-red-500 text-xs">{{ errors.email }}</p>
+    </div>
+
+    <div>
+      <Label for="password">Contraseña</Label>
+      <Input
+        v-model="formData.password"
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Ingrese su contraseña"
+        @input="validateField('password')"
+      />
+      <p v-if="errors.password" class="text-red-500 text-xs">
+        {{ errors.password }}
+      </p>
+    </div>
+
+    <div>
+      <Label for="phone">Teléfono</Label>
+      <Input
+        v-model="formData.phone"
+        type="tel"
+        id="phone"
+        name="phone"
+        placeholder="Ingrese su número de teléfono"
+        pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+        @input="validateField('phone')"
+      />
+      <p v-if="errors.phone" class="text-red-500 text-xs">{{ errors.phone }}</p>
+    </div>
+
+    <div>
+      <Label for="address">Dirección</Label>
+      <Input
+        v-model="formData.address"
+        type="text"
+        id="address"
+        name="address"
+        placeholder="Ingrese su dirección"
+        @input="validateField('address')"
+      />
+      <p v-if="errors.address" class="text-red-500 text-xs">
+        {{ errors.address }}
+      </p>
+    </div>
+
+    <div>
+      <Label for="role">Rol</Label>
+      <Select v-model="formData.role" @input="validateField('role')">
+        <SelectTrigger class="w-full">
+          <SelectValue placeholder="Seleccione un rol" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>Roles</SelectLabel>
+            <SelectItem v-for="role in roleOptions" :key="role" :value="role">
+              {{ role }}
+            </SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+      <p v-if="errors.role" class="text-red-500 text-xs">{{ errors.role }}</p>
+    </div>
+
+    <Button type="submit" class="text-white">Registrarse</Button>
+
+    <cite class="flex pt-2">
+      Ya tienes una cuenta?
+      <router-link to="/login">
+        <span class="text-blue-500 pl-1">Inicia sesión</span>
+      </router-link>
+    </cite>
+  </form>
 </template>

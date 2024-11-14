@@ -24,7 +24,7 @@ const submitForm = () => handleSubmit(onSubmit)
         name="email"
         placeholder="Ingrese su correo electrónico"
         class="mt-1 block w-full"
-        @blur="validateField('email')"
+        @input="validateField('email')"
       />
       <p v-if="errors.email" class="text-red-500 text-xs">{{ errors.email }}</p>
     </div>
@@ -40,7 +40,7 @@ const submitForm = () => handleSubmit(onSubmit)
         name="password"
         placeholder="Ingrese su contraseña"
         class="mt-1 block w-full"
-        @blur="validateField('password')"
+        @input="validateField('password')"
       />
       <p v-if="errors.password" class="text-red-500 text-xs">
         {{ errors.password }}
