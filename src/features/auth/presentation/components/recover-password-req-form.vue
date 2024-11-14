@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { AutoForm } from '@/components/ui/auto-form'
-import { Button } from '@/components/ui/button'
-
-import useRecoverPassword from '../../composables/use-recover-password'
 import { useForm } from '@/lib/composables/use-form'
+
+import { Button } from '@/components/ui/button'
 import Input from '@/components/ui/input/Input.vue'
 import Label from '@/components/ui/label/Label.vue'
+
+import useRecoverPassword from '../../composables/use-recover-password'
 
 const { onSubmit, schema } = useRecoverPassword()
 const { formData, errors, handleSubmit, validateField } = useForm(schema)

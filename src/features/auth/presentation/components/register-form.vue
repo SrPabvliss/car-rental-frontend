@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { ROLE_ENUM } from '@/features/users/constants/RoleEnum'
+import { useForm } from '@/lib/composables/use-form'
+
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -11,9 +14,9 @@ import {
   SelectLabel,
   SelectItem,
 } from '@/components/ui/select'
-import { ROLE_ENUM } from '@/features/users/constants/RoleEnum'
+
 import useRegister from '../../composables/use-register'
-import { useForm } from '@/lib/composables/use-form'
+
 
 const { schema, onSubmit } = useRegister()
 const { formData, errors, handleSubmit, validateField } = useForm(schema)
