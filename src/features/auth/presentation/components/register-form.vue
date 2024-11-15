@@ -82,7 +82,6 @@ const roleOptions = Object.values(ROLE_ENUM)
         id="phone"
         name="phone"
         placeholder="Ingrese su número de teléfono"
-        pattern="/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/"
         @input="validateField('phone')"
       />
       <p v-if="errors.phone" class="text-red-500 text-xs">{{ errors.phone }}</p>

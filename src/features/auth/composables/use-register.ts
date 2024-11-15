@@ -7,9 +7,6 @@ import { z } from 'zod'
 import { AuthDataSourceImpl } from '../services/datasource'
 
 type RegisterForm = ICreateUser
-const phoneRegex = new RegExp(
-  /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/,
-)
 
 export default function useRegister() {
   const toast = useToast()
@@ -33,11 +30,13 @@ export default function useRegister() {
     role: z.enum([...Object.values(ROLE_ENUM)] as [ROLE_ENUM, ...ROLE_ENUM[]], {
       message: 'El rol no es válido.',
     }),
-    phone: z
-      .string({ required_error: 'El teléfono es requerido.' })
-      .regex(phoneRegex, { message: 'El teléfono no es válido.' })
-      .min(3, { message: 'El teléfono debe tener al menos 3 caracteres.' })
-      .max(15, { message: 'El teléfono debe tener máximo 15 caracteres.' }),
+    phone: z.preprocess(
+      val => (typeof val === 'number' ? val.toString() : val),
+      z
+        .string({ required_error: 'El teléfono es requerido.' })
+        .min(3, { message: 'El teléfono debe tener al menos 3 caracteres.' })
+        .max(15, { message: 'El teléfono debe tener máximo 15 caracteres.' }),
+    ),
   })
 
   async function onSubmit(formData: RegisterForm) {

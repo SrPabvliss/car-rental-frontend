@@ -13,6 +13,54 @@ describe('Register Flow', () => {
     cy.get('button[type="submit"]').contains('Registrarse').should('be.visible')
   })
 
+  describe('Real-time Validation', () => {
+    it('should show an error for invalid email', () => {
+      cy.visit('/register')
+      cy.get('input[name="email"]').type('invalid-email')
+      cy.contains('El email no es válido.').should('be.visible')
+    })
+
+    it('should show an error for short password', () => {
+      cy.visit('/register')
+      cy.get('input[name="password"]').type('12')
+      cy.contains('La contraseña debe tener al menos 5 caracteres.').should(
+        'be.visible',
+      )
+    })
+
+    it('should show an error for short phone number', () => {
+      cy.visit('/register')
+      cy.get('input[name="phone"]').type('12')
+      cy.contains('El teléfono debe tener al menos 3 caracteres.').should(
+        'be.visible',
+      )
+    })
+
+    it('should show an error for short name', () => {
+      cy.visit('/register')
+      cy.get('input[name="name"]').type('Jo')
+      cy.contains('El nombre debe tener al menos 3 caracteres.').should(
+        'be.visible',
+      )
+    })
+
+    it('should show an error for short last name', () => {
+      cy.visit('/register')
+      cy.get('input[name="lastName"]').type('Lo')
+      cy.contains('El apellido debe tener al menos 3 caracteres.').should(
+        'be.visible',
+      )
+    })
+
+    it('should show an error if address is too short', () => {
+      cy.visit('/register')
+      cy.get('input[name="address"]').type('Av')
+      cy.contains('La dirección debe tener al menos 3 caracteres.').should(
+        'be.visible',
+      )
+    })
+  })
+
   it('should register successfully and redirect to login', () => {
     cy.intercept('POST', '**/auth/signup', {
       statusCode: 201,
