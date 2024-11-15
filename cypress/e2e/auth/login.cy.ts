@@ -47,4 +47,26 @@ describe('Login Flow', () => {
     cy.get('button[type="submit"]').click()
     cy.contains('Error').should('be.visible')
   })
+
+  describe('Login Page Navigation', () => {
+    beforeEach(() => {
+      cy.visit('/login')
+    })
+
+    it('should navigate to the recover password page', () => {
+      cy.contains('¿Olvidaste tu contraseña?').click()
+
+      cy.url().should('include', '/recover-password')
+
+      cy.contains('Recuperar contraseña').should('be.visible')
+    })
+
+    it('should navigate to the register page', () => {
+      cy.contains('Regístrate').click()
+
+      cy.url().should('include', '/register')
+
+      cy.contains('Regístrate').should('be.visible')
+    })
+  })
 })

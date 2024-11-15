@@ -1,6 +1,7 @@
 import useNavLinks from '@/core/composables/use-navlinks'
 import { useModulesStore } from '@/core/context/modules-store'
 import router from '@/router'
+import { useToast } from 'vue-toastification'
 import { z } from 'zod'
 
 import { AuthDataSourceImpl } from '../services/datasource'
@@ -22,11 +23,17 @@ export default function useLogin() {
   })
 
   async function onSubmit(formData: LoginForm) {
-    const data = await AuthDataSourceImpl.getInstance().login(formData)
-    if (!data) return
-    useModulesStore().setModules(useNavLinks('admin'))
-    const modules = useModulesStore().modules
-    router.push({ name: modules[0].href })
+    const toast = useToast()
+    try {
+      const data = await AuthDataSourceImpl.getInstance().login(formData)
+      if (!data) return
+      useModulesStore().setModules(useNavLinks('admin'))
+      const modules = useModulesStore().modules
+      router.push({ name: modules[0].href })
+    } catch (error) {
+      console.error(error)
+      toast.error('Error al iniciar sesión')
+    }
   }
 
   return {
