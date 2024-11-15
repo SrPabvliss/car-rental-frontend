@@ -23,7 +23,6 @@ export default function useLogin() {
 
   async function onSubmit(formData: LoginForm) {
     const data = await AuthDataSourceImpl.getInstance().login(formData)
-    console.log(data)
     if (!data) return
     useModulesStore().setModules(useNavLinks('admin'))
     const modules = useModulesStore().modules

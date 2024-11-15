@@ -1,19 +1,20 @@
 import { defineConfig } from 'cypress'
-import dotenv from 'dotenv';
+import dotenv from 'dotenv'
 
-dotenv.config({ path: `.env.${process.env.NODE_ENV || 'development'}` });
+dotenv.config({ path: `.env.${process.env.NODE_ENV || 'development'}` })
 
 export default defineConfig({
   e2e: {
     specPattern: 'cypress/e2e/**/*.{cy,spec}.{js,jsx,ts,tsx}',
-    baseUrl: process.env.VITE_API_URL || 'http://localhost:4173',
+    baseUrl: 'http://localhost:4173',
     video: true,
-    screenshotOnRunFailure: true
+    screenshotOnRunFailure: true,
+    chromeWebSecurity: false,
   },
-  component:{
+  component: {
     devServer: {
       framework: 'vue',
-      bundler: 'vite'
-    }
-  }
+      bundler: 'vite',
+    },
+  },
 })
