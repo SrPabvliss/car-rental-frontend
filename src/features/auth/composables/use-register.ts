@@ -1,6 +1,7 @@
 import { ROLE_ENUM } from '@/features/users/constants/RoleEnum'
 import type { ICreateUser } from '@/features/users/interfaces/IUser'
 import router from '@/router'
+import { ref } from 'vue'
 import { useToast } from 'vue-toastification'
 import { z } from 'zod'
 
@@ -10,6 +11,7 @@ type RegisterForm = ICreateUser
 
 export default function useRegister() {
   const toast = useToast()
+  const isLoading = ref(false)
 
   const schema = z.object({
     name: z
@@ -40,18 +42,24 @@ export default function useRegister() {
   })
 
   async function onSubmit(formData: RegisterForm) {
+    if (isLoading.value) return // Previene múltiples envíos simultáneos
+
+    isLoading.value = true
     try {
       const data = await AuthDataSourceImpl.getInstance().register(formData)
       if (!data) return
       router.push({ name: 'login' })
     } catch (error) {
-      console.log(error)
+      console.error(error)
       toast.error('Error al registrar el usuario.')
+    } finally {
+      isLoading.value = false
     }
   }
 
   return {
     schema,
     onSubmit,
+    isLoading,
   }
 }

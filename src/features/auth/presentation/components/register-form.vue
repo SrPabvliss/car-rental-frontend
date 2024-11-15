@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ROLE_ENUM } from '@/features/users/constants/RoleEnum'
 import { useForm } from '@/lib/composables/use-form'
+import LoadingSpinner from '@/shared/components/loading-spinner.vue'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -8,7 +9,7 @@ import { Label } from '@/components/ui/label'
 
 import useRegister from '../../composables/use-register'
 
-const { schema, onSubmit } = useRegister()
+const { schema, onSubmit, isLoading } = useRegister()
 const { formData, errors, handleSubmit, validateField } = useForm(schema)
 
 const submitForm = () => handleSubmit(onSubmit)
@@ -124,7 +125,10 @@ const roleOptions = Object.values(ROLE_ENUM)
       </p>
     </div>
 
-    <Button type="submit" class="text-white">Registrarse</Button>
+    <Button type="submit" class="text-white" :disabled="isLoading">
+      <LoadingSpinner v-if="isLoading" size="small" />
+      <span v-else>Registrarse</span>
+    </Button>
 
     <cite class="flex pt-2">
       Ya tienes una cuenta?
