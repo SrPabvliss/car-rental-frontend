@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useForm } from '@/lib/composables/use-form'
+import LoadingSpinner from '@/shared/components/loading-spinner.vue'
 
 import { Button } from '@/components/ui/button'
 import Input from '@/components/ui/input/Input.vue'
@@ -7,7 +8,7 @@ import Label from '@/components/ui/label/Label.vue'
 
 import useRecoverPassword from '../../composables/use-recover-password'
 
-const { onSubmit, schema } = useRecoverPassword()
+const { onSubmit, schema, isLoading } = useRecoverPassword()
 const { formData, errors, handleSubmit, validateField } = useForm(schema)
 
 const submitForm = () => handleSubmit(onSubmit)
@@ -31,11 +32,15 @@ const submitForm = () => handleSubmit(onSubmit)
       <p v-if="errors.email" class="text-red-500 text-xs">{{ errors.email }}</p>
     </div>
 
-    <Button type="submit" class="text-white w-full"
-      >Recuperar contraseña</Button
-    >
-    <cite class="flex pt-2"
-      >Ya tienes una cuenta?
+    <Button type="submit" class="text-white w-full" :disabled="isLoading">
+      <template v-if="isLoading">
+        <LoadingSpinner size="small" />
+      </template>
+      <template v-else> Recuperar contraseña </template>
+    </Button>
+
+    <cite class="flex pt-2">
+      Ya tienes una cuenta?
       <router-link to="/login">
         <span class="text-blue-500 pl-1"> Inicia sesión </span>
       </router-link>
