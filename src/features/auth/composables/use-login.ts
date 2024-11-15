@@ -1,6 +1,7 @@
 import useNavLinks from '@/core/composables/use-navlinks'
 import { useModulesStore } from '@/core/context/modules-store'
 import router from '@/router'
+import { ref } from 'vue'
 import { useToast } from 'vue-toastification'
 import { z } from 'zod'
 
@@ -12,6 +13,7 @@ interface LoginForm {
 }
 
 export default function useLogin() {
+  const isLoading = ref(false)
   const schema = z.object({
     email: z
       .string({ required_error: 'El email es requerido.' })
@@ -23,7 +25,10 @@ export default function useLogin() {
   })
 
   async function onSubmit(formData: LoginForm) {
+    if (isLoading.value) return
+
     const toast = useToast()
+    isLoading.value = true
     try {
       const data = await AuthDataSourceImpl.getInstance().login(formData)
       if (!data) return
@@ -33,11 +38,14 @@ export default function useLogin() {
     } catch (error) {
       console.error(error)
       toast.error('Error al iniciar sesión')
+    } finally {
+      isLoading.value = false
     }
   }
 
   return {
     schema,
     onSubmit,
+    isLoading,
   }
 }

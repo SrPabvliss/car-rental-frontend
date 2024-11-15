@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useForm } from '@/lib/composables/use-form'
+import LoadingSpinner from '@/shared/components/loading-spinner.vue'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -7,7 +8,7 @@ import { Label } from '@/components/ui/label'
 
 import useLogin from '../../composables/use-login'
 
-const { schema, onSubmit } = useLogin()
+const { schema, onSubmit, isLoading } = useLogin()
 const { formData, errors, handleSubmit, validateField } = useForm(schema)
 
 const submitForm = () => handleSubmit(onSubmit)
@@ -53,7 +54,10 @@ const submitForm = () => handleSubmit(onSubmit)
       <router-link to="/recover-password" class="-mt-6 mb-4">
         <cite class="text-slate-400 text-xs">¿Olvidaste tu contraseña?</cite>
       </router-link>
-      <Button type="submit" class="text-white">Iniciar sesión</Button>
+      <Button type="submit" class="text-white" :disabled="isLoading">
+        <LoadingSpinner v-if="isLoading" size="small" />
+        <span v-else>Iniciar sesión</span>
+      </Button>
     </section>
 
     <cite class="flex pt-2">
