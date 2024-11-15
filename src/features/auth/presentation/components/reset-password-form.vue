@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useForm } from '@/lib/composables/use-form'
+import LoadingSpinner from '@/shared/components/loading-spinner.vue'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -7,7 +8,7 @@ import { Label } from '@/components/ui/label'
 
 import useResetPassword from '../../composables/use-reset-password'
 
-const { schema, onSubmit } = useResetPassword()
+const { schema, onSubmit, isLoading } = useResetPassword()
 const { formData, errors, handleSubmit, validateField } = useForm(schema)
 
 const submitForm = () => handleSubmit(onSubmit)
@@ -58,6 +59,11 @@ const submitForm = () => handleSubmit(onSubmit)
       </p>
     </div>
 
-    <Button type="submit" class="text-white">Cambiar contraseña</Button>
+    <Button type="submit" class="text-white w-full" :disabled="isLoading">
+      <template v-if="isLoading">
+        <LoadingSpinner size="small" />
+      </template>
+      <template v-else> Cambiar contraseña </template>
+    </Button>
   </form>
 </template>
