@@ -5,18 +5,8 @@ import { useForm } from '@/lib/composables/use-form'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectGroup,
-  SelectLabel,
-  SelectItem,
-} from '@/components/ui/select'
 
 import useRegister from '../../composables/use-register'
-
 
 const { schema, onSubmit } = useRegister()
 const { formData, errors, handleSubmit, validateField } = useForm(schema)
@@ -114,21 +104,25 @@ const roleOptions = Object.values(ROLE_ENUM)
     </div>
 
     <div>
-      <Label for="role">Rol</Label>
-      <Select v-model="formData.role" @input="validateField('role')">
-        <SelectTrigger class="w-full">
-          <SelectValue placeholder="Seleccione un rol" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectLabel>Roles</SelectLabel>
-            <SelectItem v-for="role in roleOptions" :key="role" :value="role">
-              {{ role }}
-            </SelectItem>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-      <p v-if="errors.role" class="text-red-500 text-xs">{{ errors.role }}</p>
+      <label for="role" class="block text-sm font-medium text-gray-700"
+        >Rol</label
+      >
+      <select
+        v-model="formData.role"
+        @change="validateField('role')"
+        id="role"
+        name="role"
+        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+      >
+        <option value="" disabled selected>Seleccione un rol</option>
+        <option v-for="role in roleOptions" :key="role" :value="role">
+          {{ role }}
+        </option>
+      </select>
+
+      <p v-if="errors.role" class="text-red-500 text-xs mt-1">
+        {{ errors.role }}
+      </p>
     </div>
 
     <Button type="submit" class="text-white">Registrarse</Button>

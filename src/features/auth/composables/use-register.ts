@@ -1,6 +1,7 @@
 import { ROLE_ENUM } from '@/features/users/constants/RoleEnum'
 import type { ICreateUser } from '@/features/users/interfaces/IUser'
 import router from '@/router'
+import { useToast } from 'vue-toastification'
 import { z } from 'zod'
 
 import { AuthDataSourceImpl } from '../services/datasource'
@@ -11,6 +12,8 @@ const phoneRegex = new RegExp(
 )
 
 export default function useRegister() {
+  const toast = useToast()
+
   const schema = z.object({
     name: z
       .string({ required_error: 'El nombre es requerido.' })
@@ -44,6 +47,7 @@ export default function useRegister() {
       router.push({ name: 'login' })
     } catch (error) {
       console.log(error)
+      toast.error('Error al registrar el usuario.')
     }
   }
 
