@@ -39,7 +39,7 @@ export default function useRegister() {
   })
 
   async function onSubmit(formData: RegisterForm) {
-    if (isLoading.value) return // Previene múltiples envíos simultáneos
+    if (isLoading.value) return
 
     isLoading.value = true
     try {
