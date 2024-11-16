@@ -1,16 +1,18 @@
 import { ROLE_ENUM } from '@/features/users/constants/RoleEnum'
 import type { ICreateUser } from '@/features/users/interfaces/IUser'
 import router from '@/router'
+import { ref } from 'vue'
+import { useToast } from 'vue-toastification'
 import { z } from 'zod'
 
 import { AuthDataSourceImpl } from '../services/datasource'
 
 type RegisterForm = ICreateUser
-const phoneRegex = new RegExp(
-  /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/,
-)
 
 export default function useRegister() {
+  const toast = useToast()
+  const isLoading = ref(false)
+
   const schema = z.object({
     name: z
       .string({ required_error: 'El nombre es requerido.' })
@@ -32,23 +34,29 @@ export default function useRegister() {
     }),
     phone: z
       .string({ required_error: 'El teléfono es requerido.' })
-      .regex(phoneRegex, { message: 'El teléfono no es válido.' })
       .min(3, { message: 'El teléfono debe tener al menos 3 caracteres.' })
       .max(15, { message: 'El teléfono debe tener máximo 15 caracteres.' }),
   })
 
   async function onSubmit(formData: RegisterForm) {
+    if (isLoading.value) return
+
+    isLoading.value = true
     try {
       const data = await AuthDataSourceImpl.getInstance().register(formData)
       if (!data) return
       router.push({ name: 'login' })
     } catch (error) {
-      console.log(error)
+      console.error(error)
+      toast.error('Error al registrar el usuario.')
+    } finally {
+      isLoading.value = false
     }
   }
 
   return {
     schema,
     onSubmit,
+    isLoading,
   }
 }
