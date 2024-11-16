@@ -79,7 +79,6 @@ const roleOptions = Object.values(ROLE_ENUM)
       <Label for="phone">Teléfono</Label>
       <Input
         v-model="formData.phone"
-        type="number"
         id="phone"
         name="phone"
         placeholder="Ingrese su número de teléfono"

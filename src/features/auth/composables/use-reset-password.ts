@@ -1,5 +1,6 @@
 import router from '@/router'
 import { ref } from 'vue'
+import { useToast } from 'vue-toastification'
 import { z } from 'zod'
 
 import { type IResetPassword } from '../interfaces/IRecoverPassword'
@@ -7,6 +8,7 @@ import { AuthDataSourceImpl } from '../services/datasource'
 
 export default function useResetPassword() {
   const isLoading = ref(false)
+  const toast = useToast()
 
   const schema: z.ZodSchema = z
     .object({
@@ -39,6 +41,7 @@ export default function useResetPassword() {
       router.push({ name: 'login' })
     } catch (error) {
       console.error(error)
+      toast.error('Error al resetear la contraseña.')
     } finally {
       isLoading.value = false
     }
