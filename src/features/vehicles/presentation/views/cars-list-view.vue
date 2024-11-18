@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import ContentLayout from '@/core/layout/content-layout.vue'
+import ConfirmationDialog from '@/shared/components/confirmation-dialog.vue'
+import { ref } from 'vue'
 
 import Button from '@/components/ui/button/Button.vue'
 
@@ -20,6 +22,21 @@ const {
   handleChangeCarStatus,
   handleCreateCar,
 } = useCars()
+
+const dialogVisible = ref(false)
+const selectedCarId = ref<number | null>(null)
+
+const openDeleteDialog = (carId: number) => {
+  selectedCarId.value = carId
+  dialogVisible.value = true
+}
+
+const confirmDelete = () => {
+  if (selectedCarId.value) {
+    handleDeleteCar(selectedCarId.value)
+    dialogVisible.value = false
+  }
+}
 </script>
 
 <template>
@@ -42,8 +59,16 @@ const {
           :loading="loading"
           @view="handleViewCar"
           @edit="handleEditCar"
-          @delete="handleDeleteCar"
+          @delete="openDeleteDialog"
           @changeStatus="handleChangeCarStatus"
+        />
+
+        <ConfirmationDialog
+          :visible="dialogVisible"
+          title="Eliminar vehículo"
+          message="¿Estás seguro de que quieres eliminar este vehículo? Esta acción no se puede deshacer."
+          @confirm="confirmDelete"
+          @cancel="dialogVisible = false"
         />
         <div v-if="totalItems">
           <CarPagination v-model="filters" :total-items="totalItems" />

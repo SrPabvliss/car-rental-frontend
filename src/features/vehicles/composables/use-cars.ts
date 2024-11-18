@@ -86,9 +86,9 @@ export function useCars() {
     router.push({ name: 'cars-edit', params: { id } })
   }
 
-  const handleDeleteCar = (id: number) => {
-    console.log('Delete car:', id)
-    // TODO: Implementar lógica para eliminar el vehículo
+  const handleDeleteCar = async (id: number) => {
+    await CarDataSourceImpl.getInstance().delete(id)
+    fetchCars()
   }
 
   const handleChangeCarStatus = async (id: number, newStatus: CarStatus) => {
