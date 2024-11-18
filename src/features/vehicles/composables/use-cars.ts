@@ -2,7 +2,7 @@ import router from '@/router'
 import { ref, watch, onMounted } from 'vue'
 
 import { defaultFilters } from '../constants'
-import type { ICar } from '../interfaces/ICar'
+import type { CarStatus, ICar } from '../interfaces/ICar'
 import type { ICarFilters } from '../interfaces/ICarFilters'
 import { CarDataSourceImpl } from '../services/datasource'
 
@@ -90,10 +90,12 @@ export function useCars() {
     console.log('Delete car:', id)
     // TODO: Implementar lógica para eliminar el vehículo
   }
-  
-  const handleChangeCarStatus = (id: number, newStatus: string) => {
-    console.log(`Change status of car ${id} to ${newStatus}`)
-    // TODO: Implementar lógica para cambiar el estado del vehículo
+
+  const handleChangeCarStatus = async (id: number, newStatus: CarStatus) => {
+    const result = await CarDataSourceImpl.getInstance().update(id, {
+      status: newStatus,
+    })
+    if (result) fetchCars()
   }
 
   const handleCreateCar = () => {

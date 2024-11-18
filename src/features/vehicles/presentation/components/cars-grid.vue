@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 
-import type { ICar } from '../../interfaces/ICar'
+import type { ICar, CarStatus } from '../../interfaces/ICar'
 import CarCard from './car-card.vue'
 
 defineProps<{
@@ -19,7 +19,7 @@ const emit = defineEmits<{
   view: [id: number]
   edit: [id: number]
   delete: [id: number]
-  changeStatus: [id: number, newStatus: string]
+  changeStatus: [id: number, newStatus: CarStatus]
 }>()
 </script>
 

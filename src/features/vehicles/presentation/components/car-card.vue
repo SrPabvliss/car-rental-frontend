@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-import type { ICar } from '../../interfaces/ICar'
+import type { CarStatus, ICar } from '../../interfaces/ICar'
 
 defineProps<{
   car: ICar
@@ -33,7 +33,7 @@ const emit = defineEmits<{
   view: [id: number]
   edit: [id: number]
   delete: [id: number]
-  changeStatus: [id: number, newStatus: string]
+  changeStatus: [id: number, newStatus: CarStatus]
 }>()
 </script>
 
@@ -80,17 +80,19 @@ const emit = defineEmits<{
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem
-                @click="emit('changeStatus', car.id, 'Disponible')"
+                @click="emit('changeStatus', car.id, 'Disponible' as CarStatus)"
               >
                 Disponible
               </DropdownMenuItem>
               <DropdownMenuItem
-                @click="emit('changeStatus', car.id, 'En mantenimiento')"
+                @click="
+                  emit('changeStatus', car.id, 'En mantenimiento' as CarStatus)
+                "
               >
                 En mantenimiento
               </DropdownMenuItem>
               <DropdownMenuItem
-                @click="emit('changeStatus', car.id, 'Alquilado')"
+                @click="emit('changeStatus', car.id, 'Alquilado' as CarStatus)"
               >
                 Alquilado
               </DropdownMenuItem>
