@@ -57,6 +57,14 @@ const router = createRouter({
           component: () =>
             import('@/features/vehicles/presentation/views/cars-list-view.vue'),
         },
+        {
+          path: 'cars/create',
+          name: 'cars-create',
+          component: () =>
+            import(
+              '@/features/vehicles/presentation/views/car-create-view.vue'
+            ),
+        },
       ],
     },
   ],

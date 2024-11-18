@@ -1,3 +1,4 @@
+import router from '@/router'
 import { ref, watch, onMounted } from 'vue'
 
 import { defaultFilters } from '../constants'
@@ -73,12 +74,31 @@ export function useCars() {
     { deep: true },
   )
 
-  const handleViewCar = (id: number) => {
-    console.log('Viewing car:', id)
-  }
-
   const handleRentCar = (id: number) => {
     console.log('Renting car:', id)
+  }
+
+  const handleViewCar = (id: number) => {
+    console.log('View car:', id)
+  }
+
+  const handleEditCar = (id: number) => {
+    console.log('Edit car:', id)
+    // TODO: Implementar lógica para abrir formulario de edición
+  }
+
+  const handleDeleteCar = (id: number) => {
+    console.log('Delete car:', id)
+    // TODO: Implementar lógica para eliminar el vehículo
+  }
+
+  const handleChangeCarStatus = (id: number, newStatus: string) => {
+    console.log(`Change status of car ${id} to ${newStatus}`)
+    // TODO: Implementar lógica para cambiar el estado del vehículo
+  }
+
+  const handleCreateCar = () => {
+    router.push({ name: 'cars-create' })
   }
 
   return {
@@ -89,5 +109,9 @@ export function useCars() {
     fetchCars,
     handleViewCar,
     handleRentCar,
+    handleEditCar,
+    handleDeleteCar,
+    handleChangeCarStatus,
+    handleCreateCar,
   }
 }

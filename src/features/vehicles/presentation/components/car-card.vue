@@ -1,10 +1,15 @@
 <script setup lang="ts">
-import { Eye, CarFront } from 'lucide-vue-next'
+import { Eye, CarFront, Edit, Trash, MoreVertical } from 'lucide-vue-next'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 import type { ICar } from '../../interfaces/ICar'
 
@@ -26,7 +31,9 @@ const getStatusColor = (status: string): string => {
 
 const emit = defineEmits<{
   view: [id: number]
-  rent: [id: number]
+  edit: [id: number]
+  delete: [id: number]
+  changeStatus: [id: number, newStatus: string]
 }>()
 </script>
 
@@ -39,6 +46,7 @@ const emit = defineEmits<{
           :alt="`${car.brand} ${car.model}`"
           class="w-full h-full object-cover rounded-t-md"
         />
+        <!-- TODO: this should only be available on client and employee -->
         <div
           class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-t-md"
         >
@@ -60,9 +68,35 @@ const emit = defineEmits<{
             {{ car.year }} • {{ car.type }}
           </p>
         </div>
-        <Badge :class="getStatusColor(car.status)">
-          {{ car.status }}
-        </Badge>
+        <div class="relative flex">
+          <Badge :class="getStatusColor(car.status)">
+            {{ car.status }}
+          </Badge>
+          <DropdownMenu>
+            <DropdownMenuTrigger as="button" class="ml-2">
+              <Button variant="ghost" size="icon">
+                <MoreVertical class="h-5 w-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem
+                @click="emit('changeStatus', car.id, 'Disponible')"
+              >
+                Disponible
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                @click="emit('changeStatus', car.id, 'En mantenimiento')"
+              >
+                En mantenimiento
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                @click="emit('changeStatus', car.id, 'Alquilado')"
+              >
+                Alquilado
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
 
       <div class="space-y-3">
@@ -74,15 +108,31 @@ const emit = defineEmits<{
       </div>
     </CardContent>
 
-    <CardFooter class="p-4 pt-0 flex-shrink-0">
+    <CardFooter class="p-4 pt-0 flex-shrink-0 flex gap-2">
+      <Button class="flex-1" variant="default" @click="emit('edit', car.id)">
+        <Edit class="h-4 w-4 mr-2" />
+        Editar
+      </Button>
       <Button
-        class="w-full h-10"
-        :disabled="car.status !== 'Disponible'"
-        :variant="car.status === 'Disponible' ? 'default' : 'secondary'"
-        @click="emit('rent', car.id)"
+        class="flex-2 px-4"
+        variant="destructive"
+        @click="emit('delete', car.id)"
       >
-        {{ car.status === 'Disponible' ? 'Rentar ahora' : 'No disponible' }}
+        <Trash class="h-4 w-4 mx-2" />
       </Button>
     </CardFooter>
   </Card>
 </template>
+
+<!-- TODO: Definir acciones según roles -->
+<!--
+1. Cliente:
+   - Mostrar botón "Rentar ahora" (como estaba originalmente).
+   - Mostrar detalles del vehículo sin opciones de edición.
+2. Empleado:
+   - Opciones para registrar alquiler o devoluciones.
+   - Acceso al selector de estado.
+   - No puede editar o eliminar vehículos.
+3. Administrador:
+   - Opciones actuales: Editar, Eliminar, Cambiar estado.
+-->

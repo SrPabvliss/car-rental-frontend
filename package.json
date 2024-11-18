@@ -31,6 +31,8 @@
     "@vueuse/core": "^11.1.0",
     "axios": "^1.7.7",
     "class-variance-authority": "^0.7.0",
+    "cloudinary": "^2.5.1",
+    "cloudinary-core": "^2.13.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.5",
