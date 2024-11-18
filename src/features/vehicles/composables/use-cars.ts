@@ -83,15 +83,14 @@ export function useCars() {
   }
 
   const handleEditCar = (id: number) => {
-    console.log('Edit car:', id)
-    // TODO: Implementar lógica para abrir formulario de edición
+    router.push({ name: 'cars-edit', params: { id } })
   }
 
   const handleDeleteCar = (id: number) => {
     console.log('Delete car:', id)
     // TODO: Implementar lógica para eliminar el vehículo
   }
-
+  
   const handleChangeCarStatus = (id: number, newStatus: string) => {
     console.log(`Change status of car ${id} to ${newStatus}`)
     // TODO: Implementar lógica para cambiar el estado del vehículo

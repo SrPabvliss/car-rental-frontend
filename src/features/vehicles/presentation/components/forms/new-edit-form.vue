@@ -5,15 +5,36 @@ import {
   CAR_STATUSES,
   CAR_TYPES,
 } from '@/features/vehicles/constants'
+import type { ICar } from '@/features/vehicles/interfaces/ICar'
 import { useForm } from '@/lib/composables/use-form'
 import LoadingSpinner from '@/shared/components/loading-spinner.vue'
+import { watch } from 'vue'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
-const { schema, onSubmit, isLoading, openWidget, imageUrl } = useCarForm()
-const { formData, errors, handleSubmit, validateField } = useForm(schema)
+const props = defineProps<{
+  car?: ICar | null
+}>()
+
+const { schema, onSubmit, isLoading, openWidget, imageUrl } = useCarForm(
+  props.car,
+)
+const { formData, errors, handleSubmit, validateField, resetForm } = useForm(
+  schema,
+  props.car ?? undefined,
+)
+
+watch(
+  () => props.car,
+  newCar => {
+    if (newCar) {
+      resetForm(newCar)
+    }
+  },
+  { immediate: true },
+)
 
 const submitForm = () => handleSubmit(onSubmit)
 </script>

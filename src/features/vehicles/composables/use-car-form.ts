@@ -1,14 +1,19 @@
+import { getChangedFields } from '@/lib/composables/use-get-changed-fields'
 import router from '@/router'
 import { ref } from 'vue'
 import { useToast } from 'vue-toastification'
 import { z } from 'zod'
 
-import type { ICreateCar } from '../interfaces/ICar'
+import type { ICar, ICreateCar, IUpdateCar } from '../interfaces/ICar'
 import { CarDataSourceImpl } from '../services/datasource'
 
-export default function useCarForm() {
+export default function useCarForm(car?: ICar | null) {
   const isLoading = ref(false)
   const imageUrl = ref<string | null>(null)
+
+  if (car) {
+    imageUrl.value = car.imageUrl || null
+  }
 
   const schema = z.object({
     brand: z
@@ -72,23 +77,43 @@ export default function useCarForm() {
     widget.open()
   }
 
-  async function onSubmit(formData: ICreateCar) {
-    if (isLoading.value) return
-
-    const toast = useToast()
+  async function onSubmit(formData: any) {
     isLoading.value = true
-    try {
-      formData.imageUrl = imageUrl.value ? imageUrl.value : undefined
-      const result = await CarDataSourceImpl.getInstance().create(formData)
-      toast.success('Vehículo creado exitosamente')
+
+    if (car) {
+      const changedFields = getChangedFields(car, formData)
+
+      if (
+        Object.keys(changedFields).length === 0 &&
+        car &&
+        imageUrl.value === car.imageUrl
+      ) {
+        isLoading.value = false
+        useToast().error('No se han modificado los campos')
+        return
+      }
+
+      const result = await CarDataSourceImpl.getInstance().update(car.id, {
+        ...changedFields,
+        imageUrl: imageUrl.value ?? undefined,
+      } as IUpdateCar)
+
       if (result) {
+        useToast().success('Vehículo actualizado correctamente')
         router.push({ name: 'cars' })
       }
-    } catch {
-      toast.error('Error al crear el vehículo')
-    } finally {
-      isLoading.value = false
+    } else {
+      const result = await CarDataSourceImpl.getInstance().create(
+        formData as ICreateCar,
+      )
+
+      if (result) {
+        useToast().success('Vehículo creado correctamente')
+        router.push({ name: 'cars' })
+      }
     }
+
+    isLoading.value = false
   }
 
   return {

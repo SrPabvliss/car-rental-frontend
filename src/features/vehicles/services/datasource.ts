@@ -2,7 +2,7 @@ import { API_ROUTES } from '@/core/api/routes/api-routes'
 import { AxiosClient } from '@/core/infrastructure/http/axios-client'
 import type { IHttpHandler } from '@/core/interfaces/IHttpHandler'
 
-import type { ICar } from '../interfaces/ICar'
+import type { ICar, IUpdateCar } from '../interfaces/ICar'
 import type { ICarFilters } from '../interfaces/ICarFilters'
 
 interface CarDataSource {
@@ -14,7 +14,7 @@ interface CarDataSource {
   }>
   getById: (id: number) => Promise<ICar>
   create: (vehicle: Omit<ICar, 'id'>) => Promise<ICar>
-  update: (vehicle: ICar) => Promise<ICar>
+  update: (id: number, vehicle: IUpdateCar) => Promise<ICar>
   delete: (id: number) => Promise<void>
   count: () => Promise<number>
 }
@@ -73,9 +73,9 @@ export class CarDataSourceImpl implements CarDataSource {
     return data
   }
 
-  update = async (vehicle: ICar): Promise<ICar> => {
-    const data = await this.httpClient.put<ICar>(
-      API_ROUTES.VEHICLES.UPDATE(vehicle.id),
+  update = async (id: number, vehicle: IUpdateCar): Promise<ICar> => {
+    const data = await this.httpClient.patch<ICar>(
+      API_ROUTES.VEHICLES.UPDATE(id),
       vehicle,
     )
     return data
