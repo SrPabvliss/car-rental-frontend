@@ -7,14 +7,8 @@ import CarPagination from '../components/car-pagination.vue'
 import CarsGrid from '../components/cars-grid.vue'
 import CarFilters from '../components/filters/car-filters.vue'
 
-const {
-  loading,
-  filters,
-  paginatedCars,
-  totalFilteredItems,
-  handleViewCar,
-  handleRentCar,
-} = useCars()
+const { loading, filters, cars, totalItems, handleViewCar, handleRentCar } =
+  useCars()
 </script>
 
 <template>
@@ -28,13 +22,14 @@ const {
         <CarFilters v-model="filters" />
 
         <CarsGrid
-          :cars="paginatedCars"
+          :cars="cars"
           :loading="loading"
           @view="handleViewCar"
           @rent="handleRentCar"
         />
-
-        <CarPagination v-model="filters" :total-items="totalFilteredItems" />
+        <div v-if="totalItems">
+          <CarPagination v-model="filters" :total-items="totalItems" />
+        </div>
       </div>
     </template>
   </ContentLayout>

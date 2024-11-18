@@ -5,56 +5,48 @@ import {
   ChevronLeft,
   ChevronRight,
 } from 'lucide-vue-next'
-import { watch, ref, computed } from 'vue'
+import { computed } from 'vue'
 
-import { Button } from '@/components/ui/button'
+import Button from '@/components/ui/button/Button.vue'
 
 import { usePagination } from '../../composables/use-pagination'
 import type { ICarFilters } from '../../interfaces/ICarFilters'
-
 
 interface Props {
   modelValue: ICarFilters
   totalItems: number
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  totalItems: 0,
-})
+const props = defineProps<Props>()
 
 const emit = defineEmits<{
   'update:modelValue': [filters: ICarFilters]
 }>()
 
-const currentPage = ref(props.modelValue.page)
+const propsAsRefs = { 
+  modelValue: computed({
+    get: () => props.modelValue,
+    set: value => emit('update:modelValue', value),
+  }),
+  totalItems: computed(() => props.totalItems),
+}
 
-const { totalPages, pages, stats, itemsPerPage } = usePagination({
-  modelValue: { ...props.modelValue, page: currentPage.value },
-  totalItems: props.totalItems,
+const { currentPage, totalPages, pages, stats } = usePagination({
+  modelValue: propsAsRefs.modelValue,
+  totalItems: propsAsRefs.totalItems,
 })
 
-const isFirstPage = computed(() => currentPage.value === 1)
-const isLastPage = computed(() => currentPage.value === totalPages.value)
-
 const updatePage = (page: number) => {
-  if (page >= 1 && page <= totalPages.value) {
-    currentPage.value = page
+  if (page >= 0 && page < totalPages.value) {
     emit('update:modelValue', {
       ...props.modelValue,
       page,
-      perPage: itemsPerPage,
     })
   }
 }
 
-watch(
-  () => props.modelValue.page,
-  newPage => {
-    if (newPage !== currentPage.value) {
-      currentPage.value = newPage
-    }
-  },
-)
+const isFirstPage = computed(() => currentPage.value === 0)
+const isLastPage = computed(() => currentPage.value === totalPages.value - 1)
 </script>
 
 <template>
@@ -65,7 +57,7 @@ watch(
         size="icon"
         class="h-8 w-8"
         :disabled="isFirstPage"
-        @click="updatePage(1)"
+        @click="updatePage(0)"
       >
         <ChevronFirst class="h-4 w-4" />
       </Button>
@@ -80,17 +72,16 @@ watch(
         <ChevronLeft class="h-4 w-4" />
       </Button>
 
-      <template v-for="page in pages" :key="page">
-        <Button
-          v-if="typeof page === 'number'"
-          :variant="page === currentPage ? 'default' : 'outline'"
-          class="h-8 w-8"
-          @click="updatePage(page)"
-        >
-          {{ page }}
-        </Button>
-        <div v-else class="px-2">{{ page }}</div>
-      </template>
+      <Button
+        v-for="page in pages"
+        :key="page"
+        :variant="page === currentPage ? 'default' : 'outline'"
+        class="h-8 w-8"
+        @click="updatePage(Number(page))"
+        :disabled="typeof page !== 'number'"
+      >
+        {{ typeof page === 'number' ? page + 1 : page }}
+      </Button>
 
       <Button
         variant="outline"
@@ -107,7 +98,7 @@ watch(
         size="icon"
         class="h-8 w-8"
         :disabled="isLastPage"
-        @click="updatePage(totalPages)"
+        @click="updatePage(totalPages - 1)"
       >
         <ChevronLast class="h-4 w-4" />
       </Button>

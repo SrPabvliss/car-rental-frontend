@@ -26,7 +26,7 @@ const inputValue = computed({
     <Input
       v-model="inputValue"
       placeholder="Buscar vehículos..."
-      class="pl-10"
+      class="pl-10 border-gray-600 "
     />
   </div>
 </template>

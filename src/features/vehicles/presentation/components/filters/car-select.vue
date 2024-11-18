@@ -1,12 +1,4 @@
 <script setup lang="ts">
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-
 interface Props {
   modelValue: string | number
   placeholder: string
@@ -24,22 +16,26 @@ defineEmits<{
 </script>
 
 <template>
-  <Select
-    :model-value="modelValue.toString()"
-    @update:model-value="value => $emit('update:modelValue', value)"
-  >
-    <SelectTrigger>
-      <SelectValue :placeholder="placeholder" />
-    </SelectTrigger>
-    <SelectContent>
-      <SelectItem value="all">{{ allLabel }}</SelectItem>
-      <SelectItem
+  <div class="custom-select-wrapper">
+    <select
+      class="custom-select"
+      :value="modelValue"
+      @change="
+        $emit('update:modelValue', ($event.target as HTMLSelectElement).value)
+      "
+    >
+      <option value="all">{{ allLabel }}</option>
+      <option
         v-for="option in options"
         :key="option.value"
         :value="option.value"
       >
         {{ option.label }}
-      </SelectItem>
-    </SelectContent>
-  </Select>
+      </option>
+    </select>
+  </div>
 </template>
+
+<style scoped>
+@import '@/assets/select.css';
+</style>

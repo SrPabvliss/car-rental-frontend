@@ -1,71 +1,59 @@
-import { computed } from 'vue'
+import { computed, unref, type Ref } from 'vue'
 
 import type { ICarFilters } from '../interfaces/ICarFilters'
 
 interface PaginationProps {
-  modelValue: ICarFilters
-  totalItems: number
+  modelValue: Ref<ICarFilters> | ICarFilters
+  totalItems: Ref<number> | number
   itemsPerPage?: number
 }
 
 export function usePagination({
   modelValue,
   totalItems,
-  itemsPerPage = 5,
+  itemsPerPage = 6,
 }: PaginationProps) {
-  const currentPage = computed(() => Number(modelValue.page))
-  const totalPages = computed(() => Math.ceil(totalItems / itemsPerPage))
+  const currentPage = computed(() => {
+    const filters = unref(modelValue)
+    return Number(filters.page)
+  })
+
+  const totalItemsValue = computed(() => unref(totalItems))
+
+  const totalPages = computed(() => {
+    const pages = Math.ceil(totalItemsValue.value / itemsPerPage)
+    return Math.max(1, pages)
+  })
 
   const pages = computed(() => {
-    const current = currentPage.value
-    const total = totalPages.value
-    const delta = 1
     const range: (number | string)[] = []
+    const total = totalPages.value
+    const current = currentPage.value
 
-    range.push(1)
-
-    for (let i = current - delta; i <= current + delta; i++) {
-      if (i > 1 && i < total) {
+    for (let i = 0; i < total; i++) {
+      if (i === 0 || i === total - 1 || Math.abs(current - i) <= 1) {
         range.push(i)
+      } else if (i === current - 2 || i === current + 2) {
+        range.push('...')
       }
     }
 
-    if (total > 1) {
-      range.push(total)
-    }
-
-    const final: (number | string)[] = []
-    let prev: number | null = null
-
-    for (const i of range) {
-      if (prev !== null) {
-        if (typeof i === 'number' && i > prev + 1) {
-          final.push('...')
-        }
-      }
-      final.push(i)
-      if (typeof i === 'number') prev = i
-    }
-
-    return final
+    return [...new Set(range)]
   })
 
   const stats = computed(() => {
-    const start = (currentPage.value - 1) * itemsPerPage + 1
-    const end = Math.min(start + itemsPerPage - 1, totalItems)
-    return `Mostrando ${start} a ${end} de ${totalItems} vehículos`
-  })
+    if (totalItemsValue.value <= 0) return 'No hay vehículos disponibles'
 
-  const isFirstPage = computed(() => currentPage.value === 1)
-  const isLastPage = computed(() => currentPage.value === totalPages.value)
+    const start = currentPage.value * itemsPerPage + 1
+    const end = Math.min(start + itemsPerPage - 1, totalItemsValue.value)
+    return `Mostrando ${start} a ${end} de ${totalItemsValue.value} vehículos`
+  })
 
   return {
     currentPage,
     totalPages,
     pages,
     stats,
-    isFirstPage,
-    isLastPage,
     itemsPerPage,
   }
 }

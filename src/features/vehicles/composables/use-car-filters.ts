@@ -1,3 +1,4 @@
+import { useDebounceFn } from '@vueuse/core'
 import { computed } from 'vue'
 
 import {
@@ -13,36 +14,13 @@ import type { ICarFilters, OrderByValue } from '../interfaces/ICarFilters'
 
 export const ALL_VALUE = 'all'
 
- 
 export function useCarFilters(props: { modelValue: ICarFilters }, emit: any) {
-  const searchValue = computed({
-    get: () => props.modelValue.search,
-    set: (value: string) => updateFilter('search', value),
-  })
-
   const selectedBrand = computed(() => props.modelValue.brand || ALL_VALUE)
   const selectedType = computed(() => props.modelValue.type || ALL_VALUE)
   const selectedStatus = computed(() => props.modelValue.status || ALL_VALUE)
   const selectedYear = computed(() =>
     props.modelValue.year ? props.modelValue.year.toString() : ALL_VALUE,
   )
-  const selectedOrderBy = computed(() => props.modelValue.orderBy || ALL_VALUE)
-
-  const minPriceValue = computed({
-    get: () => props.modelValue.minPrice?.toString() || '',
-    set: (value: string) => {
-      const numberValue = value === '' ? '' : Number(value)
-      updateFilter('minPrice', numberValue)
-    },
-  })
-
-  const maxPriceValue = computed({
-    get: () => props.modelValue.maxPrice?.toString() || '',
-    set: (value: string) => {
-      const numberValue = value === '' ? '' : Number(value)
-      updateFilter('maxPrice', numberValue)
-    },
-  })
 
   const updateFilter = <K extends keyof ICarFilters>(
     key: K,
@@ -50,10 +28,44 @@ export function useCarFilters(props: { modelValue: ICarFilters }, emit: any) {
   ) => {
     emit('update:modelValue', {
       ...props.modelValue,
-      page: 1,
-      [key]: value,
+      page: 0,
+      [key]: value === 'all' ? '' : value,
     })
   }
+
+  const debouncedUpdateFilter = useDebounceFn(
+    <K extends keyof ICarFilters>(key: K, value: ICarFilters[K]) => {
+      emit('update:modelValue', {
+        ...props.modelValue,
+        page: 0,
+        [key]: value === 'all' ? '' : value,
+      })
+    },
+    300,
+  )
+
+  const selectedOrderBy = computed(() => props.modelValue.orderBy || ALL_VALUE)
+
+  const searchValue = computed({
+    get: () => props.modelValue.search,
+    set: (value: string) => debouncedUpdateFilter('search', value),
+  })
+
+  const minPriceValue = computed({
+    get: () => props.modelValue.minPrice?.toString() || '',
+    set: (value: string) => {
+      const numberValue = value === '' ? '' : Number(value)
+      debouncedUpdateFilter('minPrice', numberValue)
+    },
+  })
+
+  const maxPriceValue = computed({
+    get: () => props.modelValue.maxPrice?.toString() || '',
+    set: (value: string) => {
+      const numberValue = value === '' ? '' : Number(value)
+      debouncedUpdateFilter('maxPrice', numberValue)
+    },
+  })
 
   const handleBrandSelect = (value: string) => {
     updateFilter('brand', value === ALL_VALUE ? '' : value)
