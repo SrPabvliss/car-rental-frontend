@@ -5,7 +5,7 @@ import { useToast } from 'vue-toastification'
 export class AxiosClient implements IHttpHandler {
   private static instance: AxiosClient
   private axiosInstance: AxiosInstance
-  private static readonly baseURL = import.meta.env.VITE_API_URL || ''
+  private static readonly baseURL = (import.meta as any).env.VITE_API_URL || ''
   private accessToken: string | null = null
   private toast = useToast()
 

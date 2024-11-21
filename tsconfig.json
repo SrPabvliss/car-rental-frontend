@@ -16,7 +16,9 @@
     "module": "NodeNext",
     "preserveSymlinks": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@shared": ["./src/shared"],
+      "@features": ["/src/features"]
     }
   }
 }

@@ -9,6 +9,7 @@
     "src/lib",
     "src/router",
     "src/stores",
+    "src/shared/**/*",
   ],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
