@@ -7,12 +7,13 @@ import {
 } from '@/features/vehicles/constants'
 import type { ICar } from '@/features/vehicles/interfaces/ICar'
 import { useForm } from '@/lib/composables/use-form'
+import { FormInput, FormSelect } from '@/shared/components/forms'
 import LoadingSpinner from '@/shared/components/loading-spinner.vue'
 import { watch } from 'vue'
 
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+
+import ImageUpload from './image-upload.vue'
 
 const props = defineProps<{
   car?: ICar | null
@@ -41,159 +42,102 @@ const submitForm = () => handleSubmit(onSubmit)
 
 <template>
   <form @submit.prevent="submitForm" class="space-y-6 mt-4">
-    <div>
-      <Label for="brand">Marca</Label>
-      <select
-        v-model="formData.brand"
-        id="brand"
-        class="custom-select"
-        @change="validateField('brand')"
-      >
-        <option value="">Seleccione una marca</option>
-        <option v-for="brand in CAR_BRANDS" :key="brand" :value="brand">
-          {{ brand }}
-        </option>
-      </select>
-      <p v-if="errors.brand" class="text-red-500 text-xs">{{ errors.brand }}</p>
-    </div>
+    <FormSelect
+      id="brand"
+      label="Marca"
+      :placeholder="'Seleccione una marca'"
+      :options="CAR_BRANDS.map(brand => ({ value: brand, label: brand }))"
+      v-model="formData.brand"
+      :error="errors.brand"
+      @update:modelValue="validateField('brand')"
+    />
 
-    <div>
-      <Label for="model">Modelo</Label>
-      <Input
-        v-model="formData.model"
-        id="model"
-        placeholder="Ej. Corolla"
-        @input="validateField('model')"
-        class="border-gray-600"
-      />
-      <p v-if="errors.model" class="text-red-500 text-xs">{{ errors.model }}</p>
-    </div>
+    <FormInput
+      id="model"
+      label="Modelo"
+      placeholder="Ej. Corolla"
+      v-model="formData.model"
+      :error="errors.model"
+      @update:modelValue="validateField('model')"
+    />
 
-    <div>
-      <Label for="color">Color</Label>
-      <Input
-        v-model="formData.color"
-        id="color"
-        placeholder="Ej. Negro"
-        class="border-gray-600"
-        @input="validateField('color')"
-      />
-      <p v-if="errors.color" class="text-red-500 text-xs">{{ errors.color }}</p>
-    </div>
+    <FormInput
+      id="color"
+      label="Color"
+      placeholder="Ej. Negro"
+      v-model="formData.color"
+      :error="errors.color"
+      @update:modelValue="validateField('color')"
+    />
 
-    <div>
-      <Label for="plate">Placa</Label>
-      <Input
-        v-model="formData.plate"
-        id="plate"
-        placeholder="Ej. ABC123"
-        @input="validateField('plate')"
-        class="border-gray-600"
-      />
-      <p v-if="errors.plate" class="text-red-500 text-xs">{{ errors.plate }}</p>
-    </div>
+    <FormInput
+      id="plate"
+      label="Placa"
+      placeholder="Ej. ABC123"
+      v-model="formData.plate"
+      :error="errors.plate"
+      @update:modelValue="validateField('plate')"
+    />
 
-    <div>
-      <Label for="type">Tipo</Label>
-      <select
-        v-model="formData.type"
-        id="type"
-        class="custom-select"
-        @change="validateField('type')"
-      >
-        <option value="">Seleccione un tipo</option>
-        <option v-for="type in CAR_TYPES" :key="type" :value="type">
-          {{ type }}
-        </option>
-      </select>
-      <p v-if="errors.type" class="text-red-500 text-xs">{{ errors.type }}</p>
-    </div>
+    <FormSelect
+      id="type"
+      label="Tipo"
+      :placeholder="'Seleccione un tipo'"
+      :options="CAR_TYPES.map(type => ({ value: type, label: type }))"
+      v-model="formData.type"
+      :error="errors.type"
+      @update:modelValue="validateField('type')"
+    />
 
-    <div>
-      <Label for="status">Estado</Label>
-      <select
-        v-model="formData.status"
-        id="status"
-        class="custom-select"
-        @change="validateField('status')"
-      >
-        <option value="">Seleccione un estado</option>
-        <option v-for="status in CAR_STATUSES" :key="status" :value="status">
-          {{ status }}
-        </option>
-      </select>
-      <p v-if="errors.status" class="text-red-500 text-xs">
-        {{ errors.status }}
-      </p>
-    </div>
+    <FormSelect
+      id="status"
+      label="Estado"
+      :placeholder="'Seleccione un estado'"
+      :options="CAR_STATUSES.map(status => ({ value: status, label: status }))"
+      v-model="formData.status"
+      :error="errors.status"
+      @update:modelValue="validateField('status')"
+    />
 
-    <div>
-      <Label for="year">Año</Label>
-      <Input
-        v-model="formData.year"
-        id="year"
-        type="number"
-        placeholder="Ej. 2023"
-        class="border-gray-600"
-        @input="validateField('year')"
-      />
-      <p v-if="errors.year" class="text-red-500 text-xs">{{ errors.year }}</p>
-    </div>
+    <FormInput
+      id="year"
+      label="Año"
+      type="number"
+      placeholder="Ej. 2023"
+      v-model="formData.year"
+      :error="errors.year"
+      @update:modelValue="validateField('year')"
+    />
 
-    <div>
-      <Label for="mileage">Kilometraje</Label>
-      <Input
-        v-model="formData.mileage"
-        id="mileage"
-        type="number"
-        placeholder="Ej. 15000"
-        class="border-gray-600"
-        @input="validateField('mileage')"
-      />
-      <p v-if="errors.mileage" class="text-red-500 text-xs">
-        {{ errors.mileage }}
-      </p>
-    </div>
+    <FormInput
+      id="mileage"
+      label="Kilometraje"
+      type="number"
+      placeholder="Ej. 15000"
+      v-model="formData.mileage"
+      :error="errors.mileage"
+      @update:modelValue="validateField('mileage')"
+    />
 
-    <div>
-      <Label for="dailyRate">Tarifa diaria</Label>
-      <Input
-        v-model="formData.dailyRate"
-        id="dailyRate"
-        type="number"
-        placeholder="Ej. 90.0"
-        class="border-gray-600"
-        @input="validateField('dailyRate')"
-      />
-      <p v-if="errors.dailyRate" class="text-red-500 text-xs">
-        {{ errors.dailyRate }}
-      </p>
-    </div>
+    <FormInput
+      id="dailyRate"
+      label="Tarifa diaria"
+      type="number"
+      placeholder="Ej. 90.0"
+      v-model="formData.dailyRate"
+      :error="errors.dailyRate"
+      @update:modelValue="validateField('dailyRate')"
+    />
 
-    <div class="flex flex-col gap-2">
-      <Label for="imageUrl">Imagen del vehículo</Label>
-      <Button
-        type="button"
-        class="btn btn-secondary"
-        @click="openWidget"
-        :disabled="isLoading"
-        variant="outline"
-      >
-        Subir Imagen
-      </Button>
-      <p v-if="imageUrl" class="mt-4">
-        <Label>Imagen cargada:</Label>
-        <img
-          :src="imageUrl"
-          alt="Uploaded Image"
-          class="mt-2 w-40 h-40 object-cover"
-        />
-      </p>
-    </div>
+    <ImageUpload
+      :imageUrl="imageUrl"
+      :isLoading="isLoading"
+      @upload="openWidget"
+    />
 
     <Button type="submit" :disabled="isLoading">
       <LoadingSpinner v-if="isLoading" size="small" />
-      <span v-else>Crear Vehículo</span>
+      <span v-else>{{ props.car ? 'Editar vehículo' : 'Crear vehículo' }}</span>
     </Button>
   </form>
 </template>

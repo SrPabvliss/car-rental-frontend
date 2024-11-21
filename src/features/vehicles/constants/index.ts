@@ -66,7 +66,6 @@ export interface SelectConfig {
 }
 
 export const createFilterSelectConfigs = (
-   
   selectedValues: Record<string, any>,
   handlers: Record<string, (value: string) => void>,
 ): SelectConfig[] => [

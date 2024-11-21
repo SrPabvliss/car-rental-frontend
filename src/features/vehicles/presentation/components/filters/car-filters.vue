@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { FormInput, FormSelect } from '@/shared/components/forms'
 import { SlidersHorizontal } from 'lucide-vue-next'
 
 import { Button } from '@/components/ui/button'
@@ -11,8 +12,6 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 
-import FilterSearch from '../../../../../shared/components/filter-search.vue'
-import FilterSelect from '../../../../../shared/components/filter-select.vue'
 import { useCarFilters } from '../../../composables/use-car-filters'
 import type { ICarFilters } from '../../../interfaces/ICarFilters'
 import CarPriceRange from './car-price-range.vue'
@@ -32,9 +31,11 @@ const { searchValue, selectConfigs, minPriceValue, maxPriceValue } =
 <template>
   <div class="space-y-4">
     <div class="flex gap-2">
-      <FilterSearch
+      <FormInput
+        id="search"
         v-model="searchValue"
-        :placeholder="'Buscar vehiculos ...'"
+        placeholder="Buscar vehículos..."
+        :icon="SlidersHorizontal"
       />
 
       <Sheet>
@@ -52,9 +53,11 @@ const { searchValue, selectConfigs, minPriceValue, maxPriceValue } =
               Ajusta los filtros para encontrar el vehículo perfecto
             </SheetDescription>
           </SheetHeader>
+
           <div class="space-y-4 mt-4">
             <template v-for="config in selectConfigs" :key="config.key">
-              <FilterSelect
+              <FormSelect
+                :id="config.key"
                 v-model="config.modelValue"
                 :placeholder="config.placeholder"
                 :options="config.options"
@@ -74,7 +77,8 @@ const { searchValue, selectConfigs, minPriceValue, maxPriceValue } =
 
     <div class="hidden lg:grid grid-cols-6 gap-4">
       <template v-for="config in selectConfigs" :key="config.key">
-        <FilterSelect
+        <FormSelect
+          :id="config.key"
           v-model="config.modelValue"
           :placeholder="config.placeholder"
           :options="config.options"

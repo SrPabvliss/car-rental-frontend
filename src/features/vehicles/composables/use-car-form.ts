@@ -103,9 +103,10 @@ export default function useCarForm(car?: ICar | null) {
         router.push({ name: 'cars' })
       }
     } else {
-      const result = await CarDataSourceImpl.getInstance().create(
-        formData as ICreateCar,
-      )
+      const result = await CarDataSourceImpl.getInstance().create({
+        ...formData,
+        imageUrl: imageUrl.value ?? undefined,
+      } as ICreateCar)
 
       if (result) {
         useToast().success('Vehículo creado correctamente')
