@@ -39,7 +39,7 @@ const inputValue = computed({
         :type="type || 'text'"
         v-model="inputValue"
         :placeholder="placeholder || ''"
-        :class="{ 'pl-10  border-gray-500': icon }"
+        :class="['border-gray-500', { 'pl-10': icon }]" 
       />
     </div>
 
