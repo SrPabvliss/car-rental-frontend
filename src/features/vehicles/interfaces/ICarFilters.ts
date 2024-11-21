@@ -1,6 +1,8 @@
+import type { IFilter } from '@/shared/interfaces/IFilter'
+
 import type { CarStatus, CarType } from './ICar'
 
-export interface ICarFilters {
+export interface ICarFilters extends IFilter {
   search: string
   type: CarType | ''
   status: CarStatus | ''
@@ -9,8 +11,6 @@ export interface ICarFilters {
   minPrice: number | ''
   maxPrice: number | ''
   orderBy: 'price_asc' | 'price_desc' | 'year_desc' | 'year_asc' | ''
-  page: number
-  perPage: number
 }
 
 export type OrderByValue =

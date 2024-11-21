@@ -111,7 +111,7 @@ const roleOptions = Object.values(ROLE_ENUM)
         @change="validateField('role')"
         id="role"
         name="role"
-        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+        class="custom-select"
       >
         <option value="" disabled selected>Seleccione un rol</option>
         <option v-for="role in roleOptions" :key="role" :value="role">
@@ -137,3 +137,7 @@ const roleOptions = Object.values(ROLE_ENUM)
     </cite>
   </form>
 </template>
+
+<style scoped>
+@import '@/assets/select.css';
+</style>

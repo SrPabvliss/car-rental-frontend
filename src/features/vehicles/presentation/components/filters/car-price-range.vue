@@ -33,12 +33,14 @@ const maxPriceValue = computed({
         v-model="minPriceValue"
         placeholder="Mínimo"
         min="0"
+        class="border-gray-600"
       />
       <Input
         type="number"
         v-model="maxPriceValue"
         placeholder="Máximo"
         min="0"
+        class="border-gray-600"
       />
     </div>
   </div>
