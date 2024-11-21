@@ -57,7 +57,7 @@ const { searchValue, selectConfigs, minPriceValue, maxPriceValue } =
           <div class="space-y-4 mt-4">
             <template v-for="config in selectConfigs" :key="config.key">
               <FormSelect
-                :id="config.key"
+                :id="config.id as string"
                 v-model="config.modelValue"
                 :placeholder="config.placeholder"
                 :options="config.options"

@@ -38,7 +38,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <Card class="w-full h-[500px] flex flex-col">
+  <Card class="w-full h-[500px] flex flex-col car-card">
     <CardHeader class="p-0 flex-shrink-0">
       <div class="w-full h-[280px] relative group">
         <img
