@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { Search } from 'lucide-vue-next'
-import { computed } from 'vue'
+import { computed, type Component } from 'vue'
 
 import { Input } from '@/components/ui/input'
 
 const props = defineProps<{
   modelValue: string
+  placeholder?: string
+  icon?: Component
 }>()
 
 const emit = defineEmits<{
@@ -20,13 +22,14 @@ const inputValue = computed({
 
 <template>
   <div class="relative flex-1">
-    <Search
+    <component
+      :is="icon || Search"
       class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"
     />
     <Input
       v-model="inputValue"
-      placeholder="Buscar vehículos..."
-      class="pl-10 border-gray-600 "
+      :placeholder="placeholder || 'Buscar...'"
+      class="pl-10 border-gray-600"
     />
   </div>
 </template>

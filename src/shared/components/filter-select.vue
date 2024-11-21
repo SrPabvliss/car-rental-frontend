@@ -1,13 +1,14 @@
 <script setup lang="ts">
 interface Props {
   modelValue: string | number
-  placeholder: string
+  placeholder?: string
   options: { value: string; label: string }[]
   allLabel?: string
 }
 
 withDefaults(defineProps<Props>(), {
   allLabel: 'Todos',
+  placeholder: 'Selecciona una opción',
 })
 
 defineEmits<{
@@ -23,6 +24,7 @@ defineEmits<{
       @change="
         $emit('update:modelValue', ($event.target as HTMLSelectElement).value)
       "
+      :aria-label="placeholder"
     >
       <option value="all">{{ allLabel }}</option>
       <option

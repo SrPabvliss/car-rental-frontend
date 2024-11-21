@@ -1,4 +1,7 @@
+<!-- Reutilizable -->
+
 <script setup lang="ts">
+import type { IFilter } from '@/shared/interfaces/IFilter'
 import {
   ChevronFirst,
   ChevronLast,
@@ -9,21 +12,20 @@ import { computed } from 'vue'
 
 import Button from '@/components/ui/button/Button.vue'
 
-import { usePagination } from '../../composables/use-pagination'
-import type { ICarFilters } from '../../interfaces/ICarFilters'
+import { usePagination } from '../composables/use-pagination'
 
 interface Props {
-  modelValue: ICarFilters
+  modelValue: IFilter
   totalItems: number
 }
 
 const props = defineProps<Props>()
 
 const emit = defineEmits<{
-  'update:modelValue': [filters: ICarFilters]
+  'update:modelValue': [filters: IFilter]
 }>()
 
-const propsAsRefs = { 
+const propsAsRefs = {
   modelValue: computed({
     get: () => props.modelValue,
     set: value => emit('update:modelValue', value),

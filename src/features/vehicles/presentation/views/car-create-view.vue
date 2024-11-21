@@ -2,7 +2,7 @@
 import ContentLayout from '@/core/layout/content-layout.vue'
 import { ref } from 'vue'
 
-import CarBreadcrumb from '../components/car-breadcrumb.vue'
+import CustomBreadcrumb from '../../../../shared/components/custom-breadcrumb.vue'
 import NewEditForm from '../components/forms/new-edit-form.vue'
 
 const breadcrumbItems = ref([
@@ -14,7 +14,7 @@ const breadcrumbItems = ref([
 <template>
   <ContentLayout title="Crear nuevo vehículo">
     <template #content>
-      <CarBreadcrumb :items="breadcrumbItems" />
+      <CustomBreadcrumb :items="breadcrumbItems" />
       <NewEditForm />
     </template>
   </ContentLayout>

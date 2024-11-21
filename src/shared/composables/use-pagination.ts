@@ -1,9 +1,8 @@
+import type { IFilter } from '@/shared/interfaces/IFilter'
 import { computed, unref, type Ref } from 'vue'
 
-import type { ICarFilters } from '../interfaces/ICarFilters'
-
 interface PaginationProps {
-  modelValue: Ref<ICarFilters> | ICarFilters
+  modelValue: Ref<IFilter> | IFilter
   totalItems: Ref<number> | number
   itemsPerPage?: number
 }

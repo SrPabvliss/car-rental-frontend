@@ -11,12 +11,11 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 
+import FilterSearch from '../../../../../shared/components/filter-search.vue'
+import FilterSelect from '../../../../../shared/components/filter-select.vue'
 import { useCarFilters } from '../../../composables/use-car-filters'
 import type { ICarFilters } from '../../../interfaces/ICarFilters'
 import CarPriceRange from './car-price-range.vue'
-import CarSearch from './car-search.vue'
-import CarSelect from './car-select.vue'
-
 
 const props = defineProps<{
   modelValue: ICarFilters
@@ -33,7 +32,10 @@ const { searchValue, selectConfigs, minPriceValue, maxPriceValue } =
 <template>
   <div class="space-y-4">
     <div class="flex gap-2">
-      <CarSearch v-model="searchValue" />
+      <FilterSearch
+        v-model="searchValue"
+        :placeholder="'Buscar vehiculos ...'"
+      />
 
       <Sheet>
         <SheetTrigger asChild>
@@ -52,7 +54,7 @@ const { searchValue, selectConfigs, minPriceValue, maxPriceValue } =
           </SheetHeader>
           <div class="space-y-4 mt-4">
             <template v-for="config in selectConfigs" :key="config.key">
-              <CarSelect
+              <FilterSelect
                 v-model="config.modelValue"
                 :placeholder="config.placeholder"
                 :options="config.options"
@@ -72,7 +74,7 @@ const { searchValue, selectConfigs, minPriceValue, maxPriceValue } =
 
     <div class="hidden lg:grid grid-cols-6 gap-4">
       <template v-for="config in selectConfigs" :key="config.key">
-        <CarSelect
+        <FilterSelect
           v-model="config.modelValue"
           :placeholder="config.placeholder"
           :options="config.options"
