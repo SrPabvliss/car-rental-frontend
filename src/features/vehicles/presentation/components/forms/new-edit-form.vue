@@ -135,7 +135,7 @@ const submitForm = () => handleSubmit(onSubmit)
       @upload="openWidget"
     />
 
-    <Button type="submit" :disabled="isLoading">
+    <Button type="submit" :disabled="isLoading" data-testid="submit-car-form">
       <LoadingSpinner v-if="isLoading" size="small" />
       <span v-else>{{ props.car ? 'Editar vehículo' : 'Crear vehículo' }}</span>
     </Button>
