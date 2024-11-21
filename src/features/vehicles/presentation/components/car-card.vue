@@ -69,11 +69,18 @@ const emit = defineEmits<{
           </p>
         </div>
         <div class="relative flex">
-          <Badge :class="getStatusColor(car.status)">
+          <Badge
+            :class="getStatusColor(car.status)"
+            :data-testid="`car-status-${car.id}`"
+          >
             {{ car.status }}
           </Badge>
           <DropdownMenu>
-            <DropdownMenuTrigger as="button" class="ml-2">
+            <DropdownMenuTrigger
+              as="button"
+              class="ml-2"
+              data-testid="menu-trigger"
+            >
               <Button variant="ghost" size="icon">
                 <MoreVertical class="h-5 w-5" />
               </Button>
@@ -81,6 +88,7 @@ const emit = defineEmits<{
             <DropdownMenuContent>
               <DropdownMenuItem
                 @click="emit('changeStatus', car.id, 'Disponible' as CarStatus)"
+                data-testid="status-option-disponible"
               >
                 Disponible
               </DropdownMenuItem>
@@ -88,11 +96,13 @@ const emit = defineEmits<{
                 @click="
                   emit('changeStatus', car.id, 'En mantenimiento' as CarStatus)
                 "
+                data-testid="status-option-mantenimiento"
               >
                 En mantenimiento
               </DropdownMenuItem>
               <DropdownMenuItem
                 @click="emit('changeStatus', car.id, 'Alquilado' as CarStatus)"
+                data-testid="status-option-alquilado"
               >
                 Alquilado
               </DropdownMenuItem>
