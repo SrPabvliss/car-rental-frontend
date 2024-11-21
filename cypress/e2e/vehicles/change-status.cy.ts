@@ -40,9 +40,6 @@ describe('Change Status Flow', () => {
 
     cy.get('[data-testid="status-option-disponible"]').click()
 
-    cy.get('[data-testid="car-status-2"]').should(
-      'contain.text',
-      'En mantenimiento',
-    )
+    cy.get('[data-testid="car-status-1"]').should('contain.text', 'Disponible')
   })
 })

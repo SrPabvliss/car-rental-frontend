@@ -129,6 +129,7 @@ const emit = defineEmits<{
         class="flex-2 px-4"
         variant="destructive"
         @click="emit('delete', car.id)"
+        :data-testid="`delete-button-${car.id}`"
       >
         <Trash class="h-4 w-4 mx-2" />
       </Button>
