@@ -86,6 +86,7 @@ describe('LoginForm', () => {
       handleSubmit: callback => {
         callback({ email: 'test@test.com', password: '12345' })
       },
+      resetForm: vi.fn(),
     })
 
     const wrapper = mount(LoginForm, globalMountOptions)
@@ -123,6 +124,7 @@ describe('LoginForm', () => {
       }),
       handleSubmit: vi.fn(),
       validateField: validateFieldMock,
+      resetForm: vi.fn(),
     })
 
     const wrapper = mount(LoginForm, globalMountOptions)

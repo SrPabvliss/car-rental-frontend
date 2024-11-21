@@ -91,6 +91,7 @@ describe('ResetPasswordForm', () => {
       errors: ref({ token: 'Token es requerido' }),
       handleSubmit: vi.fn(),
       validateField: validateFieldMock,
+      resetForm: vi.fn(),
     })
 
     const wrapper = mount(ResetPasswordForm, globalMountOptions)
@@ -128,6 +129,7 @@ describe('ResetPasswordForm', () => {
       errors: ref({}),
       handleSubmit: handleSubmitMock,
       validateField: vi.fn(),
+      resetForm: vi.fn(),
     })
 
     const wrapper = mount(ResetPasswordForm, globalMountOptions)
