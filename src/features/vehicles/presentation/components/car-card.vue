@@ -121,7 +121,12 @@ const emit = defineEmits<{
     </CardContent>
 
     <CardFooter class="p-4 pt-0 flex-shrink-0 flex gap-2">
-      <Button class="flex-1" variant="default" @click="emit('edit', car.id)">
+      <Button
+        class="flex-1"
+        variant="default"
+        @click="emit('edit', car.id)"
+        :data-testid="`edit-car-button`"
+      >
         <Edit class="h-4 w-4 mr-2" />
         Editar
       </Button>
