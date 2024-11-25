@@ -15,10 +15,12 @@
     "lib": ["ES2023", "DOM"],
     "module": "NodeNext",
     "preserveSymlinks": true,
+    "noEmit": true,
     "paths": {
       "@/*": ["./src/*"],
       "@shared": ["./src/shared"],
-      "@features": ["/src/features"]
+      "@features": ["/src/features"],
+      "@core": ["./src/core"]
     }
   }
 }
