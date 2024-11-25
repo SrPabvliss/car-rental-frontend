@@ -10,6 +10,9 @@ export default defineConfig({
     video: true,
     screenshotOnRunFailure: true,
     chromeWebSecurity: false,
+    viewportWidth: 1920,
+    viewportHeight: 1080,
+    defaultCommandTimeout: 10000,
   },
   component: {
     devServer: {

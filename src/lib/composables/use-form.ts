@@ -1,11 +1,20 @@
 import { ref, reactive, toRaw } from 'vue'
 import { ZodSchema, ZodError } from 'zod'
 
-export function useForm<T extends Record<string, any>>(schema: ZodSchema<T>) {
+export function useForm<T extends Record<string, any>>(
+  schema: ZodSchema<T>,
+  initialValues?: Partial<T>,
+) {
   const formData = reactive<T>({} as T)
   const errors = ref<Record<keyof T, string | null>>(
     {} as Record<keyof T, string | null>,
   )
+
+  const resetForm = (values?: Partial<T>) => {
+    const defaults = values || initialValues || {}
+    Object.assign(formData, defaults)
+    resetErrors()
+  }
 
   const validate = () => {
     try {
@@ -47,10 +56,15 @@ export function useForm<T extends Record<string, any>>(schema: ZodSchema<T>) {
     }
   }
 
+  if (initialValues) {
+    resetForm(initialValues)
+  }
+
   return {
     formData,
     errors,
     handleSubmit,
     validateField,
+    resetForm,
   }
 }

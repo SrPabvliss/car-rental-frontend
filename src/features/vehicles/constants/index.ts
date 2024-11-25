@@ -57,6 +57,7 @@ export const ORDER_BY_OPTIONS: OrderByOption[] = [
 ]
 
 export interface SelectConfig {
+  id?: string
   key: keyof ICarFilters
   modelValue: string | number
   placeholder: string
@@ -66,11 +67,11 @@ export interface SelectConfig {
 }
 
 export const createFilterSelectConfigs = (
-   
   selectedValues: Record<string, any>,
   handlers: Record<string, (value: string) => void>,
 ): SelectConfig[] => [
   {
+    id: 'brand',
     key: 'brand',
     modelValue: selectedValues.brand,
     placeholder: 'Marca',
@@ -79,6 +80,7 @@ export const createFilterSelectConfigs = (
     handler: handlers.handleBrandSelect,
   },
   {
+    id: 'type',
     key: 'type',
     modelValue: selectedValues.type,
     placeholder: 'Tipo de vehículo',
@@ -90,6 +92,7 @@ export const createFilterSelectConfigs = (
     handler: handlers.handleTypeSelect,
   },
   {
+    id: 'status',
     key: 'status',
     modelValue: selectedValues.status,
     placeholder: 'Estado',
@@ -101,6 +104,7 @@ export const createFilterSelectConfigs = (
     handler: handlers.handleStatusSelect,
   },
   {
+    id: 'year',
     key: 'year',
     modelValue: selectedValues.year,
     placeholder: 'Año',
@@ -112,6 +116,7 @@ export const createFilterSelectConfigs = (
     handler: handlers.handleYearSelect,
   },
   {
+    id: 'orderBy',
     key: 'orderBy',
     modelValue: selectedValues.orderBy,
     placeholder: 'Ordenar por',

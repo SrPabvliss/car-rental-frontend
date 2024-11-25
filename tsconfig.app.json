@@ -1,7 +1,7 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": [
-    "env.d.ts",
+    "src/vite-env.d.ts",
     "src/**/*",
     "src/**/*.d.ts",
     "src/**/*.ts",
@@ -9,10 +9,12 @@
     "src/lib",
     "src/router",
     "src/stores",
+    "src/shared/**/*"
   ],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "composite": true,
+    "noEmit": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "lib": ["ES2023", "DOM"],
     "baseUrl": ".",

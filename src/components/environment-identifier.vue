@@ -1,24 +1,22 @@
-<!-- src/components/EnvironmentIndicator.vue -->
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 const envInfo = ref({
-  mode: import.meta.env.MODE,
   title: import.meta.env.VITE_APP_TITLE,
   apiUrl: import.meta.env.VITE_API_URL,
-  nodeEnv: import.meta.env.VITE_NODE_ENV
+  nodeEnv: import.meta.env.VITE_NODE_ENV,
 })
 
 const isExpanded = ref(false)
 
-const getShortMode = () => {
-  return envInfo.value.mode === 'development' ? 'DEV' : 'TEST'
-}
+const getShortNodeEnv = computed(() => {
+  return envInfo.value.nodeEnv === 'development' ? 'DEV' : 'TEST'
+})
 </script>
 
 <template>
-  <div 
-    v-if="['development', 'test'].includes(envInfo.mode)" 
+  <div
+    v-if="['development', 'test'].includes(envInfo.nodeEnv)"
     class="env-indicator"
     :class="{ expanded: isExpanded }"
     @click="isExpanded = !isExpanded"
@@ -26,8 +24,8 @@ const getShortMode = () => {
     <div v-if="isExpanded" class="env-content">
       <pre>{{ JSON.stringify(envInfo, null, 2) }}</pre>
     </div>
-    <div class="env-label" :class="envInfo.mode">
-      {{ getShortMode() }}
+    <div class="env-label" :class="envInfo.nodeEnv">
+      {{ getShortNodeEnv }}
     </div>
   </div>
 </template>

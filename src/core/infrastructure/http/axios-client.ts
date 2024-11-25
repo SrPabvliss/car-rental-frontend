@@ -1,4 +1,3 @@
- 
 import type { IHttpHandler } from '@/core/interfaces/IHttpHandler'
 import axios, { type AxiosInstance, type AxiosRequestConfig } from 'axios'
 import { useToast } from 'vue-toastification'
@@ -6,7 +5,7 @@ import { useToast } from 'vue-toastification'
 export class AxiosClient implements IHttpHandler {
   private static instance: AxiosClient
   private axiosInstance: AxiosInstance
-  private static readonly baseURL = import.meta.env.VITE_API_URL || ''
+  private static readonly baseURL = (import.meta as any).env.VITE_API_URL || ''
   private accessToken: string | null = null
   private toast = useToast()
 
@@ -30,8 +29,9 @@ export class AxiosClient implements IHttpHandler {
 
     this.axiosInstance.interceptors.response.use(
       response => {
-        // this.toast.success(response.data.message)
-        this.toast.success('Correcto')
+        if (response.config.method !== 'get') {
+          this.toast.success('Correcto')
+        }
         return response
       },
       error => {
@@ -62,15 +62,35 @@ export class AxiosClient implements IHttpHandler {
     return this.axiosInstance
   }
 
-  async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+  private buildQueryParams(params?: Record<string, any>): string {
+    if (!params) return ''
+    const query = new URLSearchParams()
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== '') {
+        query.append(key, String(value))
+      }
+    })
+    return query.toString() ? `?${query.toString()}` : ''
+  }
+
+  async get<T>(
+    url: string,
+    config?: AxiosRequestConfig & { params?: Record<string, any> },
+  ): Promise<T> {
     try {
-      const response = await this.axiosInstance.get<T>(url, config)
+      const queryParams = config?.params
+        ? ''
+        : this.buildQueryParams(config?.params)
+
+      const response = await this.axiosInstance.get<T>(
+        `${url}${queryParams}`,
+        config,
+      )
       return response.data
     } catch (e: any) {
       return e.response.data
     }
   }
-
   async post<T>(
     url: string,
     data?: any,

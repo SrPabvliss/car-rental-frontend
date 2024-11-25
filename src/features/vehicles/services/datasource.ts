@@ -1,14 +1,22 @@
+import { API_ROUTES } from '@/core/api/routes/api-routes'
 import { AxiosClient } from '@/core/infrastructure/http/axios-client'
 import type { IHttpHandler } from '@/core/interfaces/IHttpHandler'
 
-import type { ICar } from '../interfaces/ICar'
+import type { ICar, IUpdateCar } from '../interfaces/ICar'
+import type { ICarFilters } from '../interfaces/ICarFilters'
 
 interface CarDataSource {
-  getAll: () => Promise<ICar[]>
-  getById: (id: string) => Promise<ICar>
-  create: (vehicle: ICar) => Promise<ICar>
-  update: (vehicle: ICar) => Promise<ICar>
-  delete: (id: string) => Promise<void>
+  getAll: (filters?: Partial<ICarFilters>) => Promise<{
+    totalItems: number
+    perPage: number
+    page: number
+    items: ICar[]
+  }>
+  getById: (id: number) => Promise<ICar>
+  create: (vehicle: Omit<ICar, 'id'>) => Promise<ICar>
+  update: (id: number, vehicle: IUpdateCar) => Promise<ICar>
+  delete: (id: number) => Promise<void>
+  count: () => Promise<number>
 }
 
 export class CarDataSourceImpl implements CarDataSource {
@@ -16,7 +24,7 @@ export class CarDataSourceImpl implements CarDataSource {
   private static instance: CarDataSourceImpl
 
   constructor() {
-    this.httpClient = new AxiosClient()
+    this.httpClient = AxiosClient.getInstance()
   }
 
   static getInstance(): CarDataSourceImpl {
@@ -26,30 +34,54 @@ export class CarDataSourceImpl implements CarDataSource {
     return CarDataSourceImpl.instance
   }
 
-  getAll = async (): Promise<ICar[]> => {
-    const data = await this.httpClient.get<ICar[]>('/api/cars')
+  count: () => Promise<number> = async () => {
+    const data = await this.httpClient.get<number>(API_ROUTES.VEHICLES.COUNT)
     return data
   }
 
-  getById = async (id: string): Promise<ICar> => {
-    const data = await this.httpClient.get<ICar>(`/api/cars/${id}`)
+  getAll = async (
+    filters?: Partial<ICarFilters>,
+  ): Promise<{
+    totalItems: number
+    perPage: number
+    page: number
+    items: ICar[]
+  }> => {
+    const data = await this.httpClient.get<{
+      totalItems: number
+      perPage: number
+      page: number
+      items: ICar[]
+    }>(API_ROUTES.VEHICLES.FILTER, {
+      params: filters,
+    })
     return data
   }
 
-  create = async (vehicle: ICar): Promise<ICar> => {
-    const data = await this.httpClient.post<ICar>('/api/cars', vehicle)
+  getById = async (id: number): Promise<ICar> => {
+    const data = await this.httpClient.get<ICar>(
+      API_ROUTES.VEHICLES.GET_BY_ID(id),
+    )
     return data
   }
 
-  update = async (vehicle: ICar): Promise<ICar> => {
-    const data = await this.httpClient.put<ICar>(
-      `/api/cars/${vehicle.id}`,
+  create = async (vehicle: Omit<ICar, 'id'>): Promise<ICar> => {
+    const data = await this.httpClient.post<ICar>(
+      API_ROUTES.VEHICLES.CREATE,
       vehicle,
     )
     return data
   }
 
-  delete = async (id: string): Promise<void> => {
-    await this.httpClient.delete(`/api/cars/${id}`)
+  update = async (id: number, vehicle: IUpdateCar): Promise<ICar> => {
+    const data = await this.httpClient.patch<ICar>(
+      API_ROUTES.VEHICLES.UPDATE(id),
+      vehicle,
+    )
+    return data
+  }
+
+  delete = async (id: number): Promise<void> => {
+    await this.httpClient.delete(API_ROUTES.VEHICLES.DELETE(id))
   }
 }

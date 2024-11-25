@@ -1,3 +1,5 @@
+<!-- Reutitlizable -->
+
 <script setup lang="ts">
 import router from '@/router'
 import { ChevronRight } from 'lucide-vue-next'
