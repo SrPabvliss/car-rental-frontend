@@ -48,7 +48,9 @@ const confirmDelete = () => {
             :items="[{ label: 'Vehículos', href: 'cars', current: true }]"
           />
           <div class="flex justify-end">
-            <Button @click="handleCreateCar">Crear vehículo</Button>
+            <Button @click="handleCreateCar" data-testid="create-car-button"
+              >Crear vehículo</Button
+            >
           </div>
         </div>
 

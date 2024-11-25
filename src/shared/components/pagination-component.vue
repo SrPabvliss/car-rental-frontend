@@ -55,6 +55,7 @@ const isLastPage = computed(() => currentPage.value === totalPages.value - 1)
   <div class="flex flex-col items-center gap-2">
     <div class="flex items-center gap-1">
       <Button
+        data-testid="first-page-button"
         variant="outline"
         size="icon"
         class="h-8 w-8"
@@ -65,6 +66,7 @@ const isLastPage = computed(() => currentPage.value === totalPages.value - 1)
       </Button>
 
       <Button
+        data-testid="previous-page-button"
         variant="outline"
         size="icon"
         class="h-8 w-8"
@@ -86,6 +88,7 @@ const isLastPage = computed(() => currentPage.value === totalPages.value - 1)
       </Button>
 
       <Button
+        data-testid="next-page-button"
         variant="outline"
         size="icon"
         class="h-8 w-8"
@@ -96,6 +99,7 @@ const isLastPage = computed(() => currentPage.value === totalPages.value - 1)
       </Button>
 
       <Button
+        data-testid="last-page-button"
         variant="outline"
         size="icon"
         class="h-8 w-8"
@@ -106,7 +110,7 @@ const isLastPage = computed(() => currentPage.value === totalPages.value - 1)
       </Button>
     </div>
 
-    <p class="text-sm text-muted-foreground">
+    <p class="text-sm text-muted-foreground" data-testid="pagination-stats">
       {{ stats }}
     </p>
   </div>

@@ -107,6 +107,7 @@ export function useCars() {
     filters,
     cars,
     totalItems,
+    cleanFilters,
     fetchCars,
     handleViewCar,
     handleRentCar,

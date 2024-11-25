@@ -108,6 +108,7 @@ describe('RegisterForm', () => {
       errors: ref({ name: 'Nombre es requerido', email: 'Correo no válido' }),
       handleSubmit: vi.fn(),
       validateField: validateFieldMock,
+      resetForm: vi.fn(),
     })
 
     const wrapper = mount(RegisterForm, globalMountOptions)
@@ -161,6 +162,7 @@ describe('RegisterForm', () => {
       errors: ref({}),
       handleSubmit: handleSubmitMock,
       validateField: vi.fn(),
+      resetForm: vi.fn(),
     })
 
     const wrapper = mount(RegisterForm, globalMountOptions)

@@ -38,7 +38,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <Card class="w-full h-[500px] flex flex-col">
+  <Card class="w-full h-[500px] flex flex-col car-card">
     <CardHeader class="p-0 flex-shrink-0">
       <div class="w-full h-[280px] relative group">
         <img
@@ -69,11 +69,18 @@ const emit = defineEmits<{
           </p>
         </div>
         <div class="relative flex">
-          <Badge :class="getStatusColor(car.status)">
+          <Badge
+            :class="getStatusColor(car.status)"
+            :data-testid="`car-status-${car.id}`"
+          >
             {{ car.status }}
           </Badge>
           <DropdownMenu>
-            <DropdownMenuTrigger as="button" class="ml-2">
+            <DropdownMenuTrigger
+              as="button"
+              class="ml-2"
+              data-testid="menu-trigger"
+            >
               <Button variant="ghost" size="icon">
                 <MoreVertical class="h-5 w-5" />
               </Button>
@@ -81,6 +88,7 @@ const emit = defineEmits<{
             <DropdownMenuContent>
               <DropdownMenuItem
                 @click="emit('changeStatus', car.id, 'Disponible' as CarStatus)"
+                data-testid="status-option-disponible"
               >
                 Disponible
               </DropdownMenuItem>
@@ -88,11 +96,13 @@ const emit = defineEmits<{
                 @click="
                   emit('changeStatus', car.id, 'En mantenimiento' as CarStatus)
                 "
+                data-testid="status-option-mantenimiento"
               >
                 En mantenimiento
               </DropdownMenuItem>
               <DropdownMenuItem
                 @click="emit('changeStatus', car.id, 'Alquilado' as CarStatus)"
+                data-testid="status-option-alquilado"
               >
                 Alquilado
               </DropdownMenuItem>
@@ -111,7 +121,12 @@ const emit = defineEmits<{
     </CardContent>
 
     <CardFooter class="p-4 pt-0 flex-shrink-0 flex gap-2">
-      <Button class="flex-1" variant="default" @click="emit('edit', car.id)">
+      <Button
+        class="flex-1"
+        variant="default"
+        @click="emit('edit', car.id)"
+        :data-testid="`edit-car-button`"
+      >
         <Edit class="h-4 w-4 mr-2" />
         Editar
       </Button>
@@ -119,6 +134,7 @@ const emit = defineEmits<{
         class="flex-2 px-4"
         variant="destructive"
         @click="emit('delete', car.id)"
+        :data-testid="`delete-button-${car.id}`"
       >
         <Trash class="h-4 w-4 mx-2" />
       </Button>

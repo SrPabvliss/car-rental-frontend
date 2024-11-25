@@ -35,10 +35,20 @@ const closeDialog = () => {
         </DialogDescription>
       </DialogHeader>
       <DialogFooter>
-        <Button type="button" @click="closeDialog" variant="ghost">
+        <Button
+          type="button"
+          @click="closeDialog"
+          variant="ghost"
+          data-testid="cancel-button"
+        >
           Cancelar
         </Button>
-        <Button type="button" @click="$emit('confirm')" variant="default">
+        <Button
+          type="button"
+          @click="$emit('confirm')"
+          variant="default"
+          data-testid="confirm-button"
+        >
           Confirmar
         </Button>
       </DialogFooter>

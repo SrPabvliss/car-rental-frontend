@@ -85,6 +85,7 @@ describe('RecoverPasswordForm', () => {
       errors: ref({ email: 'Correo inválido' }),
       handleSubmit: vi.fn(),
       validateField: validateFieldMock,
+      resetForm: vi.fn(),
     })
 
     const wrapper = mount(RecoverPasswordForm, globalMountOptions)
@@ -112,6 +113,7 @@ describe('RecoverPasswordForm', () => {
       errors: ref({}),
       handleSubmit: handleSubmitMock,
       validateField: vi.fn(),
+      resetForm: vi.fn(),
     })
 
     const wrapper = mount(RecoverPasswordForm, globalMountOptions)
