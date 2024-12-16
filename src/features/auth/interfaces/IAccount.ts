@@ -1,3 +1,4 @@
-import type { IUser } from '@/features/users/interfaces/IUser'
-
-export type IAccount = IUser
+export interface IAccount {
+  email: string
+  role: string
+}

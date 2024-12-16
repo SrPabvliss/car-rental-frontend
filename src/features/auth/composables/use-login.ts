@@ -32,7 +32,7 @@ export default function useLogin() {
     try {
       const data = await AuthDataSourceImpl.getInstance().login(formData)
       if (!data) return
-      useModulesStore().setModules(useNavLinks('admin'))
+      useModulesStore().setModules(useNavLinks(data.role))
       const modules = useModulesStore().modules
       router.push({ name: modules[0].href })
     } catch (error) {

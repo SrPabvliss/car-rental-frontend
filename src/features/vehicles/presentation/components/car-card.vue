@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Eye, CarFront, Edit, Trash, MoreVertical } from 'lucide-vue-next'
+import { CarFront, Edit, Trash, MoreVertical } from 'lucide-vue-next'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -15,6 +15,7 @@ import type { CarStatus, ICar } from '../../interfaces/ICar'
 
 defineProps<{
   car: ICar
+  role: string
 }>()
 
 const getStatusColor = (status: string): string => {
@@ -34,27 +35,19 @@ const emit = defineEmits<{
   edit: [id: number]
   delete: [id: number]
   changeStatus: [id: number, newStatus: CarStatus]
+  rent: [id: number]
 }>()
 </script>
 
 <template>
   <Card class="w-full h-[500px] flex flex-col car-card">
     <CardHeader class="p-0 flex-shrink-0">
-      <div class="w-full h-[280px] relative group">
+      <div class="w-full h-[270px]">
         <img
           :src="car.imageUrl"
           :alt="`${car.brand} ${car.model}`"
           class="w-full h-full object-cover rounded-t-md"
         />
-        <!-- TODO: this should only be available on client and employee -->
-        <div
-          class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-t-md"
-        >
-          <Button variant="secondary" size="sm" @click="emit('view', car.id)">
-            <Eye class="h-4 w-4 mr-2" />
-            Ver detalles
-          </Button>
-        </div>
       </div>
     </CardHeader>
 
@@ -67,6 +60,7 @@ const emit = defineEmits<{
           <p class="text-sm text-muted-foreground mt-1">
             {{ car.year }} • {{ car.type }}
           </p>
+          <p class="text-sm text-muted-foreground mt-1">{{ car.color }}</p>
         </div>
         <div class="relative flex">
           <Badge
@@ -75,7 +69,8 @@ const emit = defineEmits<{
           >
             {{ car.status }}
           </Badge>
-          <DropdownMenu>
+
+          <DropdownMenu v-if="['Administrador', 'Empleado'].includes(role)">
             <DropdownMenuTrigger
               as="button"
               class="ml-2"
@@ -122,35 +117,34 @@ const emit = defineEmits<{
 
     <CardFooter class="p-4 pt-0 flex-shrink-0 flex gap-2">
       <Button
+        v-if="role === 'Cliente' && car.status === 'Disponible'"
         class="flex-1"
         variant="default"
-        @click="emit('edit', car.id)"
-        :data-testid="`edit-car-button`"
+        @click="emit('rent', car.id)"
+        data-testid="rent-car-button"
       >
-        <Edit class="h-4 w-4 mr-2" />
-        Editar
+        Rentar ahora
       </Button>
-      <Button
-        class="flex-2 px-4"
-        variant="destructive"
-        @click="emit('delete', car.id)"
-        :data-testid="`delete-button-${car.id}`"
-      >
-        <Trash class="h-4 w-4 mx-2" />
-      </Button>
+
+      <template v-if="role === 'Administrador'">
+        <Button
+          class="flex-1"
+          variant="default"
+          @click="emit('edit', car.id)"
+          data-testid="edit-car-button"
+        >
+          <Edit class="h-4 w-4 mr-2" />
+          Editar
+        </Button>
+        <Button
+          class="flex-2 px-4"
+          variant="destructive"
+          @click="emit('delete', car.id)"
+          data-testid="delete-button"
+        >
+          <Trash class="h-4 w-4 mx-2" />
+        </Button>
+      </template>
     </CardFooter>
   </Card>
 </template>
-
-<!-- TODO: Definir acciones según roles -->
-<!--
-1. Cliente:
-   - Mostrar botón "Rentar ahora" (como estaba originalmente).
-   - Mostrar detalles del vehículo sin opciones de edición.
-2. Empleado:
-   - Opciones para registrar alquiler o devoluciones.
-   - Acceso al selector de estado.
-   - No puede editar o eliminar vehículos.
-3. Administrador:
-   - Opciones actuales: Editar, Eliminar, Cambiar estado.
--->

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 import {
   Card,
   CardContent,
@@ -13,6 +14,7 @@ import CarCard from './car-card.vue'
 defineProps<{
   cars: ICar[]
   loading?: boolean
+  role: string
 }>()
 
 const emit = defineEmits<{
@@ -54,6 +56,7 @@ const emit = defineEmits<{
           v-for="car in cars"
           :key="car.id"
           :car="car"
+          :role="role"
           @view="id => emit('view', id)"
           @edit="id => emit('edit', id)"
           @delete="id => emit('delete', id)"
