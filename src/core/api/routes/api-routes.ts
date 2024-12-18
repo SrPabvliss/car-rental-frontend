@@ -2,6 +2,7 @@ const AR_KEYS = {
   AUTH: '/auth',
   USERS: '/users',
   VEHICLES: '/cars',
+  RENTALS: '/rentals',
 }
 
 export const API_ROUTES = {
@@ -15,6 +16,7 @@ export const API_ROUTES = {
   USERS: {
     GET_ALL: AR_KEYS.USERS,
     GET_BY_ID: (id: number) => `${AR_KEYS.USERS}/${id}`,
+    GET_CLIENTS: `${AR_KEYS.USERS}/clients`,
     UPDATE: (id: number) => `${AR_KEYS.USERS}/${id}`,
     REMOVE: (id: number) => `${AR_KEYS.USERS}/${id}`,
   },
@@ -27,4 +29,13 @@ export const API_ROUTES = {
     FILTER: `${AR_KEYS.VEHICLES}/filter`,
     COUNT: `${AR_KEYS.VEHICLES}/count`,
   },
+  RENTALS: {
+    GET_ALL: AR_KEYS.RENTALS,
+    GET_BY_ID: (id: number) => `${AR_KEYS.RENTALS}/${id}`,
+    GET_BY_USER_ID: (userId: number) => `${AR_KEYS.RENTALS}/users/${userId}`,
+    CREATE: AR_KEYS.RENTALS,
+    UPDATE: (id: number) => `${AR_KEYS.RENTALS}/${id}`,
+    DELETE: (id: number) => `${AR_KEYS.RENTALS}/${id}`,
+
+  }
 }

@@ -1,6 +1,7 @@
 import { mainRoutes } from '@/core/routes/main-routes'
 import { useAuthStore } from '@/features/auth/context/auth-store'
 import { authRoutes } from '@/features/auth/routes/auth-routes'
+import { rentalRoutes } from '@/features/rentals/routes/rental-routes'
 import { carRoutes } from '@/features/vehicles/routes/car-routes'
 import { specialRoutes } from '@/shared/routes/special-routes'
 import { createRouter, createWebHistory } from 'vue-router'
@@ -11,6 +12,7 @@ const router = createRouter({
     ...mainRoutes,
     ...authRoutes,
     ...carRoutes,
+    ...rentalRoutes,
     ...specialRoutes,
     {
       path: '/:pathMatch(.*)*',

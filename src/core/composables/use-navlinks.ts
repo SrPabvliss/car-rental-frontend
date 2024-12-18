@@ -87,7 +87,7 @@ export default function useNavLinks(roleType: string) {
         label: '',
         icon: 'lucide:clipboard-list',
         variant: 'ghost',
-        href: 'my-rentals',
+        href: 'rentals',
       },
       {
         title: 'Historial',
