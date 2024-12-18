@@ -75,7 +75,7 @@ export function useCars() {
   )
 
   const handleRentCar = (id: number) => {
-    console.log('Renting car:', id)
+    router.push({ name: 'cars-rent', params: { id } })
   }
 
   const handleViewCar = (id: number) => {

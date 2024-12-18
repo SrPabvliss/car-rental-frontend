@@ -26,9 +26,15 @@ export interface IRental {
 export interface ICreateRental
   extends Omit<
     IRental,
-    'id' | 'actualEndDate' | 'payments' | 'incidents | car | user | employee'
+    | 'id'
+    | 'actualEndDate'
+    | 'payments'
+    | 'incidents'
+    | 'car'
+    | 'user'
+    | 'employee'
   > {
-  employeeId: number
+  employeeId?: number
   userId: number
   carId: number
 }

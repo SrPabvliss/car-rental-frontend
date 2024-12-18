@@ -33,6 +33,18 @@ export const carRoutes = [
           roles: ['Administrador'],
         },
       },
+      {
+        path: ':id/rent',
+        name: 'cars-rent',
+        component: () =>
+          import(
+            '@/features/rentals/presentation/views/create-rental-view.vue'
+          ),
+        meta: {
+          layout: 'dashboard',
+          roles: ['Cliente'],
+        },
+      },
     ],
   },
 ]

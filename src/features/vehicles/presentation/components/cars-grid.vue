@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import {
   Card,
   CardContent,
@@ -22,6 +21,7 @@ const emit = defineEmits<{
   edit: [id: number]
   delete: [id: number]
   changeStatus: [id: number, newStatus: CarStatus]
+  rent: [id: number]
 }>()
 </script>
 
@@ -61,6 +61,7 @@ const emit = defineEmits<{
           @edit="id => emit('edit', id)"
           @delete="id => emit('delete', id)"
           @changeStatus="(id, newStatus) => emit('changeStatus', id, newStatus)"
+          @rent="id => emit('rent', id)"
         />
       </template>
     </div>

@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import ContentLayout from '@/core/layout/content-layout.vue'
+import router from '@/router'
 import CustomBreadcrumb from '@/shared/components/custom-breadcrumb.vue'
 
 import Button from '@/components/ui/button/Button.vue'
 
 import RentalTable from '../components/rental-table.vue'
+
+const rentACar = () => {
+  router.push({
+    name: 'cars',
+  })
+}
 </script>
 
 <template>
@@ -16,7 +23,7 @@ import RentalTable from '../components/rental-table.vue'
             :items="[{ label: 'Alquiler', href: 'rental', current: true }]"
           />
           <div class="flex justify-end">
-            <Button>Rentar un vehículo</Button>
+            <Button @click="rentACar">Rentar un vehículo</Button>
           </div>
         </div>
 

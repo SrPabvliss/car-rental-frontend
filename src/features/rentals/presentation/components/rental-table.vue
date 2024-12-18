@@ -7,7 +7,16 @@ import {
   createColumnHelper,
 } from '@tanstack/vue-table'
 import { format } from 'date-fns'
+import { Edit, Eye, Trash } from 'lucide-vue-next'
+import { h } from 'vue'
 
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -44,23 +53,22 @@ const columns = [
     header: 'Total',
     cell: info => `$${info.getValue().toFixed(2)}`,
   }),
-  // columnHelper.display({
-  //   id: 'actions',
-  //   header: 'Acciones',
-  //   cell: () => (
-  //     <div class="flex items-center gap-2">
-  //       <Button variant="ghost" size="icon">
-  //         <Eye class="h-4 w-4" />
-  //       </Button>
-  //       <Button variant="ghost" size="icon">
-  //         <Edit class="h-4 w-4" />
-  //       </Button>
-  //       <Button variant="ghost" size="icon">
-  //         <Trash class="h-4 w-4" />
-  //       </Button>
-  //     </div>
-  //   ),
-  // }),
+  columnHelper.display({
+    id: 'actions',
+    header: 'Acciones',
+    cell: () =>
+      h('div', { class: 'flex items-center gap-2' }, [
+        h(Button, { variant: 'ghost', size: 'icon' }, () =>
+          h(Eye, { class: 'h-4 w-4' }),
+        ),
+        h(Button, { variant: 'ghost', size: 'icon' }, () =>
+          h(Edit, { class: 'h-4 w-4' }),
+        ),
+        h(Button, { variant: 'ghost', size: 'icon' }, () =>
+          h(Trash, { class: 'h-4 w-4' }),
+        ),
+      ]),
+  }),
 ]
 
 const table = useVueTable({
@@ -74,7 +82,16 @@ const table = useVueTable({
 
 <template>
   <div class="space-y-4">
-    <Table>
+    <Card v-if="!rentals.length && !loading" class="border-dashed">
+      <CardHeader>
+        <CardTitle>No haz realizado ningún alquiler</CardTitle>
+        <CardDescription>
+          No se encontraron alquileres a tu nombre, elige el vehículo que más te
+          guste y comienza a disfrutar de la experiencia.
+        </CardDescription>
+      </CardHeader>
+    </Card>
+    <Table v-else>
       <TableHeader>
         <TableRow
           v-for="headerGroup in table.getHeaderGroups()"

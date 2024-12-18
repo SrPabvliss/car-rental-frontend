@@ -22,6 +22,7 @@ const {
   handleDeleteCar,
   handleChangeCarStatus,
   handleCreateCar,
+  handleRentCar,
 } = useCars()
 
 const dialogVisible = ref(false)
@@ -47,7 +48,6 @@ const user = getUser()
 <template>
   <ContentLayout title="Vehículos">
     <template #content>
-      
       <div class="space-y-6">
         <div class="flex items-center justify-between">
           <CustomBreadcrumb
@@ -70,6 +70,7 @@ const user = getUser()
           @edit="handleEditCar"
           @delete="openDeleteDialog"
           @changeStatus="handleChangeCarStatus"
+          @rent="handleRentCar"
         />
 
         <ConfirmationDialog
