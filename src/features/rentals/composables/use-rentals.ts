@@ -79,8 +79,7 @@ export function useRentals() {
       isCancelDialogOpen.value = true
     },
     pay: (id: number) => {
-      console.log('Pay rental:', id)
-      // Lógica para pagar
+      router.push({ name: 'rental-pay', params: { id: id.toString() } })
     },
     downloadInvoice: (id: number) => {
       console.log('Download invoice:', id)

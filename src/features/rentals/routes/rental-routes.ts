@@ -23,6 +23,15 @@ export const rentalRoutes = [
           roles: ['Cliente'],
         },
 
+      },{
+        path: 'rentals/:id/pay',
+        name: 'rental-pay',
+        component: () =>
+          import('@/features/rentals/presentation/views/rental-pay-view.vue'),
+        meta: {
+          layout: 'dashboard',
+          roles: ['Cliente'],
+        },
       }
     ],
   },
