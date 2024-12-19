@@ -87,7 +87,7 @@ export class RentalDataSourceImpl implements RentalDataSource {
   }
 
   async update(id: number, rental: IUpdateRental): Promise<IRental> {
-    const data = await this.httpClient.put<IRental>(
+    const data = await this.httpClient.patch<IRental>(
       API_ROUTES.RENTALS.UPDATE(id),
       rental,
     )

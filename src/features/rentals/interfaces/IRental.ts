@@ -7,6 +7,7 @@ export enum RentalStatus {
   CANCELED = 'Cancelado',
   COMPLETED = 'Completado',
   RESERVED = 'Reservado',
+  PAID = 'Pagado',
 }
 
 export interface IRental {

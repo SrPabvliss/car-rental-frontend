@@ -1,16 +1,9 @@
 <script setup lang="ts">
+import type { ROLE_ENUM } from '@/features/users/constants/RoleEnum'
 import PaginationComponent from '@/shared/components/pagination-component.vue'
-import {
-  FlexRender,
-  getCoreRowModel,
-  useVueTable,
-  createColumnHelper,
-} from '@tanstack/vue-table'
-import { format } from 'date-fns'
-import { Edit, Eye, Trash } from 'lucide-vue-next'
-import { h } from 'vue'
+import type { IFilter } from '@/shared/interfaces/IFilter'
+import { FlexRender, getCoreRowModel, useVueTable } from '@tanstack/vue-table'
 
-import { Button } from '@/components/ui/button'
 import {
   Card,
   CardDescription,
@@ -26,71 +19,68 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-import { useRentals } from '../../composables/use-rentals'
+import { useRentalColumns } from '../../composables/use-rental-columns'
 import type { IRental } from '../../interfaces/IRental'
 
-const { rentals, loading, filters, totalItems } = useRentals()
-const columnHelper = createColumnHelper<IRental>()
+interface Props {
+  rentals: IRental[]
+  loading?: boolean
+  filters: IFilter
+  totalItems: number
+  role: ROLE_ENUM
+  emptyMessage?: {
+    title?: string
+    description?: string
+  }
+}
 
-const columns = [
-  columnHelper.accessor('startDate', {
-    header: 'Fecha Inicio',
-    cell: info => format(new Date(info.getValue()), 'dd/MM/yyyy HH:mm'),
+const props = withDefaults(defineProps<Props>(), {
+  loading: false,
+  emptyMessage: () => ({
+    title: 'No haz realizado ningún alquiler',
+    description:
+      'No se encontraron alquileres a tu nombre, elige el vehículo que más te guste y comienza a disfrutar de la experiencia.',
   }),
-  columnHelper.accessor('endDate', {
-    header: 'Fecha Fin',
-    cell: info => format(new Date(info.getValue()), 'dd/MM/yyyy HH:mm'),
-  }),
-  columnHelper.accessor('car', {
-    header: 'Vehículo',
-    cell: info => `${info.getValue().brand} ${info.getValue().model}`,
-  }),
-  columnHelper.accessor('status', {
-    header: 'Estado',
-    cell: info => info.getValue(),
-  }),
-  columnHelper.accessor('total', {
-    header: 'Total',
-    cell: info => `$${info.getValue().toFixed(2)}`,
-  }),
-  columnHelper.display({
-    id: 'actions',
-    header: 'Acciones',
-    cell: () =>
-      h('div', { class: 'flex items-center gap-2' }, [
-        h(Button, { variant: 'ghost', size: 'icon' }, () =>
-          h(Eye, { class: 'h-4 w-4' }),
-        ),
-        h(Button, { variant: 'ghost', size: 'icon' }, () =>
-          h(Edit, { class: 'h-4 w-4' }),
-        ),
-        h(Button, { variant: 'ghost', size: 'icon' }, () =>
-          h(Trash, { class: 'h-4 w-4' }),
-        ),
-      ]),
-  }),
-]
+})
+
+const emit = defineEmits<{
+  'update:filters': [filters: IFilter]
+  view: [id: number]
+  edit: [id: number]
+  delete: [id: number]
+  cancel: [id: number]
+  pay: [id: number]
+  downloadInvoice: [id: number]
+  processReturn: [id: number]
+}>()
+
+
+const columns = useRentalColumns(props.role, emit)
 
 const table = useVueTable({
   get data() {
-    return rentals.value
+    return props.rentals
   },
   columns,
   getCoreRowModel: getCoreRowModel(),
 })
+
+const handleFiltersUpdate = (newFilters: IFilter) => {
+  emit('update:filters', newFilters)
+}
 </script>
 
 <template>
   <div class="space-y-4">
     <Card v-if="!rentals.length && !loading" class="border-dashed">
       <CardHeader>
-        <CardTitle>No haz realizado ningún alquiler</CardTitle>
+        <CardTitle>{{ emptyMessage.title }}</CardTitle>
         <CardDescription>
-          No se encontraron alquileres a tu nombre, elige el vehículo que más te
-          guste y comienza a disfrutar de la experiencia.
+          {{ emptyMessage.description }}
         </CardDescription>
       </CardHeader>
     </Card>
+
     <Table v-else>
       <TableHeader>
         <TableRow
@@ -106,6 +96,7 @@ const table = useVueTable({
           </TableHead>
         </TableRow>
       </TableHeader>
+
       <TableBody>
         <template v-if="!loading">
           <TableRow v-for="row in table.getRowModel().rows" :key="row.id">
@@ -126,7 +117,11 @@ const table = useVueTable({
     </Table>
 
     <div v-if="totalItems" class="mt-4">
-      <PaginationComponent v-model="filters" :total-items="totalItems" />
+      <PaginationComponent
+        :model-value="filters"
+        :total-items="totalItems"
+        @update:model-value="handleFiltersUpdate"
+      />
     </div>
   </div>
 </template>

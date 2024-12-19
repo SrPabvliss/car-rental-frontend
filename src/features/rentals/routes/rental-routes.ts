@@ -13,6 +13,17 @@ export const rentalRoutes = [
           roles: ['Administrador', 'Empleado', 'Cliente'],
         },
       },
+      {
+        path: 'rentals/:id',
+        name: 'rental-edit',
+        component: () =>
+          import('@/features/rentals/presentation/views/edit-rental-view.vue'),
+        meta: {
+          layout: 'dashboard',
+          roles: ['Cliente'],
+        },
+
+      }
     ],
   },
 ]
