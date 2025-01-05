@@ -22,8 +22,8 @@ export const rentalRoutes = [
           layout: 'dashboard',
           roles: ['Cliente'],
         },
-
-      },{
+      },
+      {
         path: 'rentals/:id/pay',
         name: 'rental-pay',
         component: () =>
@@ -32,7 +32,19 @@ export const rentalRoutes = [
           layout: 'dashboard',
           roles: ['Cliente'],
         },
-      }
+      },
+      {
+        path: 'rentals/:id/return',
+        name: 'rental-return',
+        component: () =>
+          import(
+            '@/features/rentals/presentation/views/rental-return-view.vue'
+          ),
+        meta: {
+          layout: 'dashboard',
+          roles: ['Empleado'],
+        },
+      },
     ],
   },
 ]

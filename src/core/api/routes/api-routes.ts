@@ -4,6 +4,7 @@ const AR_KEYS = {
   VEHICLES: '/cars',
   RENTALS: '/rentals',
   PAYMENTS: '/payments',
+  INCIDENTS: '/incidents',
 }
 
 export const API_ROUTES = {
@@ -44,5 +45,14 @@ export const API_ROUTES = {
     CREATE: AR_KEYS.PAYMENTS,
     UPDATE: (id: number) => `${AR_KEYS.PAYMENTS}/${id}`,
     DELETE: (id: number) => `${AR_KEYS.PAYMENTS}/${id}`,
-  }
+  },
+  INCIDENTS: {
+    GET_ALL: AR_KEYS.INCIDENTS,
+    GET_BY_RENTAL_ID: (rentalId: number) =>
+      `${AR_KEYS.INCIDENTS}/rentals/${rentalId}`,
+    GET_BY_ID: (id: number) => `${AR_KEYS.INCIDENTS}/${id}`,
+    CREATE: AR_KEYS.INCIDENTS,
+    UPDATE: (id: number) => `${AR_KEYS.INCIDENTS}/${id}`,
+    DELETE: (id: number) => `${AR_KEYS.INCIDENTS}/${id}`,
+  },
 }

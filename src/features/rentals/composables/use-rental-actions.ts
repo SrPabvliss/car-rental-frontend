@@ -28,8 +28,7 @@ export function useRentalActions(role: ROLE_ENUM, emit: any) {
       {
         icon: Eye,
         label: 'Ver detalles',
-        action: () => 
-          emit('view', rental.id),
+        action: () => emit('view', rental.id),
         show: () => true,
         variant: 'ghost',
       },
@@ -128,8 +127,6 @@ export function useRentalActions(role: ROLE_ENUM, emit: any) {
     const availableActions = baseActions[role](rental).filter(action =>
       action.show(rental),
     )
-
-    console.log(availableActions)
 
     return h(
       'div',

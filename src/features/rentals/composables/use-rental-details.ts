@@ -1,6 +1,7 @@
-import { ref } from "vue"
-import type { IRental } from "../interfaces/IRental"
-import { RentalDataSourceImpl } from "../services/datasource"
+import { ref } from 'vue'
+
+import type { IRental } from '../interfaces/IRental'
+import { RentalDataSourceImpl } from '../services/datasource'
 
 export const useRentalDetail = () => {
   const loading = ref(false)
@@ -12,6 +13,7 @@ export const useRentalDetail = () => {
     error.value = null
     try {
       rentalDetail.value = await RentalDataSourceImpl.getInstance().getById(id)
+      console.log(rentalDetail.value)
     } catch (e) {
       error.value = 'Error al cargar los detalles del alquiler'
       console.error(e)
@@ -24,6 +26,6 @@ export const useRentalDetail = () => {
     loading,
     error,
     rentalDetail,
-    fetchRentalDetail
+    fetchRentalDetail,
   }
 }

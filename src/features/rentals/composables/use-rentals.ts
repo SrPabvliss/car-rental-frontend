@@ -1,36 +1,46 @@
 import { useAuthStore } from '@/features/auth/context/auth-store'
+import { ROLE_ENUM } from '@/features/users/constants/RoleEnum'
+import router from '@/router'
 import type { IFilter } from '@/shared/interfaces/IFilter'
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, computed } from 'vue'
 
 import { RentalStatus, type IRental } from '../interfaces/IRental'
 import { RentalDataSourceImpl } from '../services/datasource'
-import router from '@/router'
 
 export function useRentals() {
   const loading = ref(false)
   const rentals = ref<IRental[]>([])
   const totalItems = ref(0)
-  const selectedRentalId = ref<number|null>(null)
+  const selectedRentalId = ref<number | null>(null)
   const isDetailOpen = ref(false)
   const isCancelDialogOpen = ref(false)
   const rentalToCancel = ref<number | null>(null)
   const cancelLoading = ref(false)
 
-
-
   const { getUser } = useAuthStore()
   const user = getUser()
 
+  // Computed properties para roles
+  const isEmployee = computed(() => user?.role === ROLE_ENUM.EMPLOYEE)
+  const isClient = computed(() => user?.role === ROLE_ENUM.CLIENT)
+
+  // Inicializa selectedClient basado en el rol
+  const selectedClient = ref<number | undefined>(
+    isClient.value ? user?.userId : 2,
+  )
+
   const filters = ref<IFilter>({
     page: 0,
-    perPage: 10,
+    perPage: 6,
   })
 
   const fetchRentals = async () => {
+    if (!selectedClient.value) return
+
     loading.value = true
     try {
       const result = await RentalDataSourceImpl.getInstance().getByUserId(
-        user!.userId,
+        selectedClient.value,
         filters.value,
       )
 
@@ -47,7 +57,18 @@ export function useRentals() {
     }
   }
 
+  watch(
+    () => selectedClient.value,
+    () => {
+      filters.value.page = 0
+      fetchRentals()
+    },
+  )
+
   onMounted(() => {
+    if (isClient.value && user) {
+      selectedClient.value = user.userId
+    }
     fetchRentals()
   })
 
@@ -61,12 +82,16 @@ export function useRentals() {
     { deep: true },
   )
 
+  const handleClientChange = (clientId: number) => {
+    if (!isClient.value) {
+      selectedClient.value = clientId
+    }
+  }
+
   const handleRentalAction = {
     view: (id: number) => {
-      console.log("View Action")
       selectedRentalId.value = id
       isDetailOpen.value = true
-
     },
     edit: (id: number) => {
       router.push({ name: 'rental-edit', params: { id: id.toString() } })
@@ -83,31 +108,24 @@ export function useRentals() {
     },
     downloadInvoice: (id: number) => {
       console.log('Download invoice:', id)
-      // Lógica para descargar factura
     },
     processReturn: (id: number) => {
-      console.log('Process return:', id)
-      // Lógica para procesar devolución
-    }
+      router.push({ name: 'rental-return', params: { id: id.toString() } })
+    },
   }
 
   const handleFiltersUpdate = (newFilters: any) => {
-    // updateFilters(newFilters)
     filters.value = newFilters
   }
-
 
   const handleCancelConfirm = async () => {
     if (!rentalToCancel.value) return
 
     cancelLoading.value = true
     try {
-      await RentalDataSourceImpl.getInstance().update(
-        rentalToCancel.value,
-        {
-          status: RentalStatus.CANCELED
-        }
-      )
+      await RentalDataSourceImpl.getInstance().update(rentalToCancel.value, {
+        status: RentalStatus.CANCELED,
+      })
       await fetchRentals()
     } catch (error) {
       console.error('Error canceling rental:', error)
@@ -128,6 +146,7 @@ export function useRentals() {
     filters,
     rentals,
     totalItems,
+    selectedClient,
     fetchRentals,
     handleRentalAction,
     handleFiltersUpdate,
@@ -136,6 +155,9 @@ export function useRentals() {
     isCancelDialogOpen,
     cancelLoading,
     handleCancelConfirm,
-    handleCancelDialog
+    handleCancelDialog,
+    handleClientChange,
+    isEmployee,
+    isClient,
   }
 }

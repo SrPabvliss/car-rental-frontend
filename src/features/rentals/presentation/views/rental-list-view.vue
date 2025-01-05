@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import ContentLayout from '@/core/layout/content-layout.vue'
 import { useAuthStore } from '@/features/auth/context/auth-store'
+import ClientDropdown from '@/features/users/components/client-dropdown.vue'
 import router from '@/router'
-import CustomBreadcrumb from '@/shared/components/custom-breadcrumb.vue'
-import { Button } from '@/components/ui/button'
 import ConfirmationDialog from '@/shared/components/confirmation-dialog.vue'
+import CustomBreadcrumb from '@/shared/components/custom-breadcrumb.vue'
+
+import { Button } from '@/components/ui/button'
 
 import { useRentals } from '../../composables/use-rentals'
-import RentalTable from '../components/rental-table.vue'
 import RentalDialog from '../components/rental-dialog.vue'
+import RentalTable from '../components/rental-table.vue'
 
 const {
   rentals,
@@ -22,7 +24,10 @@ const {
   isCancelDialogOpen,
   cancelLoading,
   handleCancelConfirm,
-  handleCancelDialog
+  handleCancelDialog,
+  selectedClient,
+  isEmployee,
+  handleClientChange,
 } = useRentals()
 
 const { getUser } = useAuthStore()
@@ -43,10 +48,16 @@ const rentACar = () => {
           <CustomBreadcrumb
             :items="[{ label: 'Alquiler', href: 'rental', current: true }]"
           />
-          <div class="flex justify-end">
+          <div class="flex justify-end" v-if="!isEmployee">
             <Button @click="rentACar">Rentar un vehículo</Button>
           </div>
         </div>
+
+        <ClientDropdown
+          v-if="isEmployee"
+          v-model="selectedClient"
+          @update:modelValue="handleClientChange"
+        />
 
         <RentalTable
           :rentals="rentals"

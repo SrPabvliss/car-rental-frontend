@@ -59,20 +59,6 @@ export default function useNavLinks(roleType: string) {
         variant: 'ghost',
         href: 'rentals',
       },
-      {
-        title: 'Devoluciones',
-        label: '',
-        icon: 'lucide:clipboard-check',
-        variant: 'ghost',
-        href: 'returns',
-      },
-      {
-        title: 'Clientes',
-        label: '',
-        icon: 'lucide:users',
-        variant: 'ghost',
-        href: 'customers',
-      },
     ],
     Cliente: [
       {
@@ -88,20 +74,6 @@ export default function useNavLinks(roleType: string) {
         icon: 'lucide:clipboard-list',
         variant: 'ghost',
         href: 'rentals',
-      },
-      {
-        title: 'Historial',
-        label: '',
-        icon: 'lucide:history',
-        variant: 'ghost',
-        href: 'history',
-      },
-      {
-        title: 'Facturas',
-        label: '',
-        icon: 'lucide:receipt',
-        variant: 'ghost',
-        href: 'invoices',
       },
     ],
   }

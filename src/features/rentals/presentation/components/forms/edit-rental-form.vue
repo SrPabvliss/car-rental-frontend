@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import useEditRental from '@/features/rentals/composables/use-edit-rental'
+import type { IRental } from '@/features/rentals/interfaces/IRental'
 import { useForm } from '@/lib/composables/use-form'
 import FormCalendar from '@/shared/components/forms/form-calendar.vue'
 import LoadingSpinner from '@/shared/components/loading-spinner.vue'
@@ -14,20 +16,20 @@ import {
 } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 
-import type { IRental } from '@/features/rentals/interfaces/IRental'
-import useEditRental from '@/features/rentals/composables/use-edit-rental'
-
 const props = defineProps<{
   rental: IRental
 }>()
 
-const { schema, onSubmit, isLoading, calculateTotal, calculateDays } = useEditRental(props.rental)
+const { schema, onSubmit, isLoading, calculateTotal, calculateDays } =
+  useEditRental(props.rental)
 const { formData, errors, handleSubmit, validateField, resetForm } = useForm(
   schema,
   {
-    startDate: props.rental.startDate ? new Date(props.rental.startDate) : undefined,
-    endDate: props.rental.endDate ? new Date(props.rental.endDate) : undefined
-  }
+    startDate: props.rental.startDate
+      ? new Date(props.rental.startDate)
+      : undefined,
+    endDate: props.rental.endDate ? new Date(props.rental.endDate) : undefined,
+  },
 )
 
 const total = computed(() => {
@@ -46,12 +48,14 @@ watch(
   newRental => {
     if (newRental) {
       resetForm({
-        startDate: newRental.startDate ? new Date(newRental.startDate) : undefined,
-        endDate: newRental.endDate ? new Date(newRental.endDate) : undefined
+        startDate: newRental.startDate
+          ? new Date(newRental.startDate)
+          : undefined,
+        endDate: newRental.endDate ? new Date(newRental.endDate) : undefined,
       })
     }
   },
-  { immediate: true }
+  { immediate: true },
 )
 </script>
 
@@ -60,9 +64,7 @@ watch(
     <Card>
       <CardHeader>
         <CardTitle>Información del Vehículo</CardTitle>
-        <CardDescription>
-          Detalles del vehículo alquilado
-        </CardDescription>
+        <CardDescription> Detalles del vehículo alquilado </CardDescription>
       </CardHeader>
       <CardContent>
         <div class="grid grid-cols-2 gap-4">
@@ -76,7 +78,9 @@ watch(
           </div>
           <div class="space-y-2">
             <div>
-              <h3 class="font-semibold">{{ rental.car.brand }} {{ rental.car.model }}</h3>
+              <h3 class="font-semibold">
+                {{ rental.car.brand }} {{ rental.car.model }}
+              </h3>
               <p class="text-sm text-muted-foreground">
                 {{ rental.car.year }} • {{ rental.car.type }}
               </p>
