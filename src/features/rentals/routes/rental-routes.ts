@@ -45,6 +45,18 @@ export const rentalRoutes = [
           roles: ['Empleado'],
         },
       },
+      {
+        path: 'initial-payment',
+        name: 'rental-initial-payment',
+        component: () =>
+          import(
+            '@/features/rentals/presentation/views/initial-payment-view.vue'
+          ),
+        meta: {
+          layout: 'dashboard',
+          roles: ['Cliente'],
+        },
+      },
     ],
   },
 ]

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { FormSelect } from '@/shared/components/forms'
-import { Button } from '@/components/ui/button'
 import LoadingSpinner from '@/shared/components/loading-spinner.vue'
+
+import { Button } from '@/components/ui/button'
 
 const PAYMENT_TYPES = [
   { value: 'Efectivo', label: 'Efectivo' },
@@ -14,6 +15,7 @@ defineProps<{
   baseAmount: number
   incidentsAmount: number
   selectedType: string
+  totalToPay?: number
 }>()
 
 const emit = defineEmits<{
@@ -35,8 +37,13 @@ const emit = defineEmits<{
         <span>${{ incidentsAmount.toFixed(2) }}</span>
       </div>
       <div class="flex justify-between font-bold">
-        <span>Total a pagar:</span>
-        <span>${{ (baseAmount + incidentsAmount).toFixed(2) }}</span>
+        <span>Valor total del alquiler:</span>
+        <span
+          >$
+          {{
+            totalToPay ? totalToPay : (baseAmount + incidentsAmount).toFixed(2)
+          }}
+        </span>
       </div>
     </div>
 
@@ -51,13 +58,8 @@ const emit = defineEmits<{
     />
 
     <div class="flex justify-end gap-4">
-      <Button variant="outline" @click="$router.back()">
-        Cancelar
-      </Button>
-      <Button 
-        @click="emit('submit')" 
-        :disabled="isLoading"
-      >
+      <Button variant="outline" @click="$router.back()"> Cancelar </Button>
+      <Button @click="emit('submit')" :disabled="isLoading">
         <LoadingSpinner v-if="isLoading" size="small" />
         <span v-else>Confirmar Pago</span>
       </Button>

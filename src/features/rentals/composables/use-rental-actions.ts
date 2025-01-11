@@ -36,14 +36,23 @@ export function useRentalActions(role: ROLE_ENUM, emit: any) {
         icon: CreditCard,
         label: 'Pagar',
         action: () => emit('pay', rental.id),
-        show: () => rental.status === 'Completado',
+        show: () => {
+          if (rental.status === 'Cancelado') return false
+
+          if (rental.payments.length === 0) return true
+
+          if (rental.payments.length === 1 && rental.status === 'Completado')
+            return true
+
+          return false
+        },
         variant: 'default',
       },
       {
         icon: Receipt,
         label: 'Ver factura',
         action: () => emit('downloadInvoice', rental.id),
-        show: () => rental.status === 'Pagado',
+        show: () => rental.payments.length === 2,
         variant: 'outline',
       },
       {
@@ -80,7 +89,7 @@ export function useRentalActions(role: ROLE_ENUM, emit: any) {
         icon: Receipt,
         label: 'Ver factura',
         action: () => emit('viewInvoice', rental.id),
-        show: () => rental.status === 'Pagado',
+        show: () => rental.payments.length === 2,
         variant: 'outline',
       },
     ],

@@ -2,13 +2,11 @@ import { useAuthStore } from '@/features/auth/context/auth-store'
 import type { ICar } from '@/features/vehicles/interfaces/ICar'
 import { CarDataSourceImpl } from '@/features/vehicles/services/datasource'
 import router from '@/router'
-import { format } from 'date-fns'
 import { ref, onMounted } from 'vue'
 import { useToast } from 'vue-toastification'
 import { z } from 'zod'
 
-import { RentalStatus, type ICreateRental } from '../interfaces/IRental'
-import { RentalDataSourceImpl } from '../services/datasource'
+import { useTempRentalStore } from '../context/temp-rental-store'
 
 export default function useRentalForm(carId: number) {
   const isLoading = ref(false)
@@ -48,9 +46,9 @@ export default function useRentalForm(carId: number) {
     }
   }
 
-  const formatDateForAPI = (date: Date): string => {
-    return format(date, 'dd/MM/yyyy:HH:mm')
-  }
+  // const formatDateForAPI = (date: Date): string => {
+  //   return format(date, 'dd/MM/yyyy:HH:mm')
+  // }
 
   const calculateDays = (startDate: Date, endDate: Date): number => {
     const start = new Date(startDate)
@@ -67,36 +65,30 @@ export default function useRentalForm(carId: number) {
 
   const onSubmit = async (formData: any) => {
     isLoading.value = true
-
     try {
       if (!user || !car.value) {
         throw new Error('Información incompleta')
       }
-
       const total = calculateTotal(formData.startDate, formData.endDate)
 
-      const rentalData: ICreateRental = {
-        startDate: formatDateForAPI(formData.startDate) as unknown as Date,
-        endDate: formatDateForAPI(formData.endDate) as unknown as Date,
-        status: RentalStatus.ACTIVE,
-        total,
+      // En lugar de crear el rental, guardamos los datos temporalmente
+      const tempRentalStore = useTempRentalStore()
+      tempRentalStore.setRentalData({
+        startDate: formData.startDate,
+        endDate: formData.endDate,
         carId: car.value.id,
-        userId: user.userId,
-      }
+        total,
+      })
 
-      const result = await RentalDataSourceImpl.getInstance().create(rentalData)
-
-      if (result) {
-        useToast().success('Alquiler creado correctamente')
-        router.push({ name: 'rentals' })
-      }
-    } catch {
-      useToast().error('Error al crear el alquiler')
+      // Redirigir a una nueva ruta para el pago inicial
+      router.push({ name: 'rental-initial-payment' })
+    } catch (e) {
+      console.error('Error:', e)
+      useToast().error('Error al procesar la solicitud')
     } finally {
       isLoading.value = false
     }
   }
-
   onMounted(() => {
     loadCar()
   })
