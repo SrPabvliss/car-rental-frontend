@@ -41,9 +41,11 @@ export default function useCarForm(car?: ICar | null) {
       ],
       { message: 'El tipo de vehículo es requerido.' },
     ),
-    status: z.enum(['Disponible', 'Alquilado', 'En mantenimiento'], {
-      message: 'El estado es requerido.',
-    }),
+    status: z
+      .enum(['Disponible', 'Alquilado', 'En mantenimiento'], {
+        message: 'El estado es requerido.',
+      })
+      .default('Disponible'),
     year: z
       .number({ message: 'El año es requerido.' })
       .min(2000, { message: 'El año debe ser 2000 o posterior.' })
@@ -106,6 +108,7 @@ export default function useCarForm(car?: ICar | null) {
       const result = await CarDataSourceImpl.getInstance().create({
         ...formData,
         imageUrl: imageUrl.value ?? undefined,
+        status: 'Disponible',
       } as ICreateCar)
 
       if (result) {
