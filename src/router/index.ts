@@ -2,6 +2,7 @@ import { mainRoutes } from '@/core/routes/main-routes'
 import { useAuthStore } from '@/features/auth/context/auth-store'
 import { authRoutes } from '@/features/auth/routes/auth-routes'
 import { rentalRoutes } from '@/features/rentals/routes/rental-routes'
+import { adminRoutes } from '@/features/users/routes/admin-routes'
 import { carRoutes } from '@/features/vehicles/routes/car-routes'
 import { specialRoutes } from '@/shared/routes/special-routes'
 import { createRouter, createWebHistory } from 'vue-router'
@@ -14,6 +15,7 @@ const router = createRouter({
     ...carRoutes,
     ...rentalRoutes,
     ...specialRoutes,
+    ...adminRoutes,
     {
       path: '/:pathMatch(.*)*',
       name: 'not-found',

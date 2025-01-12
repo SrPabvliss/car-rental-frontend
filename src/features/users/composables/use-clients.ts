@@ -2,7 +2,7 @@ import { ref, onMounted } from 'vue'
 import { useToast } from 'vue-toastification'
 
 import type { IUser } from '../interfaces/IUser'
-import { CarDataSourceImpl } from '../services/datasource'
+import { UserDataSourceImpl } from '../services/datasource'
 
 export function useClients() {
   const loading = ref(false)
@@ -15,7 +15,7 @@ export function useClients() {
     error.value = null
 
     try {
-      const data = await CarDataSourceImpl.getInstance().getClients()
+      const data = await UserDataSourceImpl.getInstance().getClients()
       clients.value = data
     } catch {
       error.value = 'Error al cargar los clientes'

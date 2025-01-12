@@ -13,9 +13,9 @@ export default function useNavLinks(roleType: string) {
       {
         title: 'Usuarios',
         label: '',
-        icon: 'lucide:users',
+        icon: 'lucide:user',
         variant: 'ghost',
-        href: 'users',
+        href: 'usuarios',
       },
       {
         title: 'Reportes',
