@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import LoadingSpinner from '@/shared/components/loading-spinner.vue'
+import { useMediaQuery } from '@vueuse/core'
+import { format } from 'date-fns'
+import { computed, h, watchEffect } from 'vue'
+import { useRouter } from 'vue-router'
+
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -15,11 +21,7 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer'
-import { format } from 'date-fns'
-import { useMediaQuery } from '@vueuse/core'
-import { useRouter } from 'vue-router'
-import LoadingSpinner from '@/shared/components/loading-spinner.vue'
-import { computed, h, watchEffect } from 'vue'
+
 import { useRentalDetail } from '../../composables/use-rental-details'
 
 const props = defineProps<{
@@ -35,8 +37,10 @@ const isDesktop = useMediaQuery('(min-width: 768px)')
 const router = useRouter()
 const { loading, error, rentalDetail, fetchRentalDetail } = useRentalDetail()
 
-const canPay = computed(() => 
-  rentalDetail.value?.status === 'Completado'
+const canPay = computed(
+  () =>
+    rentalDetail.value?.status === 'Completado' &&
+    rentalDetail.value?.payments.length < 2,
 )
 
 watchEffect(() => {
@@ -51,18 +55,13 @@ const handleClose = () => {
 
 const handlePayment = () => {
   if (rentalDetail.value) {
-    router.push({
-      name: 'rental-payment',
-      params: { id: rentalDetail.value.id }
-    })
+    router.push(`/rentals/rentals/${rentalDetail.value.id}/pay`)
   }
 }
 
 const RentalContent = () => {
   if (loading.value) {
-    return h('div', { class: 'flex justify-center p-4' }, [
-      h(LoadingSpinner)
-    ])
+    return h('div', { class: 'flex justify-center p-4' }, [h(LoadingSpinner)])
   }
 
   if (error.value) {
@@ -73,33 +72,38 @@ const RentalContent = () => {
     return null
   }
 
-  const { car, startDate, endDate, incidents, total, status } = rentalDetail.value
+  const { car, startDate, endDate, incidents, total } = rentalDetail.value
 
   return h('div', { class: 'space-y-6' }, [
     h('div', { class: 'space-y-2' }, [
       h('h3', { class: 'font-medium' }, 'Vehículo'),
       h('div', { class: 'flex items-center gap-4' }, [
-        car.imageUrl && h('img', {
-          src: car.imageUrl,
-          alt: `${car.brand} ${car.model}`,
-          class: 'w-20 h-20 object-cover rounded'
-        }),
+        car.imageUrl &&
+          h('img', {
+            src: car.imageUrl,
+            alt: `${car.brand} ${car.model}`,
+            class: 'w-20 h-20 object-cover rounded',
+          }),
         h('div', [
           h('p', `${car.brand} ${car.model}`),
-          h('p', { class: 'text-sm text-muted-foreground' }, `Placa: ${car.plate}`)
-        ])
-      ])
+          h(
+            'p',
+            { class: 'text-sm text-muted-foreground' },
+            `Placa: ${car.plate}`,
+          ),
+        ]),
+      ]),
     ]),
 
     h('div', { class: 'grid grid-cols-2 gap-4' }, [
       h('div', [
         h('p', { class: 'text-sm text-muted-foreground' }, 'Fecha inicio'),
-        h('p', format(new Date(startDate), 'dd/MM/yyyy HH:mm'))
+        h('p', format(new Date(startDate), 'dd/MM/yyyy HH:mm')),
       ]),
       h('div', [
         h('p', { class: 'text-sm text-muted-foreground' }, 'Fecha fin'),
-        h('p', format(new Date(endDate), 'dd/MM/yyyy HH:mm'))
-      ])
+        h('p', format(new Date(endDate), 'dd/MM/yyyy HH:mm')),
+      ]),
     ]),
 
     h('div', { class: 'space-y-2' }, [
@@ -107,30 +111,37 @@ const RentalContent = () => {
       h('div', { class: 'space-y-1' }, [
         h('div', { class: 'flex justify-between' }, [
           h('span', 'Tarifa base'),
-          h('span', `$${total.toFixed(2)}`)
+          h('span', `$${total.toFixed(2)}`),
         ]),
-        incidents?.length > 0 && h('div', { class: 'space-y-1 mt-2' }, [
-          h('p', { class: 'text-sm font-medium' }, 'Incidentes:'),
-          ...incidents.map(incident => 
-            h('div', { class: 'flex justify-between text-sm' }, [
-              h('span', incident.description),
-              h('span', `$${incident.cost.toFixed(2)}`)
-            ])
-          )
-        ]),
-        h('div', { class: 'flex justify-between font-medium mt-2 pt-2 border-t' }, [
-          h('span', 'Total'),
-          h('span', `$${total.toFixed(2)}`)
-        ])
-      ])
+        incidents?.length > 0 &&
+          h('div', { class: 'space-y-1 mt-2' }, [
+            h('p', { class: 'text-sm font-medium' }, 'Incidentes:'),
+            ...incidents.map(incident =>
+              h('div', { class: 'flex justify-between text-sm' }, [
+                h('span', incident.description),
+                h('span', `$${incident.repairCost.toFixed(2)}`),
+              ]),
+            ),
+          ]),
+        h(
+          'div',
+          { class: 'flex justify-between font-medium mt-2 pt-2 border-t' },
+          [h('span', 'Total'), h('span', `$${total.toFixed(2)}`)],
+        ),
+      ]),
     ]),
 
-    canPay.value && h('div', { class: 'mt-4' }, [
-      h(Button, {
-        class: 'w-full',
-        onClick: handlePayment
-      }, 'Ir a pagar')
-    ])
+    canPay.value &&
+      h('div', { class: 'mt-4' }, [
+        h(
+          Button,
+          {
+            class: 'w-full',
+            onClick: handlePayment,
+          },
+          'Ir a pagar',
+        ),
+      ]),
   ])
 }
 </script>
@@ -160,9 +171,7 @@ const RentalContent = () => {
         <RentalContent />
       </div>
       <DrawerFooter>
-        <Button variant="outline" @click="handleClose">
-          Cerrar
-        </Button>
+        <Button variant="outline" @click="handleClose"> Cerrar </Button>
       </DrawerFooter>
     </DrawerContent>
   </Drawer>

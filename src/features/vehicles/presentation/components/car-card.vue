@@ -44,10 +44,17 @@ const emit = defineEmits<{
     <CardHeader class="p-0 flex-shrink-0">
       <div class="w-full h-[270px]">
         <img
+          v-if="car.imageUrl"
           :src="car.imageUrl"
           :alt="`${car.brand} ${car.model}`"
           class="w-full h-full object-cover rounded-t-md"
         />
+        <div
+          v-else
+          class="w-full h-full bg-muted flex items-center justify-center rounded-t-md"
+        >
+          <CarFront class="h-20 w-20 text-muted-foreground/50" />
+        </div>
       </div>
     </CardHeader>
 

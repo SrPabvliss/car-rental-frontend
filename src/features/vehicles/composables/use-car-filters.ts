@@ -87,6 +87,21 @@ export function useCarFilters(props: { modelValue: ICarFilters }, emit: any) {
     updateFilter('orderBy', value === ALL_VALUE ? '' : (value as OrderByValue))
   }
 
+  const clearFilters = () => {
+    emit('update:modelValue', {
+      search: '',
+      type: '',
+      status: '',
+      year: '',
+      brand: '',
+      minPrice: '',
+      maxPrice: '',
+      orderBy: '',
+      page: 0,
+      perPage: props.modelValue.perPage,
+    })
+  }
+
   const selectConfigs = computed(() =>
     createFilterSelectConfigs(
       {
@@ -134,5 +149,6 @@ export function useCarFilters(props: { modelValue: ICarFilters }, emit: any) {
     handleStatusSelect,
     handleYearSelect,
     handleOrderBySelect,
+    clearFilters,
   }
 }

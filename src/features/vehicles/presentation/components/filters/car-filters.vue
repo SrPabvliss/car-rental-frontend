@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { FormInput, FormSelect } from '@/shared/components/forms'
-import { SlidersHorizontal } from 'lucide-vue-next'
+import { SlidersHorizontal, X } from 'lucide-vue-next'
+import { computed } from 'vue'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -24,8 +25,26 @@ const emit = defineEmits<{
   'update:modelValue': [filters: ICarFilters]
 }>()
 
-const { searchValue, selectConfigs, minPriceValue, maxPriceValue } =
-  useCarFilters(props, emit)
+const {
+  searchValue,
+  selectConfigs,
+  minPriceValue,
+  maxPriceValue,
+  clearFilters,
+} = useCarFilters(props, emit)
+
+const hasActiveFilters = computed(() => {
+  return Boolean(
+    searchValue.value ||
+      props.modelValue.type ||
+      props.modelValue.status ||
+      props.modelValue.year ||
+      props.modelValue.brand ||
+      props.modelValue.minPrice ||
+      props.modelValue.maxPrice ||
+      props.modelValue.orderBy,
+  )
+})
 </script>
 
 <template>
@@ -74,6 +93,15 @@ const { searchValue, selectConfigs, minPriceValue, maxPriceValue } =
         </SheetContent>
       </Sheet>
     </div>
+    <Button
+      v-if="hasActiveFilters"
+      variant="outline"
+      class="lg:hidden w-full"
+      @click="clearFilters"
+    >
+      <X class="w-4 h-4 mr-2" />
+      Limpiar Filtros
+    </Button>
 
     <div class="hidden lg:grid grid-cols-6 gap-4">
       <template v-for="config in selectConfigs" :key="config.key">
@@ -91,6 +119,17 @@ const { searchValue, selectConfigs, minPriceValue, maxPriceValue } =
         v-model:minPrice="minPriceValue"
         v-model:maxPrice="maxPriceValue"
       />
+
+      <Button
+        v-if="hasActiveFilters"
+        variant="outline"
+        class="col-span-6"
+        @click="clearFilters"
+        :disabled="!hasActiveFilters"
+      >
+        <X class="w-4 h-4 mr-2" />
+        Limpiar filtros
+      </Button>
     </div>
   </div>
 </template>
