@@ -9,6 +9,7 @@ import CustomBreadcrumb from '@/shared/components/custom-breadcrumb.vue'
 import { Button } from '@/components/ui/button'
 
 import { useRentals } from '../../composables/use-rentals'
+import InvoiceDialog from '../components/invoices/invoice-dialog.vue'
 import RentalDialog from '../components/rental-dialog.vue'
 import RentalTable from '../components/rental-table.vue'
 
@@ -28,6 +29,10 @@ const {
   selectedClient,
   isEmployee,
   handleClientChange,
+  isInvoiceDialogOpen,
+  isInvoiceSending,
+  handleCancelInvoice,
+  handleSendInvoice,
 } = useRentals()
 
 const { getUser } = useAuthStore()
@@ -90,6 +95,14 @@ const rentACar = () => {
           :loading="cancelLoading"
           @confirm="handleCancelConfirm"
           @cancel="handleCancelDialog"
+        />
+
+        <InvoiceDialog
+          :is-open="isInvoiceDialogOpen"
+          :loading="isInvoiceSending"
+          :user-email="user?.email"
+          @close="handleCancelInvoice"
+          @confirm="handleSendInvoice"
         />
       </div>
     </template>

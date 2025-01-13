@@ -1,5 +1,6 @@
-<!-- features/incidents/presentation/views/incident-list.vue -->
 <script setup lang="ts">
+import ConfirmationDialog from '@/shared/components/confirmation-dialog.vue'
+import { format } from 'date-fns'
 import { Plus } from 'lucide-vue-next'
 import { ref, onMounted } from 'vue'
 import { useToast } from 'vue-toastification'
@@ -11,7 +12,6 @@ import type { ICreateIncident, IIncident } from '../../interfaces/IIncident'
 import { IncidentDataSourceImpl } from '../../services/datasource'
 import IncidentFormDialog from '../components/incident-form-dialog.vue'
 import IncidentListItem from '../components/incident-list-item.vue'
-import { format } from 'date-fns'
 
 const props = defineProps<{
   rentalId: string | number
@@ -22,6 +22,18 @@ const isLoading = ref(false)
 const showForm = ref(false)
 const selectedIncident = ref<IIncident | undefined>()
 const toast = useToast()
+const isDeleteDialogOpen = ref(false)
+const isDeleting = ref(false)
+const selectedIncidentId = ref<number | undefined>()
+
+const handleCancelDelete = () => {
+  isDeleteDialogOpen.value = false
+}
+
+const handleOpenDialog = (id: number) => {
+  isDeleteDialogOpen.value = true
+  selectedIncidentId.value = id
+}
 
 const fetchIncidents = async () => {
   isLoading.value = true
@@ -45,12 +57,16 @@ const handleEdit = (incident: IIncident) => {
 }
 
 const handleDelete = async (id: number) => {
+  isDeleting.value = true
   try {
     await IncidentDataSourceImpl.getInstance().delete(id)
     toast.success('Incidente eliminado exitosamente')
     await fetchIncidents()
   } catch {
     toast.error('Error al eliminar el incidente')
+  } finally {
+    isDeleteDialogOpen.value = false
+    isDeleting.value = false
   }
 }
 
@@ -61,7 +77,10 @@ const handleSubmit = async (data: ICreateIncident) => {
         selectedIncident.value.id,
         {
           ...data,
-          reportedAt: format(new Date(selectedIncident.value.reportedAt), 'dd/MM/yyyy:HH:mm') as any,
+          reportedAt: format(
+            new Date(selectedIncident.value.reportedAt),
+            'dd/MM/yyyy:HH:mm',
+          ) as any,
         },
       )
       toast.success('Incidente actualizado exitosamente')
@@ -108,11 +127,19 @@ onMounted(() => {
           :key="incident.id"
           :incident="incident"
           @edit="handleEdit"
-          @delete="handleDelete"
+          @delete="handleOpenDialog"
         />
       </div>
     </CardContent>
   </Card>
+
+  <ConfirmationDialog
+    :visible="isDeleteDialogOpen"
+    title="Eliminar Incidente"
+    description="¿Estás seguro de que deseas eliminar este incidente?"
+    @cancel="handleCancelDelete"
+    @confirm="handleDelete(Number(selectedIncidentId))"
+  />
 
   <IncidentFormDialog
     v-model:show="showForm"

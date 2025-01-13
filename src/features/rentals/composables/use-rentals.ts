@@ -24,6 +24,37 @@ export function useRentals() {
   const isEmployee = computed(() => user?.role === ROLE_ENUM.EMPLOYEE)
   const isClient = computed(() => user?.role === ROLE_ENUM.CLIENT)
 
+  const isInvoiceDialogOpen = ref(false)
+  const isInvoiceSending = ref(false)
+  const selectedInvoiceId = ref<number | null>(null)
+
+  const handleDownloadInvoice = (id: number) => {
+    selectedInvoiceId.value = id
+    isInvoiceDialogOpen.value = true
+  }
+
+  const handleSendInvoice = async () => {
+    if (!selectedInvoiceId.value) return
+
+    isInvoiceSending.value = true
+    try {
+      await RentalDataSourceImpl.getInstance().sendInvoice(
+        selectedInvoiceId.value,
+      )
+      isInvoiceDialogOpen.value = false
+    } catch (error) {
+      console.error('Error sending invoice:', error)
+    } finally {
+      isInvoiceSending.value = false
+      selectedInvoiceId.value = null
+    }
+  }
+
+  const handleCancelInvoice = () => {
+    isInvoiceDialogOpen.value = false
+    selectedInvoiceId.value = null
+  }
+
   // Inicializa selectedClient basado en el rol
   const selectedClient = ref<number | undefined>(
     isClient.value ? user?.userId : 2,
@@ -107,7 +138,7 @@ export function useRentals() {
       router.push({ name: 'rental-pay', params: { id: id.toString() } })
     },
     downloadInvoice: (id: number) => {
-      RentalDataSourceImpl.getInstance().sendInvoice(id)
+      handleDownloadInvoice(id)
     },
     processReturn: (id: number) => {
       router.push({ name: 'rental-return', params: { id: id.toString() } })
@@ -159,5 +190,9 @@ export function useRentals() {
     handleClientChange,
     isEmployee,
     isClient,
+    isInvoiceDialogOpen,
+    isInvoiceSending,
+    handleSendInvoice,
+    handleCancelInvoice,
   }
 }
