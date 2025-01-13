@@ -92,7 +92,7 @@ const submitForm = () => handleSubmit(onSubmit)
     <FormInput
       id="plate"
       label="Placa"
-      placeholder="Ej. ABC123"
+      placeholder="Ej. ABC-123"
       v-model="formData.plate"
       :error="errors.plate"
       @update:modelValue="validateField('plate')"
@@ -132,8 +132,9 @@ const submitForm = () => handleSubmit(onSubmit)
     <FormInput
       id="mileage"
       label="Kilometraje"
-      type="number"
       placeholder="Ej. 15000"
+      type="number"
+      step=".01"
       v-model="formData.mileage"
       :error="errors.mileage"
       @update:modelValue="validateField('mileage')"
@@ -142,8 +143,9 @@ const submitForm = () => handleSubmit(onSubmit)
     <FormInput
       id="dailyRate"
       label="Tarifa diaria"
-      type="number"
       placeholder="Ej. 90.0"
+      type="number"
+      step=".01"
       v-model="formData.dailyRate"
       :error="errors.dailyRate"
       @update:modelValue="validateField('dailyRate')"

@@ -14,11 +14,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
+const { getUser, logout: storeLogout } = useAuthStore()
+
 const logout = () => {
+  storeLogout()
   router.push('/login')
 }
 
-const { getUser } = useAuthStore()
 
 const user = getUser()
 </script>
