@@ -14,14 +14,29 @@ interface LoginForm {
 
 export default function useLogin() {
   const isLoading = ref(false)
+  
   const schema = z.object({
     email: z
       .string({ required_error: 'El email es requerido.' })
-      .min(4, { message: 'El email debe tener al menos 4 caracteres.' })
-      .email({ message: 'El email no es válido.' }),
+      .trim()
+      .min(5, { message: 'El email debe tener al menos 5 caracteres.' })
+      .max(50, { message: 'El email no puede exceder 50 caracteres.' })
+      .email({ message: 'Ingrese un email válido.' })
+      .refine(
+        (email) => {
+          const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+          return emailRegex.test(email)
+        }, 
+        'El formato del email no es válido.'
+      ),
     password: z
       .string({ required_error: 'La contraseña es requerida.' })
-      .min(3, { message: 'La contraseña debe tener al menos 3 caracteres.' }),
+      .min(5, { message: 'La contraseña debe tener al menos 5 caracteres.' })
+      .max(50, { message: 'La contraseña no puede exceder 50 caracteres.' })
+      .refine(
+        (pass) => !pass.includes(' '), 
+        'La contraseña no puede contener espacios.'
+      )
   })
 
   async function onSubmit(formData: LoginForm) {
@@ -32,7 +47,7 @@ export default function useLogin() {
     try {
       const data = await AuthDataSourceImpl.getInstance().login(formData)
       if (!data) return
-      useModulesStore().setModules(useNavLinks('admin'))
+      useModulesStore().setModules(useNavLinks(data.role))
       const modules = useModulesStore().modules
       router.push({ name: modules[0].href })
     } catch (error) {

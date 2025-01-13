@@ -1,3 +1,7 @@
-import type { IUser } from '@/features/users/interfaces/IUser'
+import type { ROLE_ENUM } from "@/features/users/constants/RoleEnum"
 
-export type IAccount = IUser
+export interface IAccount {
+  userId: number
+  email: string
+  role: ROLE_ENUM
+}

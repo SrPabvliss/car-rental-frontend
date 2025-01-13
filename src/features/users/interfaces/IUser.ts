@@ -8,7 +8,7 @@ export interface IUser {
   name: string
   lastName: string
   phone: string
-  role: ROLE_ENUM
+  role?: ROLE_ENUM
 }
 
 export interface ICreateUser extends Omit<IUser, 'id' | 'active'> {

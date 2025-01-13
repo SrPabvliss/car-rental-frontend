@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ContentLayout from '@/core/layout/content-layout.vue'
+import { useAuthStore } from '@/features/auth/context/auth-store'
 import ConfirmationDialog from '@/shared/components/confirmation-dialog.vue'
 import { ref } from 'vue'
 
@@ -21,6 +22,7 @@ const {
   handleDeleteCar,
   handleChangeCarStatus,
   handleCreateCar,
+  handleRentCar,
 } = useCars()
 
 const dialogVisible = ref(false)
@@ -37,6 +39,10 @@ const confirmDelete = () => {
     dialogVisible.value = false
   }
 }
+
+const { getUser } = useAuthStore()
+
+const user = getUser()
 </script>
 
 <template>
@@ -47,7 +53,7 @@ const confirmDelete = () => {
           <CustomBreadcrumb
             :items="[{ label: 'Vehículos', href: 'cars', current: true }]"
           />
-          <div class="flex justify-end">
+          <div class="flex justify-end" v-if="user!.role === 'Administrador'">
             <Button @click="handleCreateCar" data-testid="create-car-button"
               >Crear vehículo</Button
             >
@@ -58,11 +64,13 @@ const confirmDelete = () => {
 
         <CarsGrid
           :cars="cars"
+          :role="user!.role"
           :loading="loading"
           @view="handleViewCar"
           @edit="handleEditCar"
           @delete="openDeleteDialog"
           @changeStatus="handleChangeCarStatus"
+          @rent="handleRentCar"
         />
 
         <ConfirmationDialog

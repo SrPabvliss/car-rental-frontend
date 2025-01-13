@@ -6,6 +6,7 @@ import { z } from 'zod'
 
 import type { ICar, ICreateCar, IUpdateCar } from '../interfaces/ICar'
 import { CarDataSourceImpl } from '../services/datasource'
+import { CAR_STATUSES, CAR_TYPES } from '../constants'
 
 export default function useCarForm(car?: ICar | null) {
   const isLoading = ref(false)
@@ -17,46 +18,83 @@ export default function useCarForm(car?: ICar | null) {
 
   const schema = z.object({
     brand: z
-      .string({ message: 'La marca es requerida.' })
-      .min(3, { message: 'La marca es requerida.' }),
+      .string({ required_error: 'La marca es requerida.' })
+      .trim()
+      .min(2, { message: 'La marca debe tener al menos 2 caracteres.' })
+      .max(50, { message: 'La marca no puede exceder 50 caracteres.' }),
+  
     model: z
-      .string({ message: 'El modelo es requerido.' })
-      .min(3, { message: 'El modelo debe tener más de 3 caracters.' }),
+      .string({ required_error: 'El modelo es requerido.' })
+      .trim()
+      .min(2, { message: 'El modelo debe tener al menos 2 caracteres.' })
+      .max(50, { message: 'El modelo debe tener menos de 50 caracteres.' }),
+  
     color: z
-      .string({ message: 'El color es requerido.' })
-      .min(3, { message: 'El color debe tener más de 3 caracteres ' }),
+      .string({ required_error: 'El color es requerido.' })
+      .trim()
+      .min(3, { message: 'El color debe tener al menos 3 caracteres.' })
+      .max(30, { message: 'El color no puede exceder 30 caracteres.' })
+      .regex(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/, { 
+        message: 'El color solo puede contener letras.' 
+      }),
+  
     plate: z
-      .string({ message: 'La placa es requerida.' })
-      .min(3, { message: 'La placa debe tener más de 3 caracteres.' }),
-    type: z.enum(
-      [
-        'Económico',
-        'Sedán',
-        'SUV Compacto',
-        'SUV Grande',
-        'Lujo',
-        'Camioneta',
-        'Minivan',
-        'Deportivo',
-      ],
-      { message: 'El tipo de vehículo es requerido.' },
-    ),
-    status: z.enum(['Disponible', 'Alquilado', 'En mantenimiento'], {
-      message: 'El estado es requerido.',
-    }),
+      .string({ required_error: 'La placa es requerida.' })
+      .trim()
+      .toUpperCase()
+      .refine(
+        (plate) => {
+          const plateRegex = /^[A-Z]{3}-[0-9]{3,4}$/
+          return plateRegex.test(plate)
+        },
+        'La placa debe tener el formato ABC-123 o ABC-1234'
+      ),
+  
+    type: z
+      .enum(CAR_TYPES as [string, ...string[]], { 
+        required_error: 'El tipo de vehículo es requerido.',
+        invalid_type_error: 'Tipo de vehículo no válido.'
+      }),
+  
+    status: z
+      .enum(CAR_STATUSES as [string, ...string[]], {
+        required_error: 'El estado es requerido.',
+        invalid_type_error: 'Estado no válido.'
+      })
+      .default('Disponible'),
+  
     year: z
-      .number({ message: 'El año es requerido.' })
+      .number({ 
+        required_error: 'El año es requerido.',
+        invalid_type_error: 'El año debe ser un número.' 
+      })
+      .int({ message: 'El año debe ser un número entero.' })
       .min(2000, { message: 'El año debe ser 2000 o posterior.' })
       .max(new Date().getFullYear(), {
-        message: 'El año no puede superar el actual.',
+        message: 'El año no puede ser mayor al actual.'
       }),
+  
     mileage: z
-      .number({ message: 'El kilometraje es requerido.' })
-      .nonnegative({ message: 'El kilometraje no puede ser negativo.' }),
+      .number({ 
+        required_error: 'El kilometraje es requerido.',
+        invalid_type_error: 'El kilometraje debe ser un número.'
+      })
+      .nonnegative({ message: 'El kilometraje no puede ser negativo.' })
+      .max(999999, { message: 'El kilometraje parece ser muy alto.' }),
+  
     dailyRate: z
-      .number({ message: 'La tarifa diaria es requerida.' })
-      .positive({ message: 'La tarifa diaria debe ser mayor a 0.' }),
-    imageUrl: z.string().optional(),
+      .number({ 
+        required_error: 'La tarifa diaria es requerida.',
+        invalid_type_error: 'La tarifa diaria debe ser un número.' 
+      })
+      .positive({ message: 'La tarifa diaria debe ser mayor a 0.' })
+      .max(1000, { message: 'La tarifa diaria parece ser muy alta.' })
+      .transform(val => Number(val.toFixed(2))),
+  
+    imageUrl: z
+      .string()
+      .url({ message: 'La URL de la imagen no es válida.' })
+      .optional()
   })
 
   const openWidget = () => {
@@ -106,6 +144,7 @@ export default function useCarForm(car?: ICar | null) {
       const result = await CarDataSourceImpl.getInstance().create({
         ...formData,
         imageUrl: imageUrl.value ?? undefined,
+        status: 'Disponible',
       } as ICreateCar)
 
       if (result) {

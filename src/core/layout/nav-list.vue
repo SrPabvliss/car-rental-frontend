@@ -31,8 +31,15 @@ const route = useRoute()
 
 const determineActiveLink = (link?: string) => {
   if (!link) return false
-  const currentModule = route.path.split('/').pop()
-  return currentModule && currentModule.toUpperCase() === link.toUpperCase()
+
+  const normalizedLink = link.replace(/^\/|\/$/g, '')
+
+  const currentPath = route.path.replace(/^\/|\/$/g, '')
+
+  return (
+    currentPath === normalizedLink ||
+    currentPath.startsWith(normalizedLink + '/')
+  )
 }
 
 const handleNavigation = (href?: string) => {
@@ -94,10 +101,12 @@ const handleNavigation = (href?: string) => {
                 variant: determineActiveLink(link.href) ? 'default' : 'ghost',
                 size: 'sm',
               }),
-              link.variant === 'default' &&
-                'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',
               'justify-start',
-              determineActiveLink(link.href) ? 'text-white' : '',
+              determineActiveLink(link.href)
+                ? 'text-primary-foreground dark:text-primary-foreground'
+                : 'text-muted-foreground hover:text-primary dark:text-muted-foreground dark:hover:text-primary',
+              link.variant === 'default' &&
+                'dark:bg-muted dark:hover:bg-muted/90',
             )
           "
           @click.prevent="link.href && handleNavigation(link.href)"

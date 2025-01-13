@@ -35,6 +35,10 @@ export const useAuthStore = defineStore(LC_KEY, {
       this.user = store.user
       this.token = store.token
     },
+    getUser() {
+      this.loadData()
+      return this.user
+    },
   },
   persist: {
     key: LC_KEY,

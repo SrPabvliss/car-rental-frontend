@@ -2,31 +2,61 @@ import type { LinkProp } from '../layout/nav-list.vue'
 
 export default function useNavLinks(roleType: string) {
   const links = {
-    admin: [
+    Administrador: [
       {
         title: 'Vehículos',
         label: '',
-        icon: 'lucide:user-circle',
+        icon: 'lucide:car',
         variant: 'ghost',
         href: 'cars',
       },
+      {
+        title: 'Usuarios',
+        label: '',
+        icon: 'lucide:user',
+        variant: 'ghost',
+        href: 'usuarios',
+      },
+      {
+        title: 'Reportes',
+        label: '',
+        icon: 'lucide:file-bar-chart',
+        variant: 'ghost',
+        href: 'reportes',
+      },
     ],
-    employee: [
+    Empleado: [
       {
-        title: 'Projects',
+        title: 'Vehículos',
         label: '',
-        icon: 'lucide:layout-dashboard',
+        icon: 'lucide:car',
         variant: 'ghost',
-        href: 'projects',
+        href: 'cars',
       },
       {
-        title: 'Reports',
+        title: 'Alquileres',
         label: '',
-        icon: 'lucide:file-text',
+        icon: 'lucide:clipboard-list',
         variant: 'ghost',
+        href: 'rentals',
       },
-    ] as const,
-    client: [],
+    ],
+    Cliente: [
+      {
+        title: 'Vehículos',
+        label: '',
+        icon: 'lucide:car',
+        variant: 'ghost',
+        href: 'cars',
+      },
+      {
+        title: 'Mis Alquileres',
+        label: '',
+        icon: 'lucide:clipboard-list',
+        variant: 'ghost',
+        href: 'rentals',
+      },
+    ],
   }
 
   return links[roleType as keyof typeof links] as LinkProp[]

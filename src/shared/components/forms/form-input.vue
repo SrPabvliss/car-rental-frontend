@@ -12,6 +12,7 @@ const props = defineProps<{
   placeholder?: string
   icon?: Component
   error?: string | null
+  step?: any
 }>()
 
 const emit = defineEmits<{
@@ -40,6 +41,7 @@ const inputValue = computed({
         v-model="inputValue"
         :placeholder="placeholder || ''"
         :class="['border-gray-500', { 'pl-10': icon }]" 
+        :step="step"
       />
     </div>
 

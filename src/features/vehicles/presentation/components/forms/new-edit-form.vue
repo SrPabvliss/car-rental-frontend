@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import useCarForm from '@/features/vehicles/composables/use-car-form'
+import { useCarModels } from '@/features/vehicles/composables/use-car-models'
 import {
   CAR_BRANDS,
   CAR_STATUSES,
@@ -14,6 +15,7 @@ import { watch } from 'vue'
 import { Button } from '@/components/ui/button'
 
 import ImageUpload from './image-upload.vue'
+import ModelAutocomplete from './model-autocomplete.vue'
 
 const props = defineProps<{
   car?: ICar | null
@@ -25,6 +27,22 @@ const { schema, onSubmit, isLoading, openWidget, imageUrl } = useCarForm(
 const { formData, errors, handleSubmit, validateField, resetForm } = useForm(
   schema,
   props.car ?? undefined,
+)
+
+const {
+  models,
+  isLoading: isLoadingModels,
+  setMake,
+} = useCarModels(props.car?.brand)
+
+watch(
+  () => formData.brand,
+  newBrand => {
+    formData.model = ''
+    if (newBrand) {
+      setMake(newBrand)
+    }
+  },
 )
 
 watch(
@@ -52,12 +70,13 @@ const submitForm = () => handleSubmit(onSubmit)
       @update:modelValue="validateField('brand')"
     />
 
-    <FormInput
-      id="model"
+    <ModelAutocomplete
       label="Modelo"
-      placeholder="Ej. Corolla"
+      :models="models"
+      :isLoading="isLoadingModels"
+      :disabled="!formData.brand"
       v-model="formData.model"
-      :error="errors.model"
+      :error="errors.model ?? undefined"
       @update:modelValue="validateField('model')"
     />
 
@@ -73,7 +92,7 @@ const submitForm = () => handleSubmit(onSubmit)
     <FormInput
       id="plate"
       label="Placa"
-      placeholder="Ej. ABC123"
+      placeholder="Ej. ABC-123"
       v-model="formData.plate"
       :error="errors.plate"
       @update:modelValue="validateField('plate')"
@@ -90,11 +109,12 @@ const submitForm = () => handleSubmit(onSubmit)
     />
 
     <FormSelect
+      v-if="car"
       id="status"
       label="Estado"
       :placeholder="'Seleccione un estado'"
       :options="CAR_STATUSES.map(status => ({ value: status, label: status }))"
-      v-model="formData.status"
+      v-model="formData.status as string"
       :error="errors.status"
       @update:modelValue="validateField('status')"
     />
@@ -112,8 +132,9 @@ const submitForm = () => handleSubmit(onSubmit)
     <FormInput
       id="mileage"
       label="Kilometraje"
-      type="number"
       placeholder="Ej. 15000"
+      type="number"
+      step=".01"
       v-model="formData.mileage"
       :error="errors.mileage"
       @update:modelValue="validateField('mileage')"
@@ -122,8 +143,9 @@ const submitForm = () => handleSubmit(onSubmit)
     <FormInput
       id="dailyRate"
       label="Tarifa diaria"
-      type="number"
       placeholder="Ej. 90.0"
+      type="number"
+      step=".01"
       v-model="formData.dailyRate"
       :error="errors.dailyRate"
       @update:modelValue="validateField('dailyRate')"

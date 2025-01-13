@@ -13,6 +13,7 @@ import CarCard from './car-card.vue'
 defineProps<{
   cars: ICar[]
   loading?: boolean
+  role: string
 }>()
 
 const emit = defineEmits<{
@@ -20,6 +21,7 @@ const emit = defineEmits<{
   edit: [id: number]
   delete: [id: number]
   changeStatus: [id: number, newStatus: CarStatus]
+  rent: [id: number]
 }>()
 </script>
 
@@ -54,10 +56,12 @@ const emit = defineEmits<{
           v-for="car in cars"
           :key="car.id"
           :car="car"
+          :role="role"
           @view="id => emit('view', id)"
           @edit="id => emit('edit', id)"
           @delete="id => emit('delete', id)"
           @changeStatus="(id, newStatus) => emit('changeStatus', id, newStatus)"
+          @rent="id => emit('rent', id)"
         />
       </template>
     </div>

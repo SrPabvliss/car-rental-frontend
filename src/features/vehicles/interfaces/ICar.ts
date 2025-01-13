@@ -25,6 +25,8 @@ export interface ICar {
   imageUrl?: string
 }
 
-export interface ICreateCar extends Omit<ICar, 'id'> {}
+export interface ICreateCar extends Omit<ICar, 'id'> {
+
+}
 
 export interface IUpdateCar extends Partial<ICreateCar> {}

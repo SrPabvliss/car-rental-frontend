@@ -1,8 +1,7 @@
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const animate = require("tailwindcss-animate")
+import animate from "tailwindcss-animate";
 
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+const config = {
   darkMode: ["class"],
   safelist: ["dark"],
   prefix: "",
@@ -12,7 +11,7 @@ module.exports = {
     './components/**/*.{ts,tsx,vue}',
     './app/**/*.{ts,tsx,vue}',
     './src/**/*.{ts,tsx,vue}',
-	],
+  ],
 
   theme: {
     container: {
@@ -91,4 +90,6 @@ module.exports = {
     },
   },
   plugins: [animate],
-}
+};
+
+export default config;
