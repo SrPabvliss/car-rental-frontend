@@ -26,9 +26,21 @@ const props = defineProps({
 })
 
 const baseUserSchema = z.object({
-  name: z.string().min(1, 'El nombre es obligatorio'),
-  lastName: z.string().min(1, 'El apellido es obligatorio'),
-  email: z.string().min(1, 'El email es obligatorio').email('Email inválido'),
+  name: z.string(
+    {
+      required_error: 'El nombre es obligatorio',
+    }
+  ).min(1, 'El nombre es obligatorio'),
+  lastName: z.string(
+    {
+      required_error: 'El apellido es obligatorio',
+    }
+  ).min(1, 'El apellido es obligatorio'),
+  email: z.string(
+    {
+      required_error: 'El email es obligatorio',
+    }
+  ).min(1, 'El email es obligatorio').email('Email inválido'),
   phone: z.string().optional(),
   address: z.string().optional(),
   role: z.enum(['Administrador', 'Cliente', 'Empleado'], {
@@ -46,7 +58,11 @@ const editUserSchema = baseUserSchema.extend({
 
 const createUserSchema = baseUserSchema.extend({
   password: z
-    .string()
+    .string(
+      {
+        required_error: 'La contraseña es obligatoria',
+      }
+    )
     .min(1, 'La contraseña es obligatoria')
     .min(6, 'La contraseña debe tener al menos 6 caracteres'),
 })

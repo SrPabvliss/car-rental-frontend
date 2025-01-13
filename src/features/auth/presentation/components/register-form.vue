@@ -102,27 +102,6 @@ const roleOptions = Object.values(ROLE_ENUM)
       </p>
     </div>
 
-    <div>
-      <label for="role" class="block text-sm font-medium text-gray-700"
-        >Rol</label
-      >
-      <select
-        v-model="formData.role"
-        @change="validateField('role')"
-        id="role"
-        name="role"
-        class="custom-select"
-      >
-        <option value="" disabled selected>Seleccione un rol</option>
-        <option v-for="role in roleOptions" :key="role" :value="role">
-          {{ role }}
-        </option>
-      </select>
-
-      <p v-if="errors.role" class="text-red-500 text-xs mt-1">
-        {{ errors.role }}
-      </p>
-    </div>
 
     <Button type="submit" class="text-white" :disabled="isLoading">
       <LoadingSpinner v-if="isLoading" size="small" />
