@@ -36,13 +36,20 @@ const emit = defineEmits<{
 }>()
 
 const schema = z.object({
-  description: z.string().min(1, 'La descripción es requerida'),
-  repairCost: z.coerce
-    .number({
-      required_error: 'El costo es requerido',
-      invalid_type_error: 'Debe ser un número',
+  description: z
+    .string({ required_error: 'La descripción es requerida' })
+    .trim()
+    .min(10, { message: 'La descripción debe tener al menos 10 caracteres' })
+    .max(200, { message: 'La descripción no puede exceder 200 caracteres' }),
+
+  repairCost: z
+    .number({ 
+      required_error: 'El costo de reparación es requerido',
+      invalid_type_error: 'El costo debe ser un número válido'
     })
-    .min(0, 'El costo debe ser mayor o igual a 0'),
+    .nonnegative({ message: 'El costo no puede ser negativo' })
+    .max(10000, { message: 'El costo parece ser muy alto' })
+    .transform(val => Number(val.toFixed(2))),
 })
 
 const { formData, errors, handleSubmit, resetForm } = useForm<FormData>(
@@ -114,6 +121,7 @@ const onClose = () => {
       <form @submit.prevent="submitForm" class="space-y-4">
         <FormTextarea
           id="description"
+          name="description"
           label="Descripción"
           v-model="formData.description"
           :error="errors.description || undefined"
@@ -122,8 +130,8 @@ const onClose = () => {
 
         <FormInput
           id="repairCost"
-          type="text"
-          inputmode="numeric"
+          type="number"
+          step=".01"
           label="Costo de Reparación"
           v-model="formData.repairCost"
           :error="errors.repairCost"

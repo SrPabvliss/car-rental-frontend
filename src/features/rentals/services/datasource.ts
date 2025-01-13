@@ -24,6 +24,7 @@ interface RentalDataSource {
   create(rental: ICreateRental): Promise<IRental>
   update(id: number, rental: IUpdateRental): Promise<IRental>
   delete(id: number): Promise<IRental>
+  sendInvoice(id: number): Promise<void>
 }
 
 export class RentalDataSourceImpl implements RentalDataSource {
@@ -99,5 +100,9 @@ export class RentalDataSourceImpl implements RentalDataSource {
       API_ROUTES.RENTALS.DELETE(id),
     )
     return data
+  }
+
+  async sendInvoice(id: number): Promise<void> {
+    await this.httpClient.post<void>(API_ROUTES.RENTALS.SEND_INVOICE(id), {})
   }
 }

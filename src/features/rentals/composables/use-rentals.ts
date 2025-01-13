@@ -107,7 +107,7 @@ export function useRentals() {
       router.push({ name: 'rental-pay', params: { id: id.toString() } })
     },
     downloadInvoice: (id: number) => {
-      console.log('Download invoice:', id)
+      RentalDataSourceImpl.getInstance().sendInvoice(id)
     },
     processReturn: (id: number) => {
       router.push({ name: 'rental-return', params: { id: id.toString() } })

@@ -15,25 +15,58 @@ export default function useRentalForm(carId: number) {
   const user = getUser()
   const days = ref(0)
 
-  const schema = z
-    .object({
-      startDate: z.instanceof(Date, {
-        message: 'La fecha de inicio es requerida',
-      }),
-      endDate: z.instanceof(Date, { message: 'La fecha de fin es requerida' }),
+  // use-rental-form.ts
+const schema = z.object({
+  startDate: z
+    .date({ 
+      required_error: 'La fecha de inicio es requerida',
+      invalid_type_error: 'Fecha de inicio inválida'
     })
-    .refine(
-      data => {
-        const start = new Date(data.startDate)
-        const end = new Date(data.endDate)
-        return end > start
-      },
-      {
-        message: 'La fecha de fin debe ser posterior a la fecha de inicio',
-        path: ['endDate'],
-      },
-    )
+    .min(new Date(), { message: 'La fecha de inicio no puede ser anterior a hoy' }),
 
+  endDate: z
+    .date({ 
+      required_error: 'La fecha de fin es requerida',
+      invalid_type_error: 'Fecha de fin inválida'
+    })
+    .min(new Date(), { message: 'La fecha de fin no puede ser anterior a hoy' })
+})
+.refine(
+  (data) => {
+    const start = new Date(data.startDate)
+    const end = new Date(data.endDate)
+    return end > start
+  },
+  {
+    message: 'La fecha de fin debe ser posterior a la fecha de inicio',
+    path: ['endDate']
+  }
+)
+.refine(
+  (data) => {
+    const start = new Date(data.startDate)
+    const maxDate = new Date()
+    maxDate.setMonth(maxDate.getMonth() + 6)
+    return start <= maxDate
+  },
+  {
+    message: 'No se pueden hacer reservas con más de 6 meses de anticipación',
+    path: ['startDate']
+  }
+)
+.refine(
+  (data) => {
+    const start = new Date(data.startDate)
+    const end = new Date(data.endDate)
+    const diffTime = end.getTime() - start.getTime()
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+    return diffDays <= 30
+  },
+  {
+    message: 'El período de alquiler no puede exceder los 30 días',
+    path: ['endDate']
+  }
+)
   const loadCar = async () => {
     isLoading.value = true
     try {

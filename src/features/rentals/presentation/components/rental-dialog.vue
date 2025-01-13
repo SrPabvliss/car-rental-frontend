@@ -23,6 +23,7 @@ import {
 } from '@/components/ui/drawer'
 
 import { useRentalDetail } from '../../composables/use-rental-details'
+import { useAuthStore } from '@/features/auth/context/auth-store'
 
 const props = defineProps<{
   rentalId: number
@@ -35,10 +36,13 @@ const emit = defineEmits<{
 
 const isDesktop = useMediaQuery('(min-width: 768px)')
 const router = useRouter()
+const { getUser } = useAuthStore()
 const { loading, error, rentalDetail, fetchRentalDetail } = useRentalDetail()
+const user = getUser()
 
 const canPay = computed(
   () =>
+    user?.role === 'Cliente' &&
     rentalDetail.value?.status === 'Completado' &&
     rentalDetail.value?.payments.length < 2,
 )

@@ -38,6 +38,7 @@ export const API_ROUTES = {
     CREATE: AR_KEYS.RENTALS,
     UPDATE: (id: number) => `${AR_KEYS.RENTALS}/${id}`,
     DELETE: (id: number) => `${AR_KEYS.RENTALS}/${id}`,
+    SEND_INVOICE: (id: number) => `${AR_KEYS.RENTALS}/${id}/send-invoice`,
   },
   PAYMENTS: {
     GET_ALL: AR_KEYS.PAYMENTS,

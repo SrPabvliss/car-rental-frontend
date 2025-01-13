@@ -79,7 +79,7 @@ export default function useRegister() {
     try {
       const data = await AuthDataSourceImpl.getInstance().register({
         ...formData,
-        role: ROLE_ENUM.CLIENT,
+        role: ROLE_ENUM.EMPLOYEE,
       })
       if (!data) return
       router.push({ name: 'login' })

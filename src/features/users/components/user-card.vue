@@ -14,7 +14,7 @@ defineProps<{
     lastName: string
     email: string
     phone?: string
-    role: string
+    role?: ROLE_ENUM
     active: boolean
   }
 }>()
@@ -47,7 +47,7 @@ const getRoleColor = (role: string) => {
           >{{ user.name }} {{ user.lastName }}</span
         >
       </div>
-      <Badge :class="getRoleColor(user.role)">{{ user.role }}</Badge>
+      <Badge :class="getRoleColor(user.role!)">{{ user.role }}</Badge>
     </CardHeader>
     <CardContent class="flex-1 flex flex-col justify-between">
       <div class="space-y-2">

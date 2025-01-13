@@ -11,6 +11,7 @@ import type { ICreateIncident, IIncident } from '../../interfaces/IIncident'
 import { IncidentDataSourceImpl } from '../../services/datasource'
 import IncidentFormDialog from '../components/incident-form-dialog.vue'
 import IncidentListItem from '../components/incident-list-item.vue'
+import { format } from 'date-fns'
 
 const props = defineProps<{
   rentalId: string | number
@@ -58,7 +59,10 @@ const handleSubmit = async (data: ICreateIncident) => {
     if (selectedIncident.value) {
       await IncidentDataSourceImpl.getInstance().update(
         selectedIncident.value.id,
-        data,
+        {
+          ...data,
+          reportedAt: format(new Date(selectedIncident.value.reportedAt), 'dd/MM/yyyy:HH:mm') as any,
+        },
       )
       toast.success('Incidente actualizado exitosamente')
     } else {
