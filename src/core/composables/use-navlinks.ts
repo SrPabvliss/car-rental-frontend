@@ -22,26 +22,7 @@ export default function useNavLinks(roleType: string) {
         label: '',
         icon: 'lucide:file-bar-chart',
         variant: 'ghost',
-        href: 'reports',
-      },
-      {
-        title: 'Configuración',
-        label: '',
-        icon: 'lucide:settings',
-        variant: 'ghost',
-        href: 'settings',
-        children: [
-          {
-            title: 'Tarifas',
-            href: 'rates',
-            icon: 'lucide:dollar-sign',
-          },
-          {
-            title: 'Parámetros',
-            href: 'parameters',
-            icon: 'lucide:sliders-horizontal',
-          },
-        ],
+        href: 'reportes',
       },
     ],
     Empleado: [

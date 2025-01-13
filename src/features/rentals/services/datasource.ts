@@ -8,6 +8,7 @@ import type {
   IRental,
   IUpdateRental,
 } from '../interfaces/IRental'
+import type { IDurationByType, IIncomeByType, IMostRentedCars, IRentalsByType } from '../interfaces/IReports'
 
 interface RentalDataSource {
   getAll(filters?: IFilter): Promise<IRental[]>
@@ -25,6 +26,13 @@ interface RentalDataSource {
   update(id: number, rental: IUpdateRental): Promise<IRental>
   delete(id: number): Promise<IRental>
   sendInvoice(id: number): Promise<void>
+
+  // reportes
+
+  getCarRentalsByType(): Promise<IRentalsByType[]>
+  getTotalIncomeByType(): Promise<IIncomeByType[]>
+  getAverageDurationByType(): Promise<IDurationByType[]>
+  getMostRentedCars(): Promise<IMostRentedCars[]>
 }
 
 export class RentalDataSourceImpl implements RentalDataSource {
@@ -104,5 +112,35 @@ export class RentalDataSourceImpl implements RentalDataSource {
 
   async sendInvoice(id: number): Promise<void> {
     await this.httpClient.post<void>(API_ROUTES.RENTALS.SEND_INVOICE(id), {})
+  }
+
+  //reportes 
+
+  async getCarRentalsByType(): Promise<IRentalsByType[]> {
+    const data = await this.httpClient.get<IRentalsByType[]>(
+      API_ROUTES.REPORTS.CAR_RENTALS_BY_TYPE
+    )
+    return data
+  }
+
+  async getTotalIncomeByType(): Promise<IIncomeByType[]> {
+    const data = await this.httpClient.get<IIncomeByType[]>(
+      API_ROUTES.REPORTS.TOTAL_INCOME_BY_TYPE
+    )
+    return data
+  }
+
+  async getAverageDurationByType(): Promise<IDurationByType[]> {
+    const data = await this.httpClient.get<IDurationByType[]>(
+      API_ROUTES.REPORTS.DURATION_BY_TYPE
+    )
+    return data
+  }
+
+  async getMostRentedCars(): Promise<IMostRentedCars[]> {
+    const data = await this.httpClient.get<IMostRentedCars[]>(
+      API_ROUTES.REPORTS.MOST_RENTED_CARS
+    )
+    return data
   }
 }

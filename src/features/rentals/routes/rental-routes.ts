@@ -1,3 +1,4 @@
+
 export const rentalRoutes = [
   {
     path: '/rentals',
@@ -57,6 +58,28 @@ export const rentalRoutes = [
           roles: ['Cliente'],
         },
       },
+      
     ],
   },
+]
+
+export const reportRoutes = [
+  {
+    path: '/reportes',
+    name: 'reportes-view',
+    component: () => import('@/core/layout/dashboard-wrapper.vue'),
+    children: [
+      {
+        path: '',
+        name: 'reportes',
+        component: () =>
+          import('@/features/rentals/presentation/views/reports/reports-view.vue'),
+        meta: {
+          layout: 'dashboard',
+          roles: ['Administrador'],
+        },
+    }
+  ]
+  }
+
 ]

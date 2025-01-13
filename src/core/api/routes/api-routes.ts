@@ -5,6 +5,7 @@ const AR_KEYS = {
   RENTALS: '/rentals',
   PAYMENTS: '/payments',
   INCIDENTS: '/incidents',
+  REPORTS: '/rentals/reports',
 }
 
 export const API_ROUTES = {
@@ -55,5 +56,11 @@ export const API_ROUTES = {
     CREATE: AR_KEYS.INCIDENTS,
     UPDATE: (id: number) => `${AR_KEYS.INCIDENTS}/${id}`,
     DELETE: (id: number) => `${AR_KEYS.INCIDENTS}/${id}`,
+  },
+  REPORTS: {
+    CAR_RENTALS_BY_TYPE: AR_KEYS.REPORTS + '/car-rentals-by-type',
+    TOTAL_INCOME_BY_TYPE: AR_KEYS.REPORTS + '/total-income-by-car-type',
+    DURATION_BY_TYPE: AR_KEYS.REPORTS + '/average-duration-by-car-type',
+    MOST_RENTED_CARS: AR_KEYS.REPORTS + '/most-rented-cars',
   },
 }

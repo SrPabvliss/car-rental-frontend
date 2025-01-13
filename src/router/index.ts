@@ -1,7 +1,7 @@
 import { mainRoutes } from '@/core/routes/main-routes'
 import { useAuthStore } from '@/features/auth/context/auth-store'
 import { authRoutes } from '@/features/auth/routes/auth-routes'
-import { rentalRoutes } from '@/features/rentals/routes/rental-routes'
+import { rentalRoutes, reportRoutes } from '@/features/rentals/routes/rental-routes'
 import { adminRoutes } from '@/features/users/routes/admin-routes'
 import { carRoutes } from '@/features/vehicles/routes/car-routes'
 import { specialRoutes } from '@/shared/routes/special-routes'
@@ -16,6 +16,7 @@ const router = createRouter({
     ...rentalRoutes,
     ...specialRoutes,
     ...adminRoutes,
+    ...reportRoutes,
     {
       path: '/:pathMatch(.*)*',
       name: 'not-found',

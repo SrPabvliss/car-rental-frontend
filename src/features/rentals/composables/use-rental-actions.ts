@@ -85,13 +85,13 @@ export function useRentalActions(role: ROLE_ENUM, emit: any) {
         show: () => rental.status === 'Activo',
         variant: 'default',
       },
-      {
-        icon: Receipt,
-        label: 'Ver factura',
-        action: () => emit('viewInvoice', rental.id),
-        show: () => rental.payments.length === 2,
-        variant: 'outline',
-      },
+      // {
+      //   icon: Receipt,
+      //   label: 'Ver factura',
+      //   action: () => emit('viewInvoice', rental.id),
+      //   show: () => rental.payments.length === 2,
+      //   variant: 'outline',
+      // },
     ],
     Administrador: rental => [
       {
